@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '@unocss/reset/tailwind.css';
+	import '../app.css';
 	import 'uno.css';
 	import { initI18n } from '../i18n/config';
 	import { onMount } from 'svelte';
@@ -31,7 +32,7 @@
 	<meta name="description" content="A humorous fantasy RPG adventure" />
 </svelte:head>
 
-<div class="app min-h-screen bg-gray-1 text-gray-12">
+<div class="app min-h-screen bg-arcana-bg-primary text-arcana-text-primary">
 	{@render children()}
 </div>
 

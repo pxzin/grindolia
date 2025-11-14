@@ -31,19 +31,19 @@
 	}: Props = $props();
 
 	const baseClasses =
-		'w-full px-3 py-2 rounded-md border bg-gray-1 text-gray-12 transition-colors duration-200';
+		'w-full px-4 py-3 rounded-lg border bg-arcana-bg-elevated text-arcana-text-primary transition-all duration-200';
 	const normalClasses =
-		'border-gray-7 focus:outline-none focus:ring-2 focus:ring-primary-9 focus:border-transparent';
-	const errorClasses = 'border-red-9 focus:outline-none focus:ring-2 focus:ring-red-9';
+		'border-arcana-border-default focus:outline-none focus:ring-2 focus:ring-arcana-gold-600 focus:border-arcana-gold-600 placeholder:text-arcana-text-muted';
+	const errorClasses = 'border-arcana-orange-600 focus:outline-none focus:ring-2 focus:ring-arcana-orange-600';
 	const disabledClasses = 'opacity-50 cursor-not-allowed';
 </script>
 
 <div class="input-wrapper {className}">
 	{#if label}
-		<label class="block text-sm font-medium text-gray-12 mb-1">
+		<label class="block text-sm font-medium text-arcana-text-primary mb-2">
 			{label}
 			{#if required}
-				<span class="text-red-9">*</span>
+				<span class="text-arcana-orange-600">*</span>
 			{/if}
 		</label>
 	{/if}
@@ -62,6 +62,6 @@
 	/>
 
 	{#if error}
-		<p class="mt-1 text-sm text-red-9">{error}</p>
+		<p class="mt-1 text-sm text-arcana-orange-600">{error}</p>
 	{/if}
 </div>

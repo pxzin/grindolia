@@ -5,7 +5,7 @@
 	 */
 
 	interface Props {
-		variant?: 'default' | 'elevated' | 'outlined';
+		variant?: 'default' | 'elevated' | 'outlined' | 'gold';
 		padding?: 'none' | 'sm' | 'md' | 'lg';
 		children?: any;
 		class?: string;
@@ -19,19 +19,20 @@
 	}: Props = $props();
 
 	const variantClasses = {
-		default: 'bg-gray-2 border border-gray-6',
-		elevated: 'bg-gray-2 shadow-lg',
-		outlined: 'bg-transparent border-2 border-gray-6'
+		default: 'bg-arcana-bg-secondary border border-arcana-border-default shadow-xl',
+		elevated: 'bg-arcana-bg-elevated border border-arcana-border-glow shadow-2xl',
+		outlined: 'bg-transparent border-2 border-arcana-border-default',
+		gold: 'bg-arcana-bg-secondary border-2 border-arcana-gold-600 shadow-xl'
 	};
 
 	const paddingClasses = {
 		none: 'p-0',
-		sm: 'p-3',
-		md: 'p-4',
-		lg: 'p-6'
+		sm: 'p-4',
+		md: 'p-6',
+		lg: 'p-8'
 	};
 
-	const baseClasses = 'rounded-lg';
+	const baseClasses = 'rounded-2xl backdrop-blur-sm';
 </script>
 
 <div class="{baseClasses} {variantClasses[variant]} {paddingClasses[padding]} {className}">

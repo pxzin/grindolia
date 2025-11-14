@@ -1,0 +1,276 @@
+/* =============================================================================
+   ARCANA DESIGN SYSTEM - Global Styles
+   Dark fantasy RPG aesthetic for Grindolia
+   Adapted from mystical game interface design
+   ============================================================================= */
+
+/* Import Google Fonts for Arcana Typography */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Import UnoCSS utilities */
+@unocss;
+
+/* CSS Reset & Base Styles */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+:root {
+	/* =============================================================================
+	   ARCANA COLOR PALETTE - Dark Fantasy Theme
+	   ============================================================================= */
+
+	/* Background Colors - Deep navy/purple foundations */
+	--color-arcana-bg-primary: #1a1d2e;
+	--color-arcana-bg-secondary: #252842;
+	--color-arcana-bg-elevated: #2d3250;
+	--color-arcana-bg-overlay: rgba(26, 29, 46, 0.95);
+
+	/* Gold/Amber - Primary accent for buttons, highlights, and important elements */
+	--color-arcana-gold-50: #fef8e7;
+	--color-arcana-gold-100: #fcefc7;
+	--color-arcana-gold-200: #f9e29c;
+	--color-arcana-gold-300: #f0c78a;
+	--color-arcana-gold-400: #e6b973;
+	--color-arcana-gold-500: #d4a574;
+	--color-arcana-gold-600: #c9984a;
+	--color-arcana-gold-700: #a67c3a;
+	--color-arcana-gold-800: #86632e;
+	--color-arcana-gold-900: #6b4f24;
+
+	/* Cyan/Blue - Magical effects, mana, abilities */
+	--color-arcana-cyan-50: #e0f7fa;
+	--color-arcana-cyan-100: #b2ebf2;
+	--color-arcana-cyan-200: #80deea;
+	--color-arcana-cyan-300: #5dade2;
+	--color-arcana-cyan-400: #4ecdc4;
+	--color-arcana-cyan-500: #3ab7b7;
+	--color-arcana-cyan-600: #2a9d8f;
+	--color-arcana-cyan-700: #1e7e72;
+	--color-arcana-cyan-800: #155e56;
+	--color-arcana-cyan-900: #0d3f3b;
+
+	/* Magenta/Pink - Special abilities, critical hits, enchantments */
+	--color-arcana-magenta-50: #fce4ec;
+	--color-arcana-magenta-100: #f8bbd0;
+	--color-arcana-magenta-200: #f48fb1;
+	--color-arcana-magenta-300: #f06292;
+	--color-arcana-magenta-400: #ec407a;
+	--color-arcana-magenta-500: #e91e63;
+	--color-arcana-magenta-600: #d946ef;
+	--color-arcana-magenta-700: #c2185b;
+	--color-arcana-magenta-800: #a1134e;
+	--color-arcana-magenta-900: #880e4f;
+
+	/* Orange/Red - Danger, warnings, fire effects, health */
+	--color-arcana-orange-50: #fff3e0;
+	--color-arcana-orange-100: #ffe0b2;
+	--color-arcana-orange-200: #ffcc80;
+	--color-arcana-orange-300: #ffb74d;
+	--color-arcana-orange-400: #ffa726;
+	--color-arcana-orange-500: #ff9800;
+	--color-arcana-orange-600: #ff6b35;
+	--color-arcana-orange-700: #e65100;
+	--color-arcana-orange-800: #bf360c;
+	--color-arcana-orange-900: #8b2500;
+
+	/* Green - Success, healing, nature effects */
+	--color-arcana-green-50: #e8f5e9;
+	--color-arcana-green-100: #c8e6c9;
+	--color-arcana-green-200: #a5d6a7;
+	--color-arcana-green-300: #81c784;
+	--color-arcana-green-400: #66bb6a;
+	--color-arcana-green-500: #4caf50;
+	--color-arcana-green-600: #43a047;
+	--color-arcana-green-700: #388e3c;
+	--color-arcana-green-800: #2e7d32;
+	--color-arcana-green-900: #1b5e20;
+
+	/* Text Colors - Cream/parchment aesthetic */
+	--color-arcana-text-primary: #e8dcc4;
+	--color-arcana-text-secondary: #b8a994;
+	--color-arcana-text-muted: #8a7d6f;
+	--color-arcana-text-white: #ffffff;
+	--color-arcana-text-gold: #f0c78a;
+
+	/* Border Colors */
+	--color-arcana-border-default: #3d4266;
+	--color-arcana-border-gold: #c9984a;
+	--color-arcana-border-glow: #5d6ab8;
+
+	/* =============================================================================
+	   SPACING SYSTEM
+	   ============================================================================= */
+	--spacing-xs: 0.25rem;    /* 4px */
+	--spacing-sm: 0.5rem;     /* 8px */
+	--spacing-md: 1rem;       /* 16px */
+	--spacing-lg: 1.5rem;     /* 24px */
+	--spacing-xl: 2rem;       /* 32px */
+	--spacing-2xl: 3rem;      /* 48px */
+	--spacing-3xl: 4rem;      /* 64px */
+	--spacing-4xl: 6rem;      /* 96px */
+
+	/* =============================================================================
+	   TYPOGRAPHY SYSTEM
+	   ============================================================================= */
+	--font-serif: 'Cinzel', serif;
+	--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+	/* Font sizes */
+	--text-xs: 0.75rem;       /* 12px */
+	--text-sm: 0.875rem;      /* 14px */
+	--text-base: 1rem;        /* 16px */
+	--text-lg: 1.125rem;      /* 18px */
+	--text-xl: 1.25rem;       /* 20px */
+	--text-2xl: 1.5rem;       /* 24px */
+	--text-3xl: 1.875rem;     /* 30px */
+	--text-4xl: 2.25rem;      /* 36px */
+	--text-5xl: 3rem;         /* 48px */
+
+	/* Line heights */
+	--leading-tight: 1.25;
+	--leading-normal: 1.5;
+	--leading-relaxed: 1.75;
+
+	/* =============================================================================
+	   EFFECTS & SHADOWS
+	   ============================================================================= */
+	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+	--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+	--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+
+	/* Glow effects */
+	--glow-gold: 0 0 20px rgba(201, 152, 74, 0.4);
+	--glow-cyan: 0 0 20px rgba(42, 157, 143, 0.4);
+	--glow-magenta: 0 0 20px rgba(217, 70, 239, 0.4);
+	--glow-green: 0 0 20px rgba(76, 175, 80, 0.4);
+
+	/* =============================================================================
+	   BORDER RADIUS
+	   ============================================================================= */
+	--radius-sm: 0.375rem;    /* 6px */
+	--radius-md: 0.5rem;      /* 8px */
+	--radius-lg: 0.75rem;     /* 12px */
+	--radius-xl: 1rem;        /* 16px */
+	--radius-2xl: 1.5rem;     /* 24px */
+	--radius-full: 9999px;
+
+	/* =============================================================================
+	   TRANSITIONS
+	   ============================================================================= */
+	--transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+	--transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+	--transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+	height: 100%;
+	scroll-behavior: smooth;
+}
+
+body {
+	min-height: 100%;
+	font-family: var(--font-sans);
+	font-size: var(--text-base);
+	line-height: var(--leading-normal);
+	color: var(--color-arcana-text-primary);
+	background-color: var(--color-arcana-bg-primary);
+	background-image:
+		radial-gradient(at 0% 0%, rgba(93, 106, 184, 0.05) 0px, transparent 50%),
+		radial-gradient(at 100% 100%, rgba(201, 152, 74, 0.03) 0px, transparent 50%);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* =============================================================================
+   TYPOGRAPHY CLASSES
+   ============================================================================= */
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-serif);
+	font-weight: 700;
+	line-height: var(--leading-tight);
+	color: var(--color-arcana-gold-300);
+}
+
+h1 { font-size: var(--text-5xl); }
+h2 { font-size: var(--text-4xl); }
+h3 { font-size: var(--text-3xl); }
+h4 { font-size: var(--text-2xl); }
+h5 { font-size: var(--text-xl); }
+h6 { font-size: var(--text-lg); }
+
+/* =============================================================================
+   SCROLLBAR CUSTOMIZATION
+   ============================================================================= */
+::-webkit-scrollbar {
+	width: 12px;
+	height: 12px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--color-arcana-bg-primary);
+	border-radius: var(--radius-md);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--color-arcana-border-default);
+	border-radius: var(--radius-md);
+	border: 2px solid var(--color-arcana-bg-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-arcana-gold-700);
+}
+
+/* =============================================================================
+   SELECTION STYLING
+   ============================================================================= */
+::selection {
+	background-color: var(--color-arcana-gold-600);
+	color: var(--color-arcana-bg-primary);
+}
+
+::-moz-selection {
+	background-color: var(--color-arcana-gold-600);
+	color: var(--color-arcana-bg-primary);
+}
+
+/* =============================================================================
+   UTILITY CLASSES
+   ============================================================================= */
+.arcana-heading {
+	font-family: var(--font-serif);
+	color: var(--color-arcana-gold-300);
+	font-weight: 700;
+}
+
+.arcana-text {
+	color: var(--color-arcana-text-primary);
+}
+
+.arcana-text-muted {
+	color: var(--color-arcana-text-muted);
+}
+
+.arcana-text-gold {
+	color: var(--color-arcana-text-gold);
+}
+
+.arcana-bg-primary {
+	background-color: var(--color-arcana-bg-primary);
+}
+
+.arcana-bg-secondary {
+	background-color: var(--color-arcana-bg-secondary);
+}
+
+.arcana-bg-elevated {
+	background-color: var(--color-arcana-bg-elevated);
+}
