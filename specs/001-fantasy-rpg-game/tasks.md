@@ -41,38 +41,38 @@
 
 ### Database Foundation
 
-- [ ] T011 Create SQLite schema definition in server/database/schema.ts (all tables from data-model.md)
-- [ ] T012 Implement database migration framework in server/database/migrations/001_initial_schema.sql
-- [ ] T013 Create database connection setup with WAL mode in server/database/connection.ts
-- [ ] T014 [P] Create Player repository in server/database/repositories/player.ts
-- [ ] T015 [P] Create CharacterClass repository in server/database/repositories/character-class.ts
-- [ ] T016 [P] Create Character repository in server/database/repositories/character.ts
-- [ ] T017 Seed initial character classes (Warrior, Mage, Rogue) in server/database/seed.ts
+- [x] T011 Create SQLite schema definition in server/database/schema.ts (all tables from data-model.md)
+- [x] T012 Implement database migration framework in server/database/migrations/001_initial_schema.sql
+- [x] T013 Create database connection setup with WAL mode in server/database/connection.ts
+- [x] T014 [P] Create Player repository in server/database/repositories/player.ts
+- [x] T015 [P] Create CharacterClass repository in server/database/repositories/character-class.ts
+- [x] T016 [P] Create Character repository in server/database/repositories/character.ts
+- [x] T017 Seed initial character classes (Warrior, Mage, Rogue) in server/database/seed.ts
 
 ### Authentication & Session Management
 
-- [ ] T018 Implement authentication middleware in src/hooks.server.ts
-- [ ] T019 Create session management with Redis in server/websocket/session.ts
-- [ ] T020 Implement password hashing utilities in server/utils/crypto.ts
-- [ ] T021 Create auth API endpoint for registration in src/routes/api/auth/register/+server.ts
-- [ ] T022 Create auth API endpoint for login in src/routes/api/auth/login/+server.ts
+- [x] T018 Implement authentication middleware in src/hooks.server.ts
+- [x] T019 Create session management with Redis in server/websocket/session.ts
+- [x] T020 Implement password hashing utilities in server/utils/crypto.ts
+- [x] T021 Create auth API endpoint for registration in src/routes/api/auth/register/+server.ts
+- [x] T022 Create auth API endpoint for login in src/routes/api/auth/login/+server.ts
 
 ### WebSocket Infrastructure
 
-- [ ] T023 Setup Redis connection and pub/sub in server/websocket/redis.ts
-- [ ] T024 Create WebSocket server setup in server/websocket/server.ts
-- [ ] T025 Implement WebSocket upgrade handler in src/routes/api/websocket/+server.ts
-- [ ] T026 Create WebSocket message types in src/lib/types/websocket.ts
-- [ ] T027 Create WebSocket message router in server/websocket/handlers/index.ts
-- [ ] T028 Create WebSocket client service in src/lib/services/websocket.ts
+- [x] T023 Setup Redis connection and pub/sub in server/websocket/redis.ts
+- [x] T024 Create WebSocket server setup in server/websocket/server.ts
+- [x] T025 Implement WebSocket upgrade handler in src/routes/api/websocket/+server.ts
+- [x] T026 Create WebSocket message types in src/lib/types/websocket.ts
+- [x] T027 Create WebSocket message router in server/websocket/handlers/index.ts
+- [x] T028 Create WebSocket client service in src/lib/services/websocket.ts
 
 ### Core Type Definitions
 
-- [ ] T029 [P] Define Character types in src/lib/types/character.ts
-- [ ] T030 [P] Define Quest types in src/lib/types/quest.ts
-- [ ] T031 [P] Define Item types in src/lib/types/item.ts
-- [ ] T032 [P] Define Arena types in src/lib/types/arena.ts
-- [ ] T033 [P] Define Auction types in src/lib/types/auction.ts
+- [x] T029 [P] Define Character types in src/lib/types/character.ts
+- [x] T030 [P] Define Quest types in src/lib/types/quest.ts
+- [x] T031 [P] Define Item types in src/lib/types/item.ts
+- [x] T032 [P] Define Arena types in src/lib/types/arena.ts
+- [x] T033 [P] Define Auction types in src/lib/types/auction.ts
 
 ### UI Foundation & Design System
 
