@@ -374,6 +374,73 @@ themes = {
 
 ---
 
+### Decision 11: Internationalization (i18n) with svelte-i18n
+
+**Decision**: Use svelte-i18n (or sveltekit-i18n) for multi-language support with JSON-based locale files
+
+**Rationale**:
+- **Global reach**: Support initial markets (English, Brazilian Portuguese, Spanish) with future expansion (Russian, Chinese, Japanese, Korean)
+- **Player accessibility**: Humorous isekai narrative requires proper localization, not just translation
+- **Maintainability**: JSON files separate translations from code, translators don't need programming knowledge
+- **Type safety**: TypeScript interfaces for translation keys prevent missing translations
+- **SEO**: Multi-language support improves discoverability in regional markets
+
+**Initial Languages**:
+1. **English (en)**: Primary language, default fallback
+2. **Brazilian Portuguese (pt-BR)**: Large gaming market in Brazil
+3. **Spanish (es)**: Spanish-speaking markets (Latin America, Spain)
+
+**Future Languages** (prepared structure, translations added later):
+4. **Russian (ru)**: Large Eastern European gaming market
+5. **Chinese (zh)**: Massive Asian market
+6. **Japanese (ja)**: RPG-loving audience, isekai genre origin
+7. **Korean (ko)**: Strong gaming culture
+
+**Alternatives Considered**:
+1. **Hardcoded strings**:
+   - Rejected: Impossible to translate, limits market to English speakers only
+2. **Manual template literals**:
+   - Rejected: No fallback mechanism, prone to errors, no tooling support
+3. **i18next**:
+   - Rejected: More complex setup, primarily React-focused, heavier than svelte-i18n
+
+**Implementation Strategy**:
+- JSON locale files in `src/i18n/locales/` (e.g., `en.json`, `pt-BR.json`, `es.json`)
+- Nested structure: `{ "character": { "create": { "title": "Create Character" } } }`
+- Use `$t()` function in components: `$t('character.create.title')`
+- Store user locale preference in localStorage + database (character preference)
+- Server-side locale detection from Accept-Language header (initial load)
+- Language selector in UI (dropdown with flag icons)
+
+**Translation Workflow**:
+1. Developer writes English strings in `en.json`
+2. Export translation keys to spreadsheet (CSV) for translators
+3. Translators fill in other languages
+4. Import translated CSV back to JSON files
+5. CI/CD validates all locale files have matching keys
+
+**Special Considerations for Game Content**:
+- **Quest narratives**: Require cultural adaptation, not literal translation (humor varies by culture)
+- **Character class names**: Keep consistent (Warrior, Mage, Rogue) or localize (Guerreiro, Mago, Ladino)?
+  - Decision: Localize for immersion, maintain English internal IDs
+- **Item descriptions**: Localize flavor text, keep stats/numbers consistent
+- **UI text**: Standard translations
+- **Error messages**: Localized for better UX
+
+**Best Practices**:
+- Use ICU MessageFormat for pluralization: `{ count, plural, one {# item} other {# items} }`
+- Support RTL languages (future): Arabic, Hebrew (requires CSS direction changes)
+- Avoid concatenation: Use placeholders `"Welcome, {username}!"` not `"Welcome, " + username`
+- Date/time formatting: Use Intl.DateTimeFormat for locale-aware dates
+- Number formatting: Use Intl.NumberFormat for currency (10,000 vs 10.000)
+
+**References**:
+- svelte-i18n: https://github.com/kaisermann/svelte-i18n
+- sveltekit-i18n: https://github.com/jarda-svoboda/sveltekit-i18n
+- ICU MessageFormat: https://formatjs.io/docs/core-concepts/icu-syntax/
+
+---
+
 ## Architectural Patterns
 
 ### Pattern 1: Repository Pattern for Data Access
@@ -494,5 +561,6 @@ export function handleMessage(ws: WebSocket, message: WebSocketMessage) {
 | Type Safety | TypeScript strict | Runtime safety, refactoring confidence |
 | Testing | Vitest + Playwright + Testing Library | Vite-native, comprehensive coverage |
 | Developer Tools | Built-in dev mode | Debugging, observability, fast iteration |
+| i18n | svelte-i18n with JSON locales | Global reach, 7 languages (3 initial + 4 future) |
 
 **Next Phase**: Phase 1 - Design & Contracts (data-model.md, contracts/, quickstart.md)

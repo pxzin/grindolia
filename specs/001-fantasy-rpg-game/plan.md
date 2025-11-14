@@ -15,10 +15,11 @@ Build a web-based multiplayer RPG game inspired by D&D, Lord of the Rings, and J
 
 **Primary Dependencies**:
 
-- Frontend: SvelteKit, Svelte 5, UnoCSS, Radix Colors, Histoire (Storybook alternative)
+- Frontend: SvelteKit, Svelte 5, UnoCSS, Radix Colors, Histoire (Storybook alternative), svelte-i18n or sveltekit-i18n
 - Backend: SvelteKit server routes, Socket.IO or native WebSocket API
 - Database: better-sqlite3 (synchronous SQLite), ioredis (Redis client)
 - Testing: Vitest, Playwright, Testing Library
+- i18n: svelte-i18n or sveltekit-i18n for translations, with JSON-based locale files
 
 **Storage**: SQLite (primary persistence) + Redis (WebSocket session/state management)
 
@@ -42,6 +43,7 @@ Build a web-based multiplayer RPG game inspired by D&D, Lord of the Rings, and J
 - Real-time UI updates via WebSocket for immediate feedback
 - Themeable UI supporting class/level-specific themes and premium themes
 - Developer mode for debugging and testing
+- Full internationalization (i18n) support for initial languages (en, pt-BR, es) with future support for ru, zh, ja, ko
 
 **Scale/Scope**:
 
@@ -156,7 +158,8 @@ src/
 │   │   ├── quest.svelte.ts        # Quest state
 │   │   ├── inventory.svelte.ts    # Inventory state
 │   │   ├── websocket.svelte.ts    # WebSocket connection state
-│   │   └── theme.svelte.ts        # Theme state
+│   │   ├── theme.svelte.ts        # Theme state
+│   │   └── i18n.svelte.ts         # Internationalization state (locale, translations)
 │   ├── services/              # Business logic services
 │   │   ├── websocket.ts       # WebSocket client service
 │   │   ├── api.ts             # REST API client
@@ -216,7 +219,17 @@ src/
 │       └── websocket/+server.ts   # WebSocket upgrade handler
 │
 ├── hooks.server.ts            # SvelteKit server hooks (auth, WebSocket)
-└── app.html                   # HTML template
+├── app.html                   # HTML template
+└── i18n/                      # Internationalization files
+    ├── locales/               # Translation files (JSON)
+    │   ├── en.json            # English translations
+    │   ├── pt-BR.json         # Brazilian Portuguese translations
+    │   ├── es.json            # Spanish translations
+    │   ├── ru.json            # Russian translations (future)
+    │   ├── zh.json            # Chinese translations (future)
+    │   ├── ja.json            # Japanese translations (future)
+    │   └── ko.json            # Korean translations (future)
+    └── config.ts              # i18n configuration (supported locales, fallback)
 
 # Server-side game logic (outside src/ for clear separation)
 server/
@@ -339,6 +352,7 @@ This separation ensures:
 | UnoCSS with semantic tokens | Dynamic theming by class/level/premium, Radix color system ensures accessibility | Tailwind doesn't support runtime theme switching easily, custom CSS scales poorly with 50+ components |
 | TypeScript strict mode | Type safety across client-server boundary prevents runtime errors in game logic | JavaScript would allow type mismatches between WebSocket messages, API contracts, and DB schemas |
 | Svelte 5 runes | Modern reactivity model, better performance than Svelte 4 stores, cleaner syntax for game state | Svelte 4 stores work but runes provide finer-grained reactivity needed for real-time updates |
+| Full i18n support (7 languages) | Global player base requires multi-language support; initial languages (en, pt-BR, es) cover major markets; future languages (ru, zh, ja, ko) prepare for expansion | Single-language would limit market reach; hardcoded strings make translation impossible; retrofitting i18n later is expensive and error-prone |
 
 **Complexity Justification Summary**: Each complexity addition directly addresses a functional requirement (real-time updates, anti-cheat, theming, component documentation) or performance constraint (WebSocket latency, server response time). Simpler alternatives would fail to meet success criteria (SC-008: arena combat <30s, SC-011: load <5s, SC-014: actions <1s).
 

@@ -73,11 +73,13 @@ Represents a user account that can own multiple characters.
 | `created_at` | INTEGER | NOT NULL, DEFAULT (unixepoch()) | Account creation timestamp (Unix epoch) |
 | `last_login_at` | INTEGER | NULL | Last login timestamp |
 | `is_active` | INTEGER | NOT NULL, DEFAULT 1 | Account status (1 = active, 0 = banned) |
+| `preferred_locale` | TEXT | NOT NULL, DEFAULT 'en' | User's preferred language (en, pt-BR, es, ru, zh, ja, ko) |
 
 **Validation Rules**:
 - Email: Valid email format, max 255 characters
 - Password: Min 8 characters, must contain uppercase, lowercase, number
 - Username: 3-20 characters, alphanumeric + underscore
+- Preferred locale: Must be one of: 'en', 'pt-BR', 'es', 'ru', 'zh', 'ja', 'ko'
 
 **Indexes**:
 ```sql
@@ -530,7 +532,8 @@ CREATE TABLE players (
   username TEXT NOT NULL UNIQUE,
   created_at INTEGER NOT NULL DEFAULT (unixepoch()),
   last_login_at INTEGER,
-  is_active INTEGER NOT NULL DEFAULT 1
+  is_active INTEGER NOT NULL DEFAULT 1,
+  preferred_locale TEXT NOT NULL DEFAULT 'en'
 );
 
 -- Character classes
