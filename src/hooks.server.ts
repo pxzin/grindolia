@@ -13,14 +13,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// Extract session ID from cookie
 	const sessionId = event.cookies.get('session_id');
 
-	console.log('[HOOKS] Request:', event.url.pathname, 'Session ID:', sessionId);
-
 	if (sessionId) {
 		try {
 			// Get session data from in-memory store
 			const session = await getSession(sessionId);
-
-			console.log('[HOOKS] Session data:', session);
 
 			if (session) {
 				// Attach session data to locals for use in routes

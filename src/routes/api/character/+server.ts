@@ -15,20 +15,13 @@ import { getDatabase } from '$server/database/connection';
  * Create a new character
  */
 export const POST: RequestHandler = async ({ request, locals }) => {
-	const fs = await import('fs');
-	fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Request received\n`);
-	fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] locals: ${JSON.stringify(locals)}\n`);
-
 	// Check authentication
 	if (!locals.session?.userId) {
-		fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Authentication failed\n`);
 		throw error(401, 'Authentication required');
 	}
 
 	try {
-		fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Parsing request body\n`);
 		const { name, classId } = await request.json();
-		fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Parsed: ${JSON.stringify({ name, classId })}\n`);
 
 		// Validate input
 		if (!name || typeof name !== 'string') {
@@ -97,9 +90,6 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			}
 		});
 	} catch (err) {
-		fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Error: ${err}\n`);
-		fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Error stack: ${err instanceof Error ? err.stack : 'no stack'}\n`);
-
 		if (err && typeof err === 'object' && 'status' in err) {
 			throw err; // Re-throw SvelteKit errors
 		}

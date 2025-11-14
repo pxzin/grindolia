@@ -172,10 +172,22 @@
 
 	// State
 	let currentView = $state<
-		'intro' | 'character-creation' | 'quests' | 'inventory' | 'narrative'
+		'intro' | 'character-creation' | 'quests' | 'inventory' | 'narrative' | 'api-test'
 	>('intro');
 	let selectedQuest = $state<QuestTemplate | null>(null);
 	let showNarrative = $state(false);
+
+	// API Testing state
+	let registerEmail = $state('');
+	let registerUsername = $state('');
+	let registerPassword = $state('');
+	let loginEmail = $state('');
+	let loginPassword = $state('');
+	let characterName = $state('');
+	let characterClassId = $state(1);
+	let apiResponse = $state('');
+	let isLoggedIn = $state(false);
+	let currentUser = $state<any>(null);
 
 	// Handlers
 	const handleCreateCharacter = async (name: string, classId: number) => {
@@ -223,6 +235,82 @@
 		showNarrative = false;
 		currentView = 'quests';
 	};
+
+	// API Testing handlers
+	const handleRegister = async () => {
+		try {
+			const response = await fetch('/api/auth/register', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					email: registerEmail,
+					username: registerUsername,
+					password: registerPassword
+				})
+			});
+
+			const data = await response.json();
+			if (response.ok) {
+				apiResponse = `✅ Registration successful!\n${JSON.stringify(data, null, 2)}`;
+			} else {
+				apiResponse = `❌ Registration failed:\n${JSON.stringify(data, null, 2)}`;
+			}
+		} catch (error) {
+			apiResponse = `❌ Error: ${error}`;
+		}
+	};
+
+	const handleLogin = async () => {
+		try {
+			const response = await fetch('/api/auth/login', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					email: loginEmail,
+					password: loginPassword
+				})
+			});
+
+			const data = await response.json();
+			if (response.ok) {
+				isLoggedIn = true;
+				currentUser = data.player;
+				apiResponse = `✅ Login successful!\n${JSON.stringify(data, null, 2)}`;
+			} else {
+				apiResponse = `❌ Login failed:\n${JSON.stringify(data, null, 2)}`;
+			}
+		} catch (error) {
+			apiResponse = `❌ Error: ${error}`;
+		}
+	};
+
+	const handleCreateCharacterAPI = async () => {
+		try {
+			const response = await fetch('/api/character', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					name: characterName,
+					classId: characterClassId
+				})
+			});
+
+			const data = await response.json();
+			if (response.ok) {
+				apiResponse = `✅ Character created!\n${JSON.stringify(data, null, 2)}`;
+			} else {
+				apiResponse = `❌ Character creation failed:\n${JSON.stringify(data, null, 2)}`;
+			}
+		} catch (error) {
+			apiResponse = `❌ Error: ${error}`;
+		}
+	};
+
+	const handleLogout = () => {
+		isLoggedIn = false;
+		currentUser = null;
+		apiResponse = '✅ Logged out';
+	};
 </script>
 
 <div class="demo-page">
@@ -239,7 +327,10 @@
 				is mocked - no authentication or database required.
 			</p>
 			<div class="intro-actions">
-				<Button variant="primary" size="lg" onclick={() => (currentView = 'character-creation')}>
+				<Button variant="primary" size="lg" onclick={() => (currentView = 'api-test')}>
+					🔌 Test Backend APIs
+				</Button>
+				<Button variant="secondary" size="lg" onclick={() => (currentView = 'character-creation')}>
 					Start Demo
 				</Button>
 				<Button variant="secondary" size="lg" onclick={() => (currentView = 'quests')}>
@@ -310,6 +401,122 @@
 					onEquip={handleEquip}
 					onUnequip={handleUnequip}
 				/>
+			</Card>
+		</div>
+	{/if}
+
+	{#if currentView === 'api-test'}
+		<div class="api-test-section">
+			<div class="nav-back">
+				<Button variant="secondary" size="sm" onclick={() => (currentView = 'intro')}>
+					← Back to Menu
+				</Button>
+			</div>
+
+			<Card variant="glass" class="api-test-card">
+				<h2 class="section-title">🔌 Backend API Testing</h2>
+				<p class="api-description">
+					Test the real authentication and character creation endpoints. All requests go to the actual
+					backend with SQLite database.
+				</p>
+
+				{#if isLoggedIn && currentUser}
+					<div class="user-status">
+						<p class="status-text">✅ Logged in as: <strong>{currentUser.username}</strong></p>
+						<Button variant="secondary" size="sm" onclick={handleLogout}>Logout</Button>
+					</div>
+				{/if}
+
+				<div class="api-forms">
+					<!-- Register Form -->
+					<div class="api-form-section">
+						<h3 class="form-title">1. Register New User</h3>
+						<div class="form-group">
+							<label>Email:</label>
+							<input
+								type="email"
+								bind:value={registerEmail}
+								placeholder="user@example.com"
+								class="form-input"
+							/>
+						</div>
+						<div class="form-group">
+							<label>Username:</label>
+							<input
+								type="text"
+								bind:value={registerUsername}
+								placeholder="username123"
+								class="form-input"
+							/>
+						</div>
+						<div class="form-group">
+							<label>Password:</label>
+							<input
+								type="password"
+								bind:value={registerPassword}
+								placeholder="Min 8 chars, uppercase, lowercase, number"
+								class="form-input"
+							/>
+						</div>
+						<Button variant="primary" onclick={handleRegister}>Register</Button>
+					</div>
+
+					<!-- Login Form -->
+					<div class="api-form-section">
+						<h3 class="form-title">2. Login</h3>
+						<div class="form-group">
+							<label>Email:</label>
+							<input
+								type="email"
+								bind:value={loginEmail}
+								placeholder="user@example.com"
+								class="form-input"
+							/>
+						</div>
+						<div class="form-group">
+							<label>Password:</label>
+							<input type="password" bind:value={loginPassword} placeholder="Password" class="form-input" />
+						</div>
+						<Button variant="primary" onclick={handleLogin}>Login</Button>
+					</div>
+
+					<!-- Create Character Form -->
+					<div class="api-form-section">
+						<h3 class="form-title">3. Create Character</h3>
+						{#if !isLoggedIn}
+							<p class="warning-text">⚠️ You must login first to create a character</p>
+						{/if}
+						<div class="form-group">
+							<label>Character Name:</label>
+							<input
+								type="text"
+								bind:value={characterName}
+								placeholder="Hero"
+								class="form-input"
+								disabled={!isLoggedIn}
+							/>
+						</div>
+						<div class="form-group">
+							<label>Class:</label>
+							<select bind:value={characterClassId} class="form-input" disabled={!isLoggedIn}>
+								<option value={1}>Warrior</option>
+								<option value={2}>Mage</option>
+								<option value={3}>Rogue</option>
+							</select>
+						</div>
+						<Button variant="primary" onclick={handleCreateCharacterAPI} disabled={!isLoggedIn}>
+							Create Character
+						</Button>
+					</div>
+				</div>
+
+				<!-- Response Display -->
+				{#if apiResponse}
+					<div class="api-response">
+						<h3 class="response-title">Response:</h3>
+						<pre class="response-content">{apiResponse}</pre>
+					</div>
+				{/if}
 			</Card>
 		</div>
 	{/if}
@@ -396,6 +603,129 @@
 		margin-bottom: 2rem;
 	}
 
+	/* API Testing Styles */
+	.api-test-section {
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.api-test-card {
+		padding: 2rem;
+	}
+
+	.api-description {
+		font-size: 1rem;
+		color: var(--color-gray-11);
+		margin-bottom: 2rem;
+		text-align: center;
+	}
+
+	.user-status {
+		background: var(--color-green-3);
+		border: 1px solid var(--color-green-6);
+		border-radius: 0.5rem;
+		padding: 1rem;
+		margin-bottom: 2rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.status-text {
+		color: var(--color-green-11);
+		margin: 0;
+	}
+
+	.api-forms {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 2rem;
+		margin-bottom: 2rem;
+	}
+
+	.api-form-section {
+		background: var(--color-gray-2);
+		border: 1px solid var(--color-gray-6);
+		border-radius: 0.5rem;
+		padding: 1.5rem;
+	}
+
+	.form-title {
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: var(--color-primary-11);
+		margin-bottom: 1rem;
+	}
+
+	.form-group {
+		margin-bottom: 1rem;
+	}
+
+	.form-group label {
+		display: block;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: var(--color-gray-11);
+		margin-bottom: 0.5rem;
+	}
+
+	.form-input {
+		width: 100%;
+		padding: 0.75rem;
+		background: var(--color-gray-1);
+		border: 1px solid var(--color-gray-6);
+		border-radius: 0.375rem;
+		color: var(--color-gray-12);
+		font-size: 0.875rem;
+		transition: all 0.2s;
+	}
+
+	.form-input:focus {
+		outline: none;
+		border-color: var(--color-primary-8);
+		box-shadow: 0 0 0 3px var(--color-primary-4);
+	}
+
+	.form-input:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.warning-text {
+		color: var(--color-amber-11);
+		font-size: 0.875rem;
+		margin-bottom: 1rem;
+		padding: 0.5rem;
+		background: var(--color-amber-3);
+		border-radius: 0.25rem;
+	}
+
+	.api-response {
+		background: var(--color-gray-1);
+		border: 1px solid var(--color-gray-6);
+		border-radius: 0.5rem;
+		padding: 1.5rem;
+	}
+
+	.response-title {
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: var(--color-gray-12);
+		margin-bottom: 1rem;
+	}
+
+	.response-content {
+		background: var(--color-gray-2);
+		padding: 1rem;
+		border-radius: 0.375rem;
+		font-family: 'Courier New', monospace;
+		font-size: 0.875rem;
+		color: var(--color-gray-12);
+		overflow-x: auto;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+	}
+
 	@media (max-width: 768px) {
 		.demo-title {
 			font-size: 2rem;
@@ -407,6 +737,10 @@
 
 		.intro-card {
 			padding: 2rem;
+		}
+
+		.api-forms {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>
