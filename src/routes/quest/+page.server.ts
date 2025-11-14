@@ -17,16 +17,30 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 	}
 
 	try {
+		// Get character ID from query params or session
+		let characterId: number | null = null;
 		const characterIdParam = url.searchParams.get('characterId');
 
-		if (!characterIdParam) {
-			throw error(400, 'Character ID is required');
+		if (characterIdParam) {
+			characterId = parseInt(characterIdParam, 10);
+			if (isNaN(characterId)) {
+				throw error(400, 'Invalid character ID');
+			}
+		} else if (locals.session?.characterId) {
+			characterId = locals.session.characterId;
 		}
 
-		const characterId = parseInt(characterIdParam, 10);
+		// If no character ID found, try to get the first character for this user
+		if (!characterId) {
+			const db = getDatabase();
+			const characterRepo = new CharacterRepository(db);
+			const characters = characterRepo.findByPlayerId(locals.session.userId);
 
-		if (isNaN(characterId)) {
-			throw error(400, 'Invalid character ID');
+			if (characters.length === 0) {
+				throw error(404, 'No character found. Please create a character first.');
+			}
+
+			characterId = characters[0].id;
 		}
 
 		const db = getDatabase();
@@ -49,6 +63,11 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 		const activeQuests = getActiveQuests(characterId);
 
 		return {
+			character: {
+				id: character.id,
+				name: character.name,
+				level: character.level
+			},
 			quests: {
 				available: availableQuests.map((quest) => ({
 					id: quest.id,

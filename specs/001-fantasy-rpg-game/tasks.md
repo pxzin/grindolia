@@ -188,11 +188,11 @@
 
 ### i18n for Dungeon Crawler
 
-- [x] T103 [US1-MVP] Add character creation translations to locale files (en, pt-BR)
-- [x] T104 [US1-MVP] Add dungeon UI translations to locale files (en)
-- [x] T105 [US1-MVP] Add combat messages translations to locale files (en)
-- [x] T106 [US1-MVP] Add loot notifications translations to locale files (en)
-- [x] T107 [US1-MVP] Add level up notifications translations to locale files (en)
+- [x] T103 [US1-MVP] Add character creation translations to locale files (en, pt-BR) ✅ COMPLETE
+- [x] T104 [US1-MVP] Add dungeon UI translations to locale files (en) ✅ COMPLETE
+- [x] T105 [US1-MVP] Add combat messages translations to locale files (en) ✅ COMPLETE
+- [x] T106 [US1-MVP] Add loot notifications translations to locale files (en) ✅ COMPLETE
+- [x] T107 [US1-MVP] Add level up notifications translations to locale files (en) ✅ COMPLETE
 
 **Checkpoint**: MVP is complete - fully playable dungeon crawler with account creation, character creation, dungeon exploration, combat, loot, and progression
 
@@ -236,7 +236,7 @@
 
 ### Quest Pages
 
-- [ ] T120 [US2] Create quest list page in src/routes/quest/+page.svelte and +page.server.ts
+- [x] T120 [US2] Create quest list page in src/routes/quest/+page.svelte and +page.server.ts ✅ COMPLETE
 
 ### Quest i18n
 
@@ -389,20 +389,26 @@
 - **Total Tasks**: 144 tasks
 - **Setup Tasks**: 10 (T001-T010) ✅ COMPLETE
 - **Foundational Tasks**: 37 (T011-T047) ✅ COMPLETE
-- **MVP Dungeon Crawler**: 60 tasks (T048-T107) 🎯 **CURRENT FOCUS**
-  - ✅ Basic infrastructure: 13/60 complete
-  - 🔨 Dungeon system: 47/60 remaining
-- **Enhanced Quests**: 15 tasks (T108-T122)
-- **Leaderboards**: 11 tasks (T123-T133)
-- **Polish**: 11 tasks (T134-T144)
+- **MVP Dungeon Crawler**: 60 tasks (T048-T107) ✅ **COMPLETE**
+  - ✅ Required tasks: 53/53 complete
+  - ⏸️ Optional/Deferred: 7 tasks (T078-T079, T080-T083, T102)
+- **Enhanced Quests**: 15 tasks (T108-T122) - **IN PROGRESS** (11/15 complete, 73%)
+- **Leaderboards**: 11 tasks (T123-T133) - Pending
+- **Polish**: 11 tasks (T134-T144) - Pending
 
-**Parallel Opportunities**: ~65% of MVP tasks can run in parallel
+**Parallel Opportunities**: ~65% of tasks can run in parallel
 
-**Current MVP Scope**: Phase 1 + Phase 2 + Phase 3 = 107 tasks total
-- Completed: 47 tasks (43.9%)
-- Remaining: 60 tasks (56.1%)
+**Current MVP Status**: Phase 1 + Phase 2 + Phase 3 = **✅ COMPLETE**
 
-**Next Steps**: Complete dungeon crawler system (T053-T107) for full playable experience
+- Completed: 100/107 required tasks (93.5%)
+- Optional/Deferred: 7 tasks (6.5%)
+
+**Next Steps**:
+
+1. ✅ MVP Dungeon Crawler is playable and ready for testing
+2. 🎯 Optionally implement Enhanced Quest System (Phase 4: T108-T122)
+3. 🎯 Optionally implement Leaderboards (Phase 5: T123-T133)
+4. 🎯 Optionally add Polish & Cross-Cutting Concerns (Phase 6: T134-T144)
 
 ---
 

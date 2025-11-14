@@ -14,7 +14,8 @@ import {
 	completeQuest as markQuestComplete,
 	abandonQuest
 } from '../../database/repositories/character-quest';
-import { getCharacterById } from '../../database/repositories/character';
+import { CharacterRepository } from '../../database/repositories/character';
+import { getDatabase } from '../../database/connection';
 import { distributeQuestRewards } from './rewards';
 import { logger } from '../../utils/logger';
 import { areObjectivesComplete } from '$lib/types/quest';
@@ -43,7 +44,9 @@ export interface CompleteQuestResult {
 export function acceptQuest(characterId: number, questTemplateId: number): AcceptQuestResult {
 	try {
 		// Get character
-		const character = getCharacterById(characterId);
+		const db = getDatabase();
+		const characterRepo = new CharacterRepository(db);
+		const character = characterRepo.findById(characterId);
 		if (!character) {
 			return { success: false, error: 'Character not found' };
 		}

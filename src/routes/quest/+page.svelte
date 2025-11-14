@@ -9,7 +9,13 @@
 	let { data } = $props();
 
 	// Load quest data into store on mount
-	onMount(() => {
+	onMount(async () => {
+		// Load character if not already loaded
+		if (data.character && !characterStore.isLoaded) {
+			await characterStore.loadCharacter();
+		}
+
+		// Load quest data
 		if (data.quests) {
 			questStore.setAvailableQuests(data.quests.available);
 			questStore.setActiveQuests(data.quests.active);
@@ -22,7 +28,10 @@
 	const character = $derived(characterStore.state);
 
 	const handleAcceptQuest = async (questId: number) => {
-		if (!character.id) {
+		// Use character from data if store doesn't have it
+		const characterId = character.id || data.character?.id;
+
+		if (!characterId) {
 			throw new Error('No character selected');
 		}
 
@@ -32,7 +41,7 @@
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				characterId: character.id,
+				characterId: characterId,
 				questTemplateId: questId
 			})
 		});
