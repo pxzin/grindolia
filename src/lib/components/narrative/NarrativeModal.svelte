@@ -61,8 +61,7 @@
 <div class="narrative-overlay" class:visible={isVisible} onclick={handleClose} role="presentation">
 	<Card
 		variant="glass"
-		class="narrative-modal"
-		class:visible={isVisible}
+		class={`narrative-modal ${isVisible ? 'visible' : ''}`}
 		onclick={(e) => e.stopPropagation()}
 		role="dialog"
 		aria-modal="true"
