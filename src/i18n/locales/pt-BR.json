@@ -1,0 +1,123 @@
+{
+	"common": {
+		"loading": "Carregando...",
+		"error": "Erro",
+		"success": "Sucesso",
+		"cancel": "Cancelar",
+		"confirm": "Confirmar",
+		"save": "Salvar",
+		"delete": "Excluir",
+		"edit": "Editar",
+		"close": "Fechar",
+		"back": "Voltar",
+		"next": "Próximo",
+		"submit": "Enviar"
+	},
+	"auth": {
+		"login": "Entrar",
+		"register": "Registrar",
+		"logout": "Sair",
+		"email": "E-mail",
+		"username": "Nome de usuário",
+		"password": "Senha",
+		"confirmPassword": "Confirmar Senha",
+		"forgotPassword": "Esqueceu a senha?",
+		"alreadyHaveAccount": "Já tem uma conta?",
+		"dontHaveAccount": "Não tem uma conta?",
+		"loginSuccess": "Login realizado com sucesso!",
+		"registerSuccess": "Conta criada com sucesso!",
+		"loginError": "E-mail ou senha inválidos",
+		"registerError": "Falha no registro"
+	},
+	"character": {
+		"create": {
+			"title": "Criar Personagem",
+			"selectClass": "Selecionar Classe",
+			"characterName": "Nome do Personagem",
+			"customize": "Personalizar Aparência",
+			"createButton": "Criar Personagem"
+		},
+		"stats": {
+			"level": "Nível",
+			"experience": "Experiência",
+			"health": "Vida",
+			"strength": "Força",
+			"intelligence": "Inteligência",
+			"dexterity": "Destreza",
+			"vitality": "Vitalidade",
+			"combatPower": "Poder de Combate"
+		},
+		"classes": {
+			"warrior": "Guerreiro",
+			"mage": "Mago",
+			"rogue": "Ladino"
+		}
+	},
+	"quest": {
+		"title": "Missões",
+		"active": "Missões Ativas",
+		"completed": "Concluídas",
+		"available": "Disponíveis",
+		"objectives": "Objetivos",
+		"rewards": "Recompensas",
+		"start": "Iniciar Missão",
+		"complete": "Concluir Missão",
+		"progress": "Progresso"
+	},
+	"inventory": {
+		"title": "Inventário",
+		"equipped": "Equipado",
+		"bag": "Mochila",
+		"equip": "Equipar",
+		"unequip": "Desequipar",
+		"use": "Usar",
+		"sell": "Vender",
+		"rarity": {
+			"common": "Comum",
+			"uncommon": "Incomum",
+			"rare": "Raro",
+			"epic": "Épico",
+			"legendary": "Lendário"
+		}
+	},
+	"arena": {
+		"title": "Arena",
+		"enterArena": "Entrar na Arena",
+		"wins": "Vitórias",
+		"losses": "Derrotas",
+		"rating": "Classificação",
+		"rank": "Rank",
+		"combatLog": "Registro de Combate",
+		"victory": "Vitória!",
+		"defeat": "Derrota"
+	},
+	"auction": {
+		"title": "Casa de Leilões",
+		"buy": "Comprar",
+		"sell": "Vender",
+		"myListings": "Meus Anúncios",
+		"createListing": "Criar Anúncio",
+		"price": "Preço",
+		"timeRemaining": "Tempo Restante",
+		"status": {
+			"active": "Ativo",
+			"sold": "Vendido",
+			"expired": "Expirado",
+			"cancelled": "Cancelado"
+		}
+	},
+	"leaderboard": {
+		"title": "Classificações",
+		"rank": "Rank",
+		"player": "Jogador",
+		"level": "Nível",
+		"arenaRating": "Classificação de Arena",
+		"wealth": "Riqueza",
+		"categories": {
+			"level": "Por Nível",
+			"combatPower": "Por Poder de Combate",
+			"arenaWins": "Por Vitórias na Arena",
+			"wealth": "Por Riqueza"
+		}
+	}
+}

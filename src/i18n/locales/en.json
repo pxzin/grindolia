@@ -1,0 +1,123 @@
+{
+	"common": {
+		"loading": "Loading...",
+		"error": "Error",
+		"success": "Success",
+		"cancel": "Cancel",
+		"confirm": "Confirm",
+		"save": "Save",
+		"delete": "Delete",
+		"edit": "Edit",
+		"close": "Close",
+		"back": "Back",
+		"next": "Next",
+		"submit": "Submit"
+	},
+	"auth": {
+		"login": "Login",
+		"register": "Register",
+		"logout": "Logout",
+		"email": "Email",
+		"username": "Username",
+		"password": "Password",
+		"confirmPassword": "Confirm Password",
+		"forgotPassword": "Forgot Password?",
+		"alreadyHaveAccount": "Already have an account?",
+		"dontHaveAccount": "Don't have an account?",
+		"loginSuccess": "Successfully logged in!",
+		"registerSuccess": "Account created successfully!",
+		"loginError": "Invalid email or password",
+		"registerError": "Registration failed"
+	},
+	"character": {
+		"create": {
+			"title": "Create Character",
+			"selectClass": "Select Class",
+			"characterName": "Character Name",
+			"customize": "Customize Appearance",
+			"createButton": "Create Character"
+		},
+		"stats": {
+			"level": "Level",
+			"experience": "Experience",
+			"health": "Health",
+			"strength": "Strength",
+			"intelligence": "Intelligence",
+			"dexterity": "Dexterity",
+			"vitality": "Vitality",
+			"combatPower": "Combat Power"
+		},
+		"classes": {
+			"warrior": "Warrior",
+			"mage": "Mage",
+			"rogue": "Rogue"
+		}
+	},
+	"quest": {
+		"title": "Quests",
+		"active": "Active Quests",
+		"completed": "Completed",
+		"available": "Available",
+		"objectives": "Objectives",
+		"rewards": "Rewards",
+		"start": "Start Quest",
+		"complete": "Complete Quest",
+		"progress": "Progress"
+	},
+	"inventory": {
+		"title": "Inventory",
+		"equipped": "Equipped",
+		"bag": "Bag",
+		"equip": "Equip",
+		"unequip": "Unequip",
+		"use": "Use",
+		"sell": "Sell",
+		"rarity": {
+			"common": "Common",
+			"uncommon": "Uncommon",
+			"rare": "Rare",
+			"epic": "Epic",
+			"legendary": "Legendary"
+		}
+	},
+	"arena": {
+		"title": "Arena",
+		"enterArena": "Enter Arena",
+		"wins": "Wins",
+		"losses": "Losses",
+		"rating": "Rating",
+		"rank": "Rank",
+		"combatLog": "Combat Log",
+		"victory": "Victory!",
+		"defeat": "Defeat"
+	},
+	"auction": {
+		"title": "Auction House",
+		"buy": "Buy",
+		"sell": "Sell",
+		"myListings": "My Listings",
+		"createListing": "Create Listing",
+		"price": "Price",
+		"timeRemaining": "Time Remaining",
+		"status": {
+			"active": "Active",
+			"sold": "Sold",
+			"expired": "Expired",
+			"cancelled": "Cancelled"
+		}
+	},
+	"leaderboard": {
+		"title": "Leaderboards",
+		"rank": "Rank",
+		"player": "Player",
+		"level": "Level",
+		"arenaRating": "Arena Rating",
+		"wealth": "Wealth",
+		"categories": {
+			"level": "By Level",
+			"combatPower": "By Combat Power",
+			"arenaWins": "By Arena Wins",
+			"wealth": "By Wealth"
+		}
+	}
+}

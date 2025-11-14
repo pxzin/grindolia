@@ -1,0 +1,123 @@
+{
+	"common": {
+		"loading": "読み込み中...",
+		"error": "エラー",
+		"success": "成功",
+		"cancel": "キャンセル",
+		"confirm": "確認",
+		"save": "保存",
+		"delete": "削除",
+		"edit": "編集",
+		"close": "閉じる",
+		"back": "戻る",
+		"next": "次へ",
+		"submit": "送信"
+	},
+	"auth": {
+		"login": "ログイン",
+		"register": "登録",
+		"logout": "ログアウト",
+		"email": "メールアドレス",
+		"username": "ユーザー名",
+		"password": "パスワード",
+		"confirmPassword": "パスワード確認",
+		"forgotPassword": "パスワードをお忘れですか？",
+		"alreadyHaveAccount": "アカウントをお持ちですか？",
+		"dontHaveAccount": "アカウントをお持ちでないですか？",
+		"loginSuccess": "ログインに成功しました！",
+		"registerSuccess": "アカウントが作成されました！",
+		"loginError": "メールアドレスまたはパスワードが無効です",
+		"registerError": "登録に失敗しました"
+	},
+	"character": {
+		"create": {
+			"title": "キャラクター作成",
+			"selectClass": "クラス選択",
+			"characterName": "キャラクター名",
+			"customize": "外見カスタマイズ",
+			"createButton": "キャラクター作成"
+		},
+		"stats": {
+			"level": "レベル",
+			"experience": "経験値",
+			"health": "体力",
+			"strength": "筋力",
+			"intelligence": "知力",
+			"dexterity": "器用さ",
+			"vitality": "生命力",
+			"combatPower": "戦闘力"
+		},
+		"classes": {
+			"warrior": "ウォリアー",
+			"mage": "メイジ",
+			"rogue": "ローグ"
+		}
+	},
+	"quest": {
+		"title": "クエスト",
+		"active": "進行中のクエスト",
+		"completed": "完了済み",
+		"available": "受注可能",
+		"objectives": "目標",
+		"rewards": "報酬",
+		"start": "クエスト開始",
+		"complete": "クエスト完了",
+		"progress": "進行状況"
+	},
+	"inventory": {
+		"title": "インベントリ",
+		"equipped": "装備中",
+		"bag": "バッグ",
+		"equip": "装備",
+		"unequip": "装備解除",
+		"use": "使用",
+		"sell": "売却",
+		"rarity": {
+			"common": "コモン",
+			"uncommon": "アンコモン",
+			"rare": "レア",
+			"epic": "エピック",
+			"legendary": "レジェンダリー"
+		}
+	},
+	"arena": {
+		"title": "アリーナ",
+		"enterArena": "アリーナに入る",
+		"wins": "勝利数",
+		"losses": "敗北数",
+		"rating": "レーティング",
+		"rank": "ランク",
+		"combatLog": "戦闘ログ",
+		"victory": "勝利！",
+		"defeat": "敗北"
+	},
+	"auction": {
+		"title": "オークションハウス",
+		"buy": "購入",
+		"sell": "出品",
+		"myListings": "出品中",
+		"createListing": "出品作成",
+		"price": "価格",
+		"timeRemaining": "残り時間",
+		"status": {
+			"active": "進行中",
+			"sold": "売却済み",
+			"expired": "期限切れ",
+			"cancelled": "キャンセル済み"
+		}
+	},
+	"leaderboard": {
+		"title": "ランキング",
+		"rank": "順位",
+		"player": "プレイヤー",
+		"level": "レベル",
+		"arenaRating": "アリーナレーティング",
+		"wealth": "所持金",
+		"categories": {
+			"level": "レベル別",
+			"combatPower": "戦闘力別",
+			"arenaWins": "アリーナ勝利数別",
+			"wealth": "所持金別"
+		}
+	}
+}

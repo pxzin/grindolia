@@ -1,32 +1,46 @@
 /**
  * Radix Colors mapping for UnoCSS
- * Maps Radix UI color scales to semantic tokens
+ * Maps Radix UI color scales to UnoCSS color utilities
  */
 
-import * as radixColors from '@radix-ui/colors';
+import * as radix from '@radix-ui/colors';
 
-// Export all Radix colors for UnoCSS
-export { radixColors };
+/**
+ * Convert Radix color scale to UnoCSS format
+ * Radix: { blue1: '#...', blue2: '#...', ... }
+ * UnoCSS: { blue: { 1: '#...', 2: '#...', ... } }
+ */
+function convertRadixToUnoCSS(colors: Record<string, string>) {
+	const result: Record<string, Record<string, string>> = {};
 
-// Semantic color tokens for theming
-export const themeTokens = {
-	// Base colors
-	surface: 'var(--color-surface)',
-	'surface-raised': 'var(--color-surface-raised)',
+	for (const [key, value] of Object.entries(colors)) {
+		// Extract color name and step (e.g., 'blue1' -> 'blue', '1')
+		const match = key.match(/^([a-z]+)(\d+)$/i);
+		if (match) {
+			const [, colorName, step] = match;
+			if (!result[colorName]) {
+				result[colorName] = {};
+			}
+			result[colorName][step] = value;
+		}
+	}
 
-	// Text colors
-	text: 'var(--color-text)',
-	'text-subtle': 'var(--color-text-subtle)',
-	'text-inverse': 'var(--color-text-inverse)',
+	return result;
+}
 
-	// Primary brand colors
-	primary: 'var(--color-primary)',
-	'primary-hover': 'var(--color-primary-hover)',
-	'primary-active': 'var(--color-primary-active)',
-
-	// Feedback colors
-	success: 'var(--color-success)',
-	warning: 'var(--color-warning)',
-	error: 'var(--color-error)',
-	info: 'var(--color-info)'
+// Convert all Radix colors
+const colors = {
+	...convertRadixToUnoCSS(radix.blue),
+	...convertRadixToUnoCSS(radix.gray),
+	...convertRadixToUnoCSS(radix.green),
+	...convertRadixToUnoCSS(radix.red),
+	...convertRadixToUnoCSS(radix.yellow),
+	...convertRadixToUnoCSS(radix.amber),
+	...convertRadixToUnoCSS(radix.purple),
+	...convertRadixToUnoCSS(radix.teal)
 };
+
+// Alias primary to blue
+colors.primary = colors.blue;
+
+export const radixColors = colors;

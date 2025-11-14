@@ -76,26 +76,26 @@
 
 ### UI Foundation & Design System
 
-- [ ] T034 Create root layout with theme setup in src/routes/+layout.svelte
-- [ ] T035 Setup Radix color tokens mapping in src/lib/config/theme-tokens.ts
-- [ ] T036 [P] Create base Button component in src/lib/components/ui/Button.svelte
-- [ ] T037 [P] Create base Card component in src/lib/components/ui/Card.svelte
-- [ ] T038 [P] Create base Input component in src/lib/components/ui/Input.svelte
-- [ ] T039 Configure Histoire for design system documentation in design-system/histoire.config.ts
+- [x] T034 Create root layout with theme setup in src/routes/+layout.svelte
+- [x] T035 Setup Radix color tokens mapping in src/lib/config/theme-tokens.ts
+- [x] T036 [P] Create base Button component in src/lib/components/ui/Button.svelte
+- [x] T037 [P] Create base Card component in src/lib/components/ui/Card.svelte
+- [x] T038 [P] Create base Input component in src/lib/components/ui/Input.svelte
+- [x] T039 Configure Histoire for design system documentation in design-system/histoire.config.ts
 
 ### Internationalization (i18n)
 
-- [ ] T040 [P] Create English locale file in src/i18n/locales/en.json
-- [ ] T041 [P] Create Portuguese (pt-BR) locale file in src/i18n/locales/pt-BR.json
-- [ ] T042 [P] Create Spanish locale file in src/i18n/locales/es.json
-- [ ] T043 [P] Create placeholder locale files for future languages (ru.json, zh.json, ja.json, ko.json)
-- [ ] T044 Create i18n store with Svelte 5 runes in src/lib/stores/i18n.svelte.ts
+- [x] T040 [P] Create English locale file in src/i18n/locales/en.json
+- [x] T041 [P] Create Portuguese (pt-BR) locale file in src/i18n/locales/pt-BR.json
+- [x] T042 [P] Create Spanish locale file in src/i18n/locales/es.json
+- [x] T043 [P] Create placeholder locale files for future languages (ru.json, zh.json, ja.json, ko.json)
+- [x] T044 Create i18n store with Svelte 5 runes in src/lib/stores/i18n.svelte.ts
 
 ### Utilities & Logging
 
-- [ ] T045 [P] Create structured logger in server/utils/logger.ts
-- [ ] T046 [P] Create validation utilities in server/utils/validation.ts
-- [ ] T047 [P] Create anti-cheat validation utilities in server/utils/anti-cheat.ts
+- [x] T045 [P] Create structured logger in server/utils/logger.ts
+- [x] T046 [P] Create validation utilities in server/utils/validation.ts
+- [x] T047 [P] Create anti-cheat validation utilities in server/utils/anti-cheat.ts
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 

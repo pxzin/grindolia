@@ -1,0 +1,123 @@
+{
+	"common": {
+		"loading": "로딩 중...",
+		"error": "오류",
+		"success": "성공",
+		"cancel": "취소",
+		"confirm": "확인",
+		"save": "저장",
+		"delete": "삭제",
+		"edit": "수정",
+		"close": "닫기",
+		"back": "뒤로",
+		"next": "다음",
+		"submit": "제출"
+	},
+	"auth": {
+		"login": "로그인",
+		"register": "회원가입",
+		"logout": "로그아웃",
+		"email": "이메일",
+		"username": "사용자 이름",
+		"password": "비밀번호",
+		"confirmPassword": "비밀번호 확인",
+		"forgotPassword": "비밀번호를 잊으셨나요?",
+		"alreadyHaveAccount": "이미 계정이 있으신가요?",
+		"dontHaveAccount": "계정이 없으신가요?",
+		"loginSuccess": "로그인에 성공했습니다!",
+		"registerSuccess": "계정이 성공적으로 생성되었습니다!",
+		"loginError": "이메일 또는 비밀번호가 올바르지 않습니다",
+		"registerError": "회원가입에 실패했습니다"
+	},
+	"character": {
+		"create": {
+			"title": "캐릭터 생성",
+			"selectClass": "직업 선택",
+			"characterName": "캐릭터 이름",
+			"customize": "외형 커스터마이징",
+			"createButton": "캐릭터 생성"
+		},
+		"stats": {
+			"level": "레벨",
+			"experience": "경험치",
+			"health": "체력",
+			"strength": "힘",
+			"intelligence": "지능",
+			"dexterity": "민첩",
+			"vitality": "생명력",
+			"combatPower": "전투력"
+		},
+		"classes": {
+			"warrior": "전사",
+			"mage": "마법사",
+			"rogue": "도적"
+		}
+	},
+	"quest": {
+		"title": "퀘스트",
+		"active": "진행 중인 퀘스트",
+		"completed": "완료됨",
+		"available": "수락 가능",
+		"objectives": "목표",
+		"rewards": "보상",
+		"start": "퀘스트 시작",
+		"complete": "퀘스트 완료",
+		"progress": "진행도"
+	},
+	"inventory": {
+		"title": "인벤토리",
+		"equipped": "착용 중",
+		"bag": "가방",
+		"equip": "장착",
+		"unequip": "장착 해제",
+		"use": "사용",
+		"sell": "판매",
+		"rarity": {
+			"common": "일반",
+			"uncommon": "고급",
+			"rare": "희귀",
+			"epic": "영웅",
+			"legendary": "전설"
+		}
+	},
+	"arena": {
+		"title": "투기장",
+		"enterArena": "투기장 입장",
+		"wins": "승리",
+		"losses": "패배",
+		"rating": "점수",
+		"rank": "순위",
+		"combatLog": "전투 기록",
+		"victory": "승리!",
+		"defeat": "패배"
+	},
+	"auction": {
+		"title": "경매장",
+		"buy": "구매",
+		"sell": "판매",
+		"myListings": "내 등록 아이템",
+		"createListing": "등록 생성",
+		"price": "가격",
+		"timeRemaining": "남은 시간",
+		"status": {
+			"active": "진행 중",
+			"sold": "판매됨",
+			"expired": "만료됨",
+			"cancelled": "취소됨"
+		}
+	},
+	"leaderboard": {
+		"title": "리더보드",
+		"rank": "순위",
+		"player": "플레이어",
+		"level": "레벨",
+		"arenaRating": "투기장 점수",
+		"wealth": "재산",
+		"categories": {
+			"level": "레벨별",
+			"combatPower": "전투력별",
+			"arenaWins": "투기장 승리별",
+			"wealth": "재산별"
+		}
+	}
+}

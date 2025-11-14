@@ -1,0 +1,123 @@
+{
+	"common": {
+		"loading": "Загрузка...",
+		"error": "Ошибка",
+		"success": "Успех",
+		"cancel": "Отмена",
+		"confirm": "Подтвердить",
+		"save": "Сохранить",
+		"delete": "Удалить",
+		"edit": "Редактировать",
+		"close": "Закрыть",
+		"back": "Назад",
+		"next": "Далее",
+		"submit": "Отправить"
+	},
+	"auth": {
+		"login": "Вход",
+		"register": "Регистрация",
+		"logout": "Выход",
+		"email": "Эл. почта",
+		"username": "Имя пользователя",
+		"password": "Пароль",
+		"confirmPassword": "Подтвердите пароль",
+		"forgotPassword": "Забыли пароль?",
+		"alreadyHaveAccount": "Уже есть аккаунт?",
+		"dontHaveAccount": "Нет аккаунта?",
+		"loginSuccess": "Вход выполнен успешно!",
+		"registerSuccess": "Аккаунт создан успешно!",
+		"loginError": "Неверный email или пароль",
+		"registerError": "Ошибка регистрации"
+	},
+	"character": {
+		"create": {
+			"title": "Создать персонажа",
+			"selectClass": "Выбрать класс",
+			"characterName": "Имя персонажа",
+			"customize": "Настроить внешность",
+			"createButton": "Создать персонажа"
+		},
+		"stats": {
+			"level": "Уровень",
+			"experience": "Опыт",
+			"health": "Здоровье",
+			"strength": "Сила",
+			"intelligence": "Интеллект",
+			"dexterity": "Ловкость",
+			"vitality": "Живучесть",
+			"combatPower": "Боевая мощь"
+		},
+		"classes": {
+			"warrior": "Воин",
+			"mage": "Маг",
+			"rogue": "Разбойник"
+		}
+	},
+	"quest": {
+		"title": "Задания",
+		"active": "Активные задания",
+		"completed": "Выполнено",
+		"available": "Доступно",
+		"objectives": "Цели",
+		"rewards": "Награды",
+		"start": "Начать задание",
+		"complete": "Завершить задание",
+		"progress": "Прогресс"
+	},
+	"inventory": {
+		"title": "Инвентарь",
+		"equipped": "Надето",
+		"bag": "Сумка",
+		"equip": "Надеть",
+		"unequip": "Снять",
+		"use": "Использовать",
+		"sell": "Продать",
+		"rarity": {
+			"common": "Обычный",
+			"uncommon": "Необычный",
+			"rare": "Редкий",
+			"epic": "Эпический",
+			"legendary": "Легендарный"
+		}
+	},
+	"arena": {
+		"title": "Арена",
+		"enterArena": "Войти на арену",
+		"wins": "Победы",
+		"losses": "Поражения",
+		"rating": "Рейтинг",
+		"rank": "Ранг",
+		"combatLog": "Журнал боя",
+		"victory": "Победа!",
+		"defeat": "Поражение"
+	},
+	"auction": {
+		"title": "Аукционный дом",
+		"buy": "Купить",
+		"sell": "Продать",
+		"myListings": "Мои объявления",
+		"createListing": "Создать объявление",
+		"price": "Цена",
+		"timeRemaining": "Осталось времени",
+		"status": {
+			"active": "Активно",
+			"sold": "Продано",
+			"expired": "Истекло",
+			"cancelled": "Отменено"
+		}
+	},
+	"leaderboard": {
+		"title": "Таблица лидеров",
+		"rank": "Ранг",
+		"player": "Игрок",
+		"level": "Уровень",
+		"arenaRating": "Рейтинг арены",
+		"wealth": "Богатство",
+		"categories": {
+			"level": "По уровню",
+			"combatPower": "По боевой мощи",
+			"arenaWins": "По победам на арене",
+			"wealth": "По богатству"
+		}
+	}
+}

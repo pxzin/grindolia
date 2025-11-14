@@ -1,38 +1,223 @@
-# sv
+# Grindolia - Fantasy RPG Multiplayer Game
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Um jogo RPG multiplayer baseado em navegador, construído com SvelteKit, TypeScript e WebSocket.
 
-## Creating a project
+## 🚀 Quick Start
 
-If you're seeing this, you've probably already done this step. Congrats!
+### Pré-requisitos
 
-```sh
-# create a new project in the current directory
-npx sv create
+- Node.js 18+ ou superior
+- pnpm (recomendado) ou npm
+- Redis (para sessões e pub/sub)
 
-# create a new project in my-app
-npx sv create my-app
+### Instalação
+
+```bash
+# Clone o repositório
+git clone <repository-url>
+cd grindolia
+
+# Instale as dependências
+pnpm install
+
+# Configure as variáveis de ambiente
+cp .env.example .env
+
+# Inicie o servidor de desenvolvimento
+pnpm dev
 ```
 
-## Developing
+O servidor estará disponível em `http://localhost:5173`
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## 🎨 Design System
 
-```sh
-npm run dev
+Para visualizar todos os componentes do design system:
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```bash
+pnpm dev
 ```
 
-## Building
+Acesse `http://localhost:5173/design-system` no navegador.
 
-To create a production version of your app:
+Você verá:
+- Todos os componentes UI (Button, Card, Input)
+- Paleta de cores completa (Radix Colors)
+- Tipografia e hierarquia
+- Exemplos de código para cada componente
+- Casos de uso reais (character cards, forms, etc)
 
-```sh
-npm run build
+## 🧪 Testes
+
+### Testes Unitários (Vitest)
+
+```bash
+# Executar testes uma vez
+pnpm test
+
+# Modo watch (re-executa ao modificar arquivos)
+pnpm test:watch
+
+# Interface gráfica
+pnpm test:ui
+
+# Cobertura
+pnpm test:coverage
 ```
 
-You can preview the production build with `npm run preview`.
+### Testes E2E (Playwright)
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```bash
+# Executar testes E2E
+pnpm test:e2e
+
+# Com interface gráfica
+pnpm test:e2e:ui
+```
+
+Para mais informações sobre testes, consulte [TESTING.md](TESTING.md).
+
+## 🏗️ Estrutura do Projeto
+
+```
+grindolia/
+├── src/
+│   ├── lib/
+│   │   ├── components/
+│   │   │   ├── ui/           # Componentes base (Button, Card, Input)
+│   │   │   └── game/         # Componentes do jogo
+│   │   ├── stores/           # Svelte stores (usando runes)
+│   │   ├── types/            # TypeScript types
+│   │   ├── services/         # Serviços (WebSocket, API)
+│   │   └── config/           # Configurações
+│   ├── routes/               # Rotas SvelteKit
+│   └── i18n/                 # Internacionalização
+├── server/
+│   ├── database/             # Schema, repositórios, migrations
+│   ├── websocket/            # WebSocket server e handlers
+│   └── utils/                # Utilitários (logger, validation, anti-cheat)
+├── tests/                    # Testes
+└── design-system/            # Design system documentation
+```
+
+## 📚 Stack Tecnológica
+
+### Frontend
+- **SvelteKit** - Framework full-stack
+- **Svelte 5** - Framework reativo com runes
+- **TypeScript** - Tipagem estática
+- **UnoCSS** - Utility-first CSS
+- **Radix Colors** - Sistema de cores acessível
+
+### Backend
+- **SvelteKit** - API endpoints
+- **SQLite** (WAL mode) - Database
+- **Redis** - Sessões e pub/sub
+- **WebSocket** - Comunicação real-time
+- **bcrypt** - Hash de senhas
+
+### Testes
+- **Vitest** - Testes unitários
+- **Playwright** - Testes E2E
+
+### Ferramentas
+- **ESLint** - Linting
+- **Prettier** - Formatação de código
+- **TypeScript** - Type checking
+
+## 🎮 Features
+
+### Implementado
+- ✅ Sistema de autenticação (registro, login)
+- ✅ Gerenciamento de sessões com Redis
+- ✅ WebSocket para comunicação real-time
+- ✅ Sistema de banco de dados com SQLite
+- ✅ Sistema de tipos completo
+- ✅ Design system com componentes base
+- ✅ Internacionalização (i18n) - 7 idiomas
+- ✅ Utilitários de validação e anti-cheat
+- ✅ Logger estruturado
+
+### Em Desenvolvimento
+- 🚧 Criação de personagens
+- 🚧 Sistema de quests
+- 🚧 Inventário e items
+- 🚧 Arena PvP
+- 🚧 Auction House
+- 🚧 Leaderboards
+
+## 🌍 Idiomas Suportados
+
+- 🇺🇸 English (en)
+- 🇧🇷 Português (pt-BR)
+- 🇪🇸 Español (es)
+- 🇷🇺 Русский (ru)
+- 🇨🇳 中文 (zh)
+- 🇯🇵 日本語 (ja)
+- 🇰🇷 한국어 (ko)
+
+## 📝 Scripts Disponíveis
+
+| Script | Descrição |
+|--------|-----------|
+| `pnpm dev` | Inicia servidor de desenvolvimento |
+| `pnpm build` | Build de produção |
+| `pnpm preview` | Preview do build |
+| `pnpm check` | Type checking |
+| `pnpm test` | Testes unitários |
+| `pnpm test:e2e` | Testes E2E |
+
+## 🛠️ Configuração
+
+### Variáveis de Ambiente
+
+Copie `.env.example` para `.env` e configure:
+
+```env
+# Database
+DATABASE_PATH=./data/grindolia.db
+
+# Redis
+REDIS_URL=redis://localhost:6379
+
+# Session
+SESSION_SECRET=your-secret-key-here
+
+# Node Environment
+NODE_ENV=development
+```
+
+### Redis
+
+Certifique-se de que o Redis está rodando:
+
+```bash
+# macOS (Homebrew)
+brew services start redis
+
+# Linux
+sudo systemctl start redis
+
+# Docker
+docker run -d -p 6379:6379 redis:alpine
+```
+
+## 📖 Documentação
+
+- [TESTING.md](TESTING.md) - Guia completo de testes
+- [specs/](specs/) - Especificações e planejamento do projeto
+
+## 🤝 Contribuindo
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto é privado e não possui licença pública.
+
+## 🎯 Roadmap
+
+Consulte [tasks.md](specs/001-fantasy-rpg-game/tasks.md) para o roadmap completo e tarefas planejadas.
