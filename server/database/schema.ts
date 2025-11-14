@@ -192,6 +192,84 @@ CREATE TABLE IF NOT EXISTS character_abilities (
   FOREIGN KEY (character_id) REFERENCES characters(id) ON DELETE CASCADE,
   FOREIGN KEY (ability_id) REFERENCES abilities(id)
 );
+
+-- Dungeons
+CREATE TABLE IF NOT EXISTS dungeons (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  min_level INTEGER NOT NULL DEFAULT 1,
+  max_floors INTEGER NOT NULL,
+  theme TEXT NOT NULL,
+  created_at INTEGER NOT NULL DEFAULT (unixepoch())
+);
+
+-- Dungeon floors
+CREATE TABLE IF NOT EXISTS dungeon_floors (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  dungeon_id INTEGER NOT NULL,
+  floor_number INTEGER NOT NULL,
+  difficulty_multiplier REAL NOT NULL DEFAULT 1.0,
+  monster_count INTEGER NOT NULL DEFAULT 3,
+  boss_monster_id INTEGER,
+  loot_table TEXT NOT NULL,
+  created_at INTEGER NOT NULL DEFAULT (unixepoch()),
+  FOREIGN KEY (dungeon_id) REFERENCES dungeons(id) ON DELETE CASCADE,
+  UNIQUE(dungeon_id, floor_number)
+);
+
+-- Monsters
+CREATE TABLE IF NOT EXISTS monsters (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  base_level INTEGER NOT NULL DEFAULT 1,
+  base_hp INTEGER NOT NULL,
+  base_strength INTEGER NOT NULL,
+  base_intelligence INTEGER NOT NULL,
+  base_dexterity INTEGER NOT NULL,
+  xp_reward INTEGER NOT NULL,
+  currency_reward INTEGER NOT NULL,
+  loot_table TEXT,
+  monster_type TEXT NOT NULL,
+  created_at INTEGER NOT NULL DEFAULT (unixepoch())
+);
+
+-- Dungeon progress (character's current dungeon run)
+CREATE TABLE IF NOT EXISTS dungeon_progress (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  character_id INTEGER NOT NULL,
+  dungeon_id INTEGER NOT NULL,
+  current_floor INTEGER NOT NULL DEFAULT 1,
+  status TEXT NOT NULL DEFAULT 'active',
+  monsters_defeated INTEGER NOT NULL DEFAULT 0,
+  loot_collected TEXT NOT NULL,
+  started_at INTEGER NOT NULL DEFAULT (unixepoch()),
+  completed_at INTEGER,
+  FOREIGN KEY (character_id) REFERENCES characters(id) ON DELETE CASCADE,
+  FOREIGN KEY (dungeon_id) REFERENCES dungeons(id)
+);
+
+-- Dungeon combat instances
+CREATE TABLE IF NOT EXISTS dungeon_combat_instances (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  character_id INTEGER NOT NULL,
+  monster_id INTEGER NOT NULL,
+  dungeon_progress_id INTEGER NOT NULL,
+  floor_number INTEGER NOT NULL,
+  character_hp_before INTEGER NOT NULL,
+  character_hp_after INTEGER NOT NULL,
+  monster_level INTEGER NOT NULL,
+  monster_hp INTEGER NOT NULL,
+  winner TEXT NOT NULL,
+  combat_log TEXT NOT NULL,
+  rewards TEXT NOT NULL,
+  created_at INTEGER NOT NULL DEFAULT (unixepoch()),
+  duration_ms INTEGER NOT NULL,
+  FOREIGN KEY (character_id) REFERENCES characters(id) ON DELETE CASCADE,
+  FOREIGN KEY (monster_id) REFERENCES monsters(id),
+  FOREIGN KEY (dungeon_progress_id) REFERENCES dungeon_progress(id) ON DELETE CASCADE
+);
 `;
 
 export const createIndexesSQL = `
@@ -245,4 +323,27 @@ CREATE INDEX IF NOT EXISTS idx_abilities_level_requirement ON abilities(level_re
 -- Character abilities indexes
 CREATE UNIQUE INDEX IF NOT EXISTS idx_character_abilities_unique
   ON character_abilities(character_id, ability_id);
+
+-- Dungeon indexes
+CREATE INDEX IF NOT EXISTS idx_dungeons_min_level ON dungeons(min_level);
+
+-- Dungeon floors indexes
+CREATE INDEX IF NOT EXISTS idx_dungeon_floors_dungeon_id ON dungeon_floors(dungeon_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_dungeon_floors_unique ON dungeon_floors(dungeon_id, floor_number);
+
+-- Monsters indexes
+CREATE INDEX IF NOT EXISTS idx_monsters_type ON monsters(monster_type);
+CREATE INDEX IF NOT EXISTS idx_monsters_level ON monsters(base_level);
+
+-- Dungeon progress indexes
+CREATE INDEX IF NOT EXISTS idx_dungeon_progress_character_id ON dungeon_progress(character_id);
+CREATE INDEX IF NOT EXISTS idx_dungeon_progress_status ON dungeon_progress(status);
+CREATE INDEX IF NOT EXISTS idx_dungeon_progress_active
+  ON dungeon_progress(character_id, status)
+  WHERE status = 'active';
+
+-- Dungeon combat instances indexes
+CREATE INDEX IF NOT EXISTS idx_dungeon_combat_character_id ON dungeon_combat_instances(character_id);
+CREATE INDEX IF NOT EXISTS idx_dungeon_combat_progress_id ON dungeon_combat_instances(dungeon_progress_id);
+CREATE INDEX IF NOT EXISTS idx_dungeon_combat_created_at ON dungeon_combat_instances(created_at DESC);
 `;
