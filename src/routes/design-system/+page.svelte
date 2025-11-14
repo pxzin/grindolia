@@ -10,6 +10,12 @@
 	import ClassCard from '$lib/components/game/ClassCard.svelte';
 	import AdventureLog from '$lib/components/game/AdventureLog.svelte';
 	import CombatLog from '$lib/components/game/CombatLog.svelte';
+	import DungeonHeader from '$lib/components/game/DungeonHeader.svelte';
+	import CombatantCard from '$lib/components/game/CombatantCard.svelte';
+	import NavigationHeader from '$lib/components/layout/NavigationHeader.svelte';
+	import NotificationToast from '$lib/components/layout/NotificationToast.svelte';
+	import Skeleton from '$lib/components/ui/Skeleton.svelte';
+	import ErrorBoundary from '$lib/components/ui/ErrorBoundary.svelte';
 	import { Sword, Sparkles, Wind, Heart } from 'lucide-svelte';
 
 	let textValue = $state('');
@@ -18,6 +24,9 @@
 	let showVictoryModal = $state(false);
 	let showDefeatModal = $state(false);
 	let selectedClass = $state<string | null>(null);
+	let showToast = $state(false);
+	let toastType = $state<'success' | 'error' | 'info'>('success');
+	let toastMessage = $state('');
 
 	// Mock log messages
 	const adventureMessages = [
@@ -92,6 +101,12 @@
 			stats: { strength: 11, intelligence: 13, dexterity: 8, vitality: 12 }
 		}
 	];
+
+	function showToastNotification(type: 'success' | 'error' | 'info', message: string) {
+		toastType = type;
+		toastMessage = message;
+		showToast = true;
+	}
 </script>
 
 <div class="min-h-screen bg-gray-1 p-8">
@@ -605,7 +620,7 @@
 				</Card>
 			</Card>
 
-			<Card>
+			<Card class="mb-6">
 				<h3 class="text-lg font-semibold mb-4">CombatLog</h3>
 				<p class="text-sm text-gray-11 mb-4">
 					Log de mensagens de combate com cores por tipo (player, enemy, damage, heal, critical, miss).
@@ -613,6 +628,122 @@
 				<Card variant="elevated">
 					<CombatLog messages={combatMessages} />
 				</Card>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">DungeonHeader</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Cabeçalho de dungeon com informações do andar, monstros derrotados e nível recomendado.
+				</p>
+				<DungeonHeader
+					currentFloor={5}
+					maxFloor={10}
+					monstersDefeated={8}
+					requiredMonstersToDescend={10}
+					recommendedLevel={12}
+					canDescend={false}
+				/>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">CombatantCard</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Cards para exibir combatentes (jogador e monstro) durante combate.
+				</p>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<CombatantCard
+						name="Aragorn"
+						level={12}
+						type="player"
+						hp={245}
+						maxHp={250}
+						attack={45}
+						defense={32}
+						className="warrior"
+					/>
+					<CombatantCard
+						name="Shadow Beast"
+						level={13}
+						type="monster"
+						hp={180}
+						maxHp={300}
+						attack={38}
+						defense={25}
+					/>
+				</div>
+			</Card>
+		</section>
+
+		<!-- Layout Components -->
+		<section class="mb-16">
+			<h2 class="text-3xl font-bold mb-6">Layout Components</h2>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">NavigationHeader</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Cabeçalho de navegação global com informações rápidas do personagem e menu responsivo.
+				</p>
+				<NavigationHeader
+					characterName="Aragorn"
+					characterLevel={12}
+					characterHP={245}
+					characterMaxHP={250}
+					characterGold={12450}
+				/>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">NotificationToast</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Notificações toast com 3 tipos (success, error, info) e auto-dismiss.
+				</p>
+				<div class="flex gap-4">
+					<Button variant="primary" onclick={() => showToastNotification('success', 'Character created successfully!')}>
+						Show Success
+					</Button>
+					<Button variant="secondary" onclick={() => showToastNotification('error', 'Failed to load dungeon!')}>
+						Show Error
+					</Button>
+					<Button variant="secondary" onclick={() => showToastNotification('info', 'New quest available!')}>
+						Show Info
+					</Button>
+				</div>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Skeleton</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Loading placeholders com 3 variantes (text, circular, rectangular).
+				</p>
+				<div class="space-y-4">
+					<div>
+						<p class="text-sm text-gray-11 mb-2">Text variant:</p>
+						<Skeleton variant="text" width="200px" />
+					</div>
+					<div>
+						<p class="text-sm text-gray-11 mb-2">Circular variant:</p>
+						<Skeleton variant="circular" width="64px" height="64px" />
+					</div>
+					<div>
+						<p class="text-sm text-gray-11 mb-2">Rectangular variant:</p>
+						<Skeleton variant="rectangular" width="100%" height="120px" />
+					</div>
+				</div>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">ErrorBoundary</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Componente para capturar e exibir erros graciosamente com opção de reset.
+				</p>
+				<ErrorBoundary>
+					{#snippet children()}
+						<Card variant="elevated">
+							<p class="text-arcana-text-primary">This content is wrapped in an ErrorBoundary.</p>
+							<p class="text-sm text-arcana-text-muted mt-2">If an error occurs, a fallback UI will be shown.</p>
+						</Card>
+					{/snippet}
+				</ErrorBoundary>
 			</Card>
 		</section>
 
@@ -830,3 +961,12 @@
 />
 
 <DefeatModal bind:open={showDefeatModal} onRespawn={() => (showDefeatModal = false)} />
+
+<!-- Toast Notification -->
+<NotificationToast
+	bind:show={showToast}
+	type={toastType}
+	message={toastMessage}
+	duration={3000}
+	onClose={() => (showToast = false)}
+/>

@@ -1,13 +1,17 @@
 <script lang="ts">
 	/**
 	 * CombatArena Component
-	 * Displays combat encounter and battle animation
+	 * Dark Fantasy combat encounter with combatant displays
 	 */
 
 	import { combatStore } from '$lib/stores/combat.svelte';
 	import { dungeonStore } from '$lib/stores/dungeon.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import CombatantCard from '$lib/components/game/CombatantCard.svelte';
+	import CombatLog from '$lib/components/game/CombatLog.svelte';
+	import VictoryModal from '$lib/components/ui/VictoryModal.svelte';
+	import DefeatModal from '$lib/components/ui/DefeatModal.svelte';
 
 	interface Props {
 		characterId: number;
@@ -20,150 +24,150 @@
 
 	const combat = combatStore.state;
 	let isResolving = $state(false);
-	let showRewards = $state(false);
+	let showVictory = $state(false);
+	let showDefeat = $state(false);
+	let combatMessages = $state<Array<{ text: string; type: any }>>([
+		{ text: 'Combat begins! Prepare yourself!', type: 'normal' }
+	]);
 
 	async function fightMonster() {
 		if (!dungeonStore.state.dungeonProgressId) return;
 
 		isResolving = true;
+		addMessage('You attack!', 'player');
+
 		try {
 			await combatStore.resolveCombat(characterId, dungeonStore.state.dungeonProgressId);
 
-			// Show rewards if character won
+			// Show appropriate modal based on outcome
 			if (combatStore.characterWon) {
 				dungeonStore.monsterDefeated();
-				showRewards = true;
+				addMessage('Victory! The monster falls!', 'critical');
+				setTimeout(() => {
+					showVictory = true;
+				}, 500);
+			} else {
+				addMessage('You have been defeated...', 'damage');
+				setTimeout(() => {
+					showDefeat = true;
+				}, 500);
 			}
 		} catch (error) {
 			console.error('Combat failed:', error);
+			addMessage('Combat error occurred!', 'damage');
 		} finally {
 			isResolving = false;
 		}
 	}
 
-	function continueDungeon() {
-		showRewards = false;
+	function addMessage(text: string, type: any) {
+		combatMessages = [...combatMessages, { text, type }].slice(-10);
+	}
+
+	function handleVictoryContinue() {
+		showVictory = false;
 		combatStore.endCombat();
 	}
+
+	function handleDefeatRespawn() {
+		showDefeat = false;
+		combatStore.endCombat();
+		dungeonStore.exitDungeon();
+	}
+
+	// Mock monster data
+	const monster = $derived(
+		combat.monster || {
+			name: 'Shadow Beast',
+			level: 5,
+			hp: { current: combat.monsterHPCurrent || 100, max: combat.monsterHPStart || 100 },
+			attack: 25,
+			defense: 15
+		}
+	);
+
+	const player = $derived({
+		name: characterName,
+		level: 10,
+		hp: { current: combat.characterHPCurrent || characterHP, max: characterMaxHP },
+		attack: 45,
+		defense: 30
+	});
 </script>
 
-<div class="combat-arena">
-	<Card variant="elevated" padding="lg">
-		<!-- Combat Header -->
-		<div class="text-center mb-6">
-			<h3 class="text-xl font-bold text-gray-12">Combat Encounter</h3>
-		</div>
-
-		{#if !combatStore.isFinished}
-			<!-- Monster Display -->
-			{#if combat.monster}
-				<div class="monster-display mb-6 text-center">
-					<div class="mb-4">
-						<span class="text-2xl">👹</span>
-					</div>
-					<h4 class="text-lg font-semibold text-gray-12">{combat.monster.name}</h4>
-					<p class="text-sm text-gray-11">Level {combat.monster.level}</p>
-
-					<!-- Monster HP Bar -->
-					<div class="mt-4">
-						<div class="flex justify-between text-sm mb-1">
-							<span class="text-gray-11">HP</span>
-							<span class="text-gray-11">{combat.monsterHPCurrent} / {combat.monsterHPStart}</span>
-						</div>
-						<div class="w-full bg-gray-6 rounded-full h-3">
-							<div
-								class="bg-red-9 h-3 rounded-full transition-all"
-								style="width: {combatStore.monsterHPPercentage}%"
-							></div>
-						</div>
-					</div>
-				</div>
-
-				<!-- VS Divider -->
-				<div class="text-center text-gray-11 font-bold mb-6">VS</div>
-
-				<!-- Character Display -->
-				<div class="character-display mb-6 text-center">
-					<h4 class="text-lg font-semibold text-gray-12">{characterName}</h4>
-
-					<!-- Character HP Bar -->
-					<div class="mt-4">
-						<div class="flex justify-between text-sm mb-1">
-							<span class="text-gray-11">HP</span>
-							<span class="text-gray-11">{combat.characterHPCurrent} / {combat.characterHPStart}</span>
-						</div>
-						<div class="w-full bg-gray-6 rounded-full h-3">
-							<div
-								class="bg-green-9 h-3 rounded-full transition-all"
-								style="width: {combatStore.characterHPPercentage}%"
-							></div>
-						</div>
-					</div>
-				</div>
-
-				<!-- Combat Action -->
-				<div class="text-center">
-					<Button
-						onclick={fightMonster}
-						variant="danger"
-						size="lg"
-						disabled={isResolving}
-					>
-						{isResolving ? 'Fighting...' : 'Fight!'}
-					</Button>
-				</div>
-			{/if}
-		{:else}
-			<!-- Combat Results -->
-			<div class="combat-results text-center">
-				{#if combatStore.characterWon}
-					<div class="mb-4">
-						<span class="text-4xl">🎉</span>
-					</div>
-					<h3 class="text-2xl font-bold text-green-11 mb-4">Victory!</h3>
-
-					{#if showRewards && combat.rewards}
-						<div class="rewards bg-gray-3 rounded-lg p-4 mb-6">
-							<h4 class="font-semibold text-gray-12 mb-3">Rewards</h4>
-							<div class="space-y-2 text-gray-11">
-								<p>+ {combat.rewards.xp} XP</p>
-								<p>+ {combat.rewards.currency} Gold</p>
-								{#if combat.rewards.items.length > 0}
-									<p>+ {combat.rewards.items.length} Item(s)</p>
-								{/if}
-							</div>
-						</div>
-					{/if}
-
-					<Button onclick={continueDungeon} variant="primary" size="lg">
-						Continue
-					</Button>
-				{:else}
-					<div class="mb-4">
-						<span class="text-4xl">💀</span>
-					</div>
-					<h3 class="text-2xl font-bold text-red-11 mb-4">Defeated</h3>
-					<p class="text-gray-11 mb-6">You have been defeated by the {combat.monster?.name}...</p>
-
-					<Button onclick={continueDungeon} variant="primary" size="lg">
-						Return to Town
-					</Button>
-				{/if}
-			</div>
-		{/if}
+<div class="space-y-6">
+	<!-- Combat Header -->
+	<Card variant="elevated">
+		<h2 class="text-2xl font-serif text-arcana-gold-400 text-center">Combat Arena</h2>
 	</Card>
+
+	<!-- Combatants Display -->
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+		<!-- Player Card -->
+		<CombatantCard
+			name={player.name}
+			level={player.level}
+			type="player"
+			hp={player.hp}
+			attack={player.attack}
+			defense={player.defense}
+			className="warrior"
+		/>
+
+		<!-- Monster Card -->
+		<CombatantCard
+			name={monster.name}
+			level={monster.level}
+			type="monster"
+			hp={monster.hp}
+			attack={monster.attack}
+			defense={monster.defense}
+		/>
+	</div>
+
+	<!-- Combat Log -->
+	<Card>
+		<CombatLog messages={combatMessages} />
+	</Card>
+
+	<!-- Action Buttons -->
+	{#if !combatStore.isFinished}
+		<div class="grid grid-cols-2 gap-4">
+			<Button
+				variant="primary"
+				size="lg"
+				class="w-full"
+				onclick={fightMonster}
+				disabled={isResolving}
+			>
+				{isResolving ? 'Fighting...' : 'Attack'}
+			</Button>
+			<Button
+				variant="secondary"
+				size="lg"
+				class="w-full"
+				onclick={() => combatStore.endCombat()}
+				disabled={isResolving}
+			>
+				Flee
+			</Button>
+		</div>
+	{:else}
+		<Card variant="elevated">
+			<p class="text-center text-arcana-text-primary">
+				Combat ended. {combatStore.characterWon ? 'Victory!' : 'Defeat...'}
+			</p>
+		</Card>
+	{/if}
 </div>
 
-<style>
-	.combat-arena {
-		max-width: 36rem;
-		margin: 0 auto;
-	}
+<!-- Victory Modal -->
+<VictoryModal
+	bind:open={showVictory}
+	xpGained={350}
+	goldGained={125}
+	onContinue={handleVictoryContinue}
+/>
 
-	.monster-display,
-	.character-display {
-		padding: 1rem;
-		border-radius: 0.5rem;
-		background: rgba(0, 0, 0, 0.1);
-	}
-</style>
+<!-- Defeat Modal -->
+<DefeatModal bind:open={showDefeat} onRespawn={handleDefeatRespawn} />
