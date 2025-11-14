@@ -1,7 +1,13 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import { Card } from '$lib/components/ui/card';
-	import { Input } from '$lib/components/ui/input';
+	/**
+	 * CharacterCreation Component
+	 * Dark Fantasy character creation with class selection grid
+	 */
+	import Button from '$lib/components/ui/Button.svelte';
+	import Card from '$lib/components/ui/Card.svelte';
+	import Input from '$lib/components/ui/Input.svelte';
+	import ClassCard from '$lib/components/game/ClassCard.svelte';
+	import { Sword, Sparkles, Wind, Heart } from 'lucide-svelte';
 
 	interface CharacterClass {
 		id: number;
@@ -20,6 +26,30 @@
 	let selectedClass = $state<number | null>(null);
 	let loading = $state(false);
 	let error = $state<string | null>(null);
+
+	// Map class IDs to icons and colors
+	const classMetadata: Record<string, { icon: any; color: string; stats: any }> = {
+		warrior: {
+			icon: Sword,
+			color: '#ff6b35',
+			stats: { strength: 15, intelligence: 8, dexterity: 10, vitality: 14 }
+		},
+		mage: {
+			icon: Sparkles,
+			color: '#2a9d8f',
+			stats: { strength: 6, intelligence: 16, dexterity: 9, vitality: 8 }
+		},
+		rogue: {
+			icon: Wind,
+			color: '#43a047',
+			stats: { strength: 10, intelligence: 10, dexterity: 16, vitality: 10 }
+		},
+		cleric: {
+			icon: Heart,
+			color: '#d946ef',
+			stats: { strength: 11, intelligence: 13, dexterity: 8, vitality: 12 }
+		}
+	};
 
 	const handleSubmit = async () => {
 		error = null;
@@ -48,17 +78,22 @@
 			loading = false;
 		}
 	};
+
+	const getClassMeta = (className: string) => {
+		const key = className.toLowerCase();
+		return classMetadata[key] || classMetadata.warrior;
+	};
 </script>
 
-<div class="character-creation">
-	<Card variant="glass" class="max-w-2xl mx-auto p-8">
-		<h1 class="text-3xl font-bold mb-6 text-center">Create Your Character</h1>
-
-		{#if error}
-			<div class="bg-red-500/10 border border-red-500 text-red-500 p-4 rounded-md mb-6">
-				{error}
-			</div>
-		{/if}
+<div class="min-h-screen flex items-center justify-center p-4 bg-gradient-radial from-arcana-bg-primary via-arcana-bg-primary/95 to-arcana-bg-primary animate-fadeIn">
+	<div class="w-full max-w-4xl">
+		<!-- Title Section -->
+		<div class="text-center mb-12">
+			<h1 class="text-5xl font-serif text-arcana-gold-400 mb-4 drop-shadow-[0_0_20px_rgba(201,152,74,0.4)]">
+				Create Your Hero
+			</h1>
+			<p class="text-xl text-arcana-text-secondary">Choose your path through the shadows</p>
+		</div>
 
 		<form
 			onsubmit={(e) => {
@@ -66,100 +101,69 @@
 				handleSubmit();
 			}}
 		>
-			<!-- Character Name -->
-			<div class="mb-6">
-				<label for="characterName" class="block text-sm font-medium mb-2">
-					Character Name
-				</label>
+			<!-- Class Selection Grid -->
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+				{#each classes as characterClass}
+					{@const meta = getClassMeta(characterClass.name)}
+					<ClassCard
+						id={characterClass.name.toLowerCase()}
+						name={characterClass.name}
+						description={characterClass.description}
+						icon={meta.icon}
+						color={meta.color}
+						stats={meta.stats}
+						selected={selectedClass === characterClass.id}
+						onclick={() => (selectedClass = characterClass.id)}
+					/>
+				{/each}
+			</div>
+
+			<!-- Character Name Input -->
+			<Card variant="elevated" class="mb-8">
+				{#if error}
+					<div class="bg-arcana-orange-600/10 border border-arcana-orange-600/30 rounded-xl p-4 mb-4">
+						<p class="text-arcana-orange-600 text-sm">{error}</p>
+					</div>
+				{/if}
+
 				<Input
-					id="characterName"
+					label="Character Name"
 					type="text"
-					placeholder="Enter your character name"
+					placeholder="Enter your hero's name..."
 					bind:value={characterName}
-					disabled={loading}
 					required
-					minlength={2}
-					maxlength={20}
+					disabled={loading}
 				/>
-			</div>
-
-			<!-- Class Selection -->
-			<div class="mb-8">
-				<label class="block text-sm font-medium mb-4">Choose Your Class</label>
-
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-					{#each classes as characterClass}
-						<button
-							type="button"
-							class="class-card"
-							class:selected={selectedClass === characterClass.id}
-							onclick={() => {
-								selectedClass = characterClass.id;
-							}}
-							disabled={loading}
-						>
-							<div class="class-name">{characterClass.name}</div>
-							<div class="class-description">{characterClass.description}</div>
-						</button>
-					{/each}
-				</div>
-			</div>
+			</Card>
 
 			<!-- Submit Button -->
-			<Button type="submit" variant="primary" class="w-full" disabled={loading}>
-				{loading ? 'Creating Character...' : 'Create Character'}
+			<Button variant="hero" size="lg" type="submit" class="w-full" disabled={loading}>
+				{loading ? 'Creating Character...' : 'Begin Adventure'}
 			</Button>
 		</form>
-	</Card>
+	</div>
 </div>
 
 <style>
-	.character-creation {
-		min-height: 100vh;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 2rem;
+	.bg-gradient-radial {
+		background: radial-gradient(
+			ellipse at center,
+			var(--color-arcana-bg-primary),
+			rgba(93, 106, 184, 0.05),
+			var(--color-arcana-bg-primary)
+		);
 	}
 
-	.class-card {
-		padding: 1.5rem;
-		border: 2px solid var(--color-primary-6);
-		border-radius: 0.5rem;
-		background: var(--color-primary-2);
-		cursor: pointer;
-		transition: all 0.2s ease;
-		text-align: left;
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 
-	.class-card:hover {
-		border-color: var(--color-primary-8);
-		background: var(--color-primary-3);
-		transform: translateY(-2px);
-	}
-
-	.class-card.selected {
-		border-color: var(--color-primary-9);
-		background: var(--color-primary-4);
-		box-shadow: 0 0 20px var(--color-primary-7);
-	}
-
-	.class-card:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-		transform: none;
-	}
-
-	.class-name {
-		font-size: 1.25rem;
-		font-weight: 600;
-		margin-bottom: 0.5rem;
-		color: var(--color-primary-12);
-	}
-
-	.class-description {
-		font-size: 0.875rem;
-		color: var(--color-gray-11);
-		line-height: 1.4;
+	.animate-fadeIn {
+		animation: fadeIn 0.5s ease-out;
 	}
 </style>

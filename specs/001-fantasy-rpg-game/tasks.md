@@ -302,16 +302,16 @@
 
 ### Enhanced Character Creation
 
-- [ ] T171 [UI] Update CharacterCreation page with class selection grid at src/routes/character/create/+page.svelte
-- [ ] T172 [UI] Add stat preview panel for selected class at src/routes/character/create/+page.svelte
-- [ ] T173 [UI] Add character creation animations and transitions at src/routes/character/create/+page.svelte
+- [x] T171 [UI] Update CharacterCreation page with class selection grid using ClassCard components ✅
+- [x] T172 [UI] Add stat preview panel for selected class (integrated in ClassCard) ✅
+- [x] T173 [UI] Add character creation animations and transitions (fadeIn animation) ✅
 
 ### Enhanced Dungeon Screen
 
-- [ ] T174 [UI] Update Dungeon page with sidebar layout (CharacterSheet + main area) at src/routes/dungeon/+page.svelte
-- [ ] T175 [UI] Create DungeonHeader card with floor info at src/lib/components/game/DungeonHeader.svelte
-- [ ] T176 [UI] Integrate AdventureLog into dungeon page at src/routes/dungeon/+page.svelte
-- [ ] T177 [UI] Add action buttons with icons (Fight, Explore, Descend, Exit) at src/routes/dungeon/+page.svelte
+- [x] T174 [UI] Update Dungeon page with sidebar layout (CharacterSheet + main area) at src/routes/dungeon/+page.svelte ✅
+- [x] T175 [UI] Create DungeonHeader card with floor info at src/lib/components/game/DungeonHeader.svelte ✅
+- [x] T176 [UI] Integrate AdventureLog into dungeon page at src/routes/dungeon/+page.svelte ✅
+- [x] T177 [UI] Add action buttons with icons (Fight, Explore, Descend, Exit) at src/routes/dungeon/+page.svelte ✅
 
 ### Enhanced Combat Screen
 
