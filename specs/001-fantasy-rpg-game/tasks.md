@@ -20,16 +20,16 @@
 
 **Purpose**: Project initialization and basic SvelteKit structure
 
-- [ ] T001 Initialize SvelteKit project with TypeScript and Svelte 5 in project root
-- [ ] T002 [P] Install and configure UnoCSS with Radix Colors in uno.config.ts
-- [ ] T003 [P] Install and configure Vitest in vite.config.ts
-- [ ] T004 [P] Install and configure Playwright in playwright.config.ts
-- [ ] T005 [P] Install better-sqlite3 and ioredis dependencies in package.json
-- [ ] T006 [P] Configure ESLint and Prettier in .eslintrc.cjs and .prettierrc
-- [ ] T007 [P] Setup TypeScript strict mode in tsconfig.json
-- [ ] T008 Create project directory structure per plan.md (src/lib/, server/, tests/, design-system/)
-- [ ] T009 [P] Create .env.example with environment variable template
-- [ ] T010 [P] Setup i18n configuration with svelte-i18n in src/i18n/config.ts
+- [x] T001 Initialize SvelteKit project with TypeScript and Svelte 5 using pnpm in project root
+- [x] T002 [P] Install and configure UnoCSS with Radix Colors in uno.config.ts using pnpm
+- [x] T003 [P] Install and configure Vitest in vite.config.ts using pnpm
+- [x] T004 [P] Install and configure Playwright in playwright.config.ts using pnpm
+- [x] T005 [P] Install better-sqlite3 and ioredis dependencies using pnpm
+- [x] T006 [P] Configure ESLint and Prettier in eslint.config.js and .prettierrc
+- [x] T007 [P] Setup TypeScript strict mode in tsconfig.json
+- [x] T008 Create project directory structure per plan.md (src/lib/, server/, tests/, design-system/)
+- [x] T009 [P] Create .env.example with environment variable template
+- [x] T010 [P] Setup i18n configuration with svelte-i18n in src/i18n/config.ts
 
 ---
 

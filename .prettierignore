@@ -1,0 +1,11 @@
+node_modules/
+.svelte-kit/
+build/
+dist/
+coverage/
+.histoire/
+playwright-report/
+test-results/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock

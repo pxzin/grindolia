@@ -15,6 +15,7 @@ Build a web-based multiplayer RPG game inspired by D&D, Lord of the Rings, and J
 
 **Primary Dependencies**:
 
+- Package Manager: pnpm (preferred over npm for performance and disk efficiency)
 - Frontend: SvelteKit, Svelte 5, UnoCSS, Radix Colors, Histoire (Storybook alternative), svelte-i18n or sveltekit-i18n
 - Backend: SvelteKit server routes, Socket.IO or native WebSocket API
 - Database: better-sqlite3 (synchronous SQLite), ioredis (Redis client)
