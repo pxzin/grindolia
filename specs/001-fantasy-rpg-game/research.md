@@ -564,3 +564,353 @@ export function handleMessage(ws: WebSocket, message: WebSocketMessage) {
 | i18n | svelte-i18n with JSON locales | Global reach, 7 languages (3 initial + 4 future) |
 
 **Next Phase**: Phase 1 - Design & Contracts (data-model.md, contracts/, quickstart.md)
+
+---
+
+## Dark Fantasy UI Mockup Analysis (Phase 4.5)
+
+**Date**: 2025-11-14
+**Source**: `temp/Dark Fantasy RPG Design/` - Figma AI-generated mockup
+**Priority**: P2-URGENT
+
+### Component Inventory
+
+#### Core UI Components (Reusable Primitives)
+
+| Component | File | Current Status | Action | Priority |
+|-----------|------|----------------|--------|----------|
+| Button | `Button.tsx` | ✅ Exists | Enhance with 'hero' variant | HIGH |
+| Card | `Card.tsx` | ✅ Exists | Add 'gold' and 'elevated' variants | HIGH |
+| Input | `Input.tsx` | ✅ Exists | Update dark fantasy styling | HIGH |
+| ProgressBar | `ProgressBar.tsx` | ❌ Missing | Create new component | HIGH |
+| Modal (base) | N/A | ❌ Missing | Create new component | HIGH |
+
+#### Game-Specific Components
+
+| Component | File | Purpose | Dependencies | Priority |
+|-----------|------|---------|--------------|----------|
+| CharacterSheet | `CharacterSheet.tsx` | Display character stats/HP/XP | Card, ProgressBar | HIGH |
+| VictoryModal | `VictoryModal.tsx` | Show combat victory + rewards | Modal base | MEDIUM |
+| DefeatModal | `DefeatModal.tsx` | Show combat defeat | Modal base | MEDIUM |
+| CharacterCreation | `CharacterCreation.tsx` | Class selection interface | Card, Button | HIGH |
+| DungeonExploration | `DungeonExploration.tsx` | Main dungeon screen layout | CharacterSheet, Card | HIGH |
+| CombatArena | `CombatArena.tsx` | Combat visualization | ProgressBar, Modal | HIGH |
+
+#### Screen Pages
+
+| Screen | File | Description | Components Used |
+|--------|------|-------------|-----------------|
+| Login | `Login.tsx` | Authentication entry | Card, Input, Button |
+| Registration | `Registration.tsx` | Account creation | Card, Input, Button |
+| Character Creation | `CharacterCreation.tsx` | Choose class/name | Card, Button (ClassCard) |
+| Dungeon | `DungeonExploration.tsx` | Main game screen | CharacterSheet, Card, Button |
+| Combat | `CombatArena.tsx` | Battle interface | ProgressBar, Modal, Card |
+
+### Color Token Mapping
+
+**Mockup CSS Variables → Arcana Design System Mapping**
+
+| Mockup Variable | Hex Value | Arcana Variable | Notes |
+|----------------|-----------|-----------------|-------|
+| `--bg-primary` | `#1a1d2e` | `--color-arcana-bg-primary` | ✅ Exact match |
+| `--bg-secondary` | `#252842` | `--color-arcana-bg-secondary` | ✅ Exact match |
+| `--bg-elevated` | `#2d3250` | `--color-arcana-bg-elevated` | ✅ Exact match |
+| `--gold-300` | `#f0c78a` | `--color-arcana-gold-300` | ✅ Exact match |
+| `--gold-600` | `#c9984a` | `--color-arcana-gold-600` | ✅ Exact match |
+| `--gold-700` | `#a67c3a` | `--color-arcana-gold-700` | ✅ Exact match |
+| `--text-primary` | `#e8dcc4` | `--color-arcana-text-primary` | ✅ Exact match |
+| `--text-secondary` | `#b8a994` | `--color-arcana-text-secondary` | ✅ Exact match |
+| `--text-muted` | `#8a7d6f` | `--color-arcana-text-muted` | ✅ Exact match |
+| `--border-default` | `#3d4266` | `--color-arcana-border-default` | ✅ Exact match |
+| `--border-gold` | `#c9984a` | `--color-arcana-border-gold` | ✅ Exact match |
+| `--border-glow` | `#5d6ab8` | `--color-arcana-border-glow` | ✅ Exact match |
+| `--cyan-600` | `#2a9d8f` | `--color-arcana-cyan-600` | ✅ Exact match (Mana) |
+| `--orange-600` | `#ff6b35` | `--color-arcana-orange-600` | ✅ Exact match (HP/Danger) |
+| `--green-600` | `#43a047` | `--color-arcana-green-600` | ✅ Exact match (XP/Success) |
+
+**Conversion Strategy**:
+- ✅ **Perfect alignment!** All mockup colors already defined in Arcana System
+- Replace all Tailwind hardcoded colors like `bg-[#252842]` with `bg-[var(--color-arcana-bg-secondary)]`
+- Or preferably use UnoCSS shortcuts: `bg-arcana-secondary`
+
+### React → Svelte 5 Conversion Patterns
+
+#### State Management
+
+**React (Hooks)**:
+```tsx
+const [username, setUsername] = useState('');
+const [isOpen, setIsOpen] = useState(false);
+```
+
+**Svelte 5 (Runes)**:
+```typescript
+let username = $state('');
+let isOpen = $state(false);
+```
+
+#### Props
+
+**React**:
+```tsx
+interface ButtonProps {
+  variant?: 'primary' | 'secondary';
+  onClick?: () => void;
+  children: React.ReactNode;
+}
+
+export function Button({ variant = 'primary', onClick, children }: ButtonProps) {
+  // ...
+}
+```
+
+**Svelte 5**:
+```svelte
+<script lang="ts">
+  interface ButtonProps {
+    variant?: 'primary' | 'secondary';
+    onclick?: () => void;
+    children?: Snippet;
+  }
+
+  let { variant = 'primary', onclick, children }: ButtonProps = $props();
+</script>
+```
+
+#### Derived/Computed Values
+
+**React**:
+```tsx
+const percentage = useMemo(() => (current / max) * 100, [current, max]);
+```
+
+**Svelte 5**:
+```typescript
+const percentage = $derived((current / max) * 100);
+```
+
+#### Effects
+
+**React**:
+```tsx
+useEffect(() => {
+  console.log('Component mounted');
+  return () => console.log('Cleanup');
+}, []);
+```
+
+**Svelte 5**:
+```svelte
+<script lang="ts">
+  import { onMount } from 'svelte';
+
+  onMount(() => {
+    console.log('Component mounted');
+    return () => console.log('Cleanup');
+  });
+</script>
+```
+
+#### Conditional Rendering
+
+**React**:
+```tsx
+{isOpen && <Modal />}
+{status === 'success' ? <Success /> : <Error />}
+```
+
+**Svelte**:
+```svelte
+{#if isOpen}
+  <Modal />
+{/if}
+
+{#if status === 'success'}
+  <Success />
+{:else}
+  <Error />
+{/if}
+```
+
+#### Loops
+
+**React**:
+```tsx
+{items.map((item) => (
+  <Card key={item.id}>{item.name}</Card>
+))}
+```
+
+**Svelte**:
+```svelte
+{#each items as item (item.id)}
+  <Card>{item.name}</Card>
+{/each}
+```
+
+#### Event Handlers
+
+**React**:
+```tsx
+<button onClick={handleClick}>Click</button>
+<input onChange={(e) => setValue(e.target.value)} />
+```
+
+**Svelte**:
+```svelte
+<button onclick={handleClick}>Click</button>
+<input oninput={(e) => value = e.currentTarget.value} />
+<!-- Or with bind: -->
+<input bind:value />
+```
+
+### Component Migration Checklist
+
+#### For Each Component, Complete:
+
+1. **Setup**
+   - [ ] Create new `.svelte` file in appropriate directory
+   - [ ] Import necessary dependencies (icons from lucide-svelte, etc.)
+
+2. **Props Conversion**
+   - [ ] Convert interface to Svelte prop types
+   - [ ] Replace destructuring with `$props()` rune
+   - [ ] Handle optional props with defaults
+
+3. **State Conversion**
+   - [ ] Replace `useState` with `$state` rune
+   - [ ] Replace `useMemo`/computed with `$derived` rune
+   - [ ] Replace `useEffect` with `onMount`/`$effect`
+
+4. **Color Token Replacement**
+   - [ ] Find all hardcoded Tailwind colors (`bg-[#hex]`, `text-[#hex]`)
+   - [ ] Replace with Arcana CSS variables or UnoCSS shortcuts
+   - [ ] Verify visual appearance matches mockup
+
+5. **Template Conversion**
+   - [ ] Convert JSX to Svelte template syntax
+   - [ ] Replace ternaries with `{#if}` blocks
+   - [ ] Replace `.map()` with `{#each}` blocks
+   - [ ] Replace `&&` conditionals with `{#if}` blocks
+
+6. **Event Handlers**
+   - [ ] Convert `onClick` → `onclick`
+   - [ ] Convert `onChange` → `oninput` or `bind:value`
+   - [ ] Update function signatures if needed
+
+7. **Styling**
+   - [ ] Keep Tailwind classes as-is (UnoCSS compatible)
+   - [ ] Convert inline styles to Svelte style blocks if complex
+   - [ ] Ensure responsive classes work
+
+8. **Icons**
+   - [ ] Replace `lucide-react` imports with `lucide-svelte`
+   - [ ] Verify icon names match (they should be identical)
+
+9. **Testing**
+   - [ ] Component renders without errors
+   - [ ] All props work correctly
+   - [ ] State updates trigger re-renders
+   - [ ] Styling matches mockup
+   - [ ] Responsive behavior works
+
+10. **Documentation**
+    - [ ] Add component to design-system page
+    - [ ] Document all variants and props
+    - [ ] Provide usage examples
+
+### Migration Priority Order
+
+**Phase 1: Core Components** (Can run in parallel)
+1. Button enhancement
+2. Card enhancement
+3. Input enhancement
+4. ProgressBar creation
+5. Modal base creation
+
+**Phase 2: Modals** (Depends on Modal base)
+1. VictoryModal
+2. DefeatModal
+
+**Phase 3: Game Components** (Can run in parallel)
+1. CharacterSheet (depends on ProgressBar)
+2. ClassCard
+3. AdventureLog
+4. CombatLog
+5. StatDisplay
+
+**Phase 4: Screens** (Depends on components above)
+1. Login page
+2. Registration page
+3. Character Creation page
+4. Dungeon page
+5. Combat page
+
+**Phase 5: Navigation & Polish**
+1. NavigationHeader
+2. NotificationToast
+3. Skeleton loading states
+4. ErrorBoundary
+5. Final design system docs
+
+### Key Technical Notes
+
+1. **Font Stack**: Already configured!
+   - Headings: `Cinzel` (serif) via `font-['Cinzel']` or `--font-serif`
+   - Body: `Inter` (sans) via default or `--font-sans`
+   - Code/Numbers: `Fira Code` (mono) via `--font-mono`
+
+2. **Glow Effects**: Use `box-shadow`
+   ```css
+   /* Gold glow */
+   box-shadow: 0 0 20px rgba(201, 152, 74, 0.4);
+
+   /* Cyan glow (mana) */
+   box-shadow: 0 0 20px rgba(42, 157, 143, 0.4);
+   ```
+
+3. **Animations**: Add to `app.css`
+   ```css
+   @keyframes fadeIn {
+     from { opacity: 0; }
+     to { opacity: 1; }
+   }
+
+   @keyframes slideUp {
+     from {
+       transform: translateY(20px);
+       opacity: 0;
+     }
+     to {
+       transform: translateY(0);
+       opacity: 1;
+     }
+   }
+   ```
+
+4. **Responsive Breakpoints**: Use Tailwind/UnoCSS defaults
+   - `sm`: 640px
+   - `md`: 768px
+   - `lg`: 1024px
+   - `xl`: 1280px
+
+5. **Icon Library**: Use `lucide-svelte`
+   ```bash
+   pnpm add lucide-svelte
+   ```
+
+### Validation Criteria
+
+Before marking Phase 4.5 complete:
+
+- [ ] All mockup screens converted to Svelte
+- [ ] All hard-coded colors use Arcana CSS variables
+- [ ] Design system page documents all components
+- [ ] Login → Character Creation → Dungeon → Combat flow works
+- [ ] Responsive on mobile (375px), tablet (768px), desktop (1920px)
+- [ ] No TypeScript errors
+- [ ] No console warnings
+- [ ] Accessibility: ARIA labels, keyboard navigation, focus states
+- [ ] Visual QA: Matches mockup aesthetic
+
+**Estimated Completion**: 2-3 days (47 tasks, ~70% parallelizable)
