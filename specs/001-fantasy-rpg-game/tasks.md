@@ -109,44 +109,44 @@
 
 ### Database & Models for US1
 
-- [ ] T048 [P] [US1] Create Zone repository in server/database/repositories/zone.ts
-- [ ] T049 [P] [US1] Create QuestTemplate repository in server/database/repositories/quest-template.ts
-- [ ] T050 [P] [US1] Create CharacterQuest repository in server/database/repositories/character-quest.ts
-- [ ] T051 [P] [US1] Create ItemTemplate repository in server/database/repositories/item-template.ts
-- [ ] T052 [P] [US1] Create InventoryItem repository in server/database/repositories/inventory-item.ts
-- [ ] T053 [US1] Seed starter zone and tutorial quest in server/database/seed.ts
-- [ ] T054 [US1] Seed starting equipment items in server/database/seed.ts
+- [x] T048 [P] [US1] Create Zone repository in server/database/repositories/zone.ts
+- [x] T049 [P] [US1] Create QuestTemplate repository in server/database/repositories/quest-template.ts
+- [x] T050 [P] [US1] Create CharacterQuest repository in server/database/repositories/character-quest.ts
+- [x] T051 [P] [US1] Create ItemTemplate repository in server/database/repositories/item-template.ts
+- [x] T052 [P] [US1] Create InventoryItem repository in server/database/repositories/inventory-item.ts
+- [x] T053 [US1] Seed starter zone and tutorial quest in server/database/seed.ts
+- [x] T054 [US1] Seed starting equipment items in server/database/seed.ts
 
 ### Game Logic for US1
 
-- [ ] T055 [P] [US1] Implement XP calculation in server/game/progression/experience.ts
-- [ ] T056 [P] [US1] Implement quest reward distribution in server/game/quest/rewards.ts
-- [ ] T057 [US1] Implement quest manager (accept, progress, complete) in server/game/quest/manager.ts
+- [x] T055 [P] [US1] Implement XP calculation in server/game/progression/experience.ts
+- [x] T056 [P] [US1] Implement quest reward distribution in server/game/quest/rewards.ts
+- [x] T057 [US1] Implement quest manager (accept, progress, complete) in server/game/quest/manager.ts
 
 ### API Endpoints for US1
 
-- [ ] T058 [P] [US1] Create character creation endpoint in src/routes/api/character/+server.ts
-- [ ] T059 [P] [US1] Create character detail endpoint in src/routes/api/character/[id]/+server.ts
-- [ ] T060 [P] [US1] Create quest list endpoint in src/routes/api/quest/+server.ts
-- [ ] T061 [P] [US1] Create quest accept endpoint in src/routes/api/quest/[id]/+server.ts
-- [ ] T062 [US1] Create quest completion endpoint in src/routes/api/quest/[id]/complete/+server.ts
+- [x] T058 [P] [US1] Create character creation endpoint in src/routes/api/character/+server.ts
+- [x] T059 [P] [US1] Create character detail endpoint in src/routes/api/character/+server.ts (GET)
+- [x] T060 [P] [US1] Create quest list endpoint in src/routes/api/quest/+server.ts
+- [x] T061 [P] [US1] Create quest accept endpoint in src/routes/api/quest/accept/+server.ts
+- [x] T062 [US1] Create quest completion endpoint in src/routes/api/quest/complete/+server.ts
 
 ### WebSocket Handlers for US1
 
-- [ ] T063 [P] [US1] Create quest progress handler in server/websocket/handlers/quest.ts
-- [ ] T064 [US1] Add quest events to WebSocket message router in server/websocket/handlers/index.ts
+- [x] T063 [P] [US1] Create quest progress handler in server/websocket/handlers/quest-progress.ts
+- [x] T064 [US1] Add quest events to WebSocket message router in server/websocket/handlers/index.ts
 
 ### State Management for US1
 
-- [ ] T065 [P] [US1] Create character store with Svelte 5 runes in src/lib/stores/character.svelte.ts
-- [ ] T066 [P] [US1] Create quest store with Svelte 5 runes in src/lib/stores/quest.svelte.ts
+- [x] T065 [P] [US1] Create character store with Svelte 5 runes in src/lib/stores/character.svelte.ts
+- [x] T066 [P] [US1] Create quest store with Svelte 5 runes in src/lib/stores/quest.svelte.ts
 - [ ] T067 [P] [US1] Create inventory store with Svelte 5 runes in src/lib/stores/inventory.svelte.ts
 
 ### UI Components for US1
 
-- [ ] T068 [P] [US1] Create CharacterSheet component in src/lib/components/game/CharacterSheet.svelte
-- [ ] T069 [P] [US1] Create QuestLog component in src/lib/components/game/QuestLog.svelte
-- [ ] T070 [P] [US1] Create QuestCard component in src/lib/components/game/QuestCard.svelte
+- [x] T068 [P] [US1] Create CharacterCreation component in src/lib/components/character/CharacterCreation.svelte
+- [x] T069 [P] [US1] Create QuestList component in src/lib/components/quest/QuestList.svelte
+- [x] T070 [P] [US1] Create QuestDetails component in src/lib/components/quest/QuestDetails.svelte
 - [ ] T071 [P] [US1] Create InventoryGrid component in src/lib/components/game/InventoryGrid.svelte
 - [ ] T072 [US1] Create narrative modal component for isekai intro in src/lib/components/game/NarrativeModal.svelte
 

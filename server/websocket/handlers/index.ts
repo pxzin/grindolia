@@ -5,6 +5,7 @@
 
 import type { WebSocketConnection } from '../server';
 import type { WebSocketMessage } from '../../../src/lib/types/websocket';
+import { handleQuestProgress } from './quest-progress';
 
 /**
  * Message handler function type
@@ -19,9 +20,8 @@ export type MessageHandler = (
  * Maps message types to their handler functions
  */
 const handlers: Record<string, MessageHandler> = {
-	// Quest handlers (will be implemented in Phase 3)
-	// QUEST_START: handleQuestStart,
-	// QUEST_COMPLETE: handleQuestComplete,
+	// Quest handlers
+	'quest:progress': handleQuestProgress,
 
 	// Arena handlers (will be implemented in Phase 6)
 	// ARENA_INITIATE: handleArenaInitiate,

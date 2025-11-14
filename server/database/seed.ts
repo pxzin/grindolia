@@ -5,6 +5,9 @@
 
 import { getDatabase } from './connection';
 import { CharacterClassRepository } from './repositories/character-class';
+import { createZone } from './repositories/zone';
+import { createQuestTemplate } from './repositories/quest-template';
+import { createItemTemplate } from './repositories/item-template';
 
 /**
  * Seed initial character classes
@@ -91,6 +94,158 @@ export function seedCharacterClasses(): void {
 }
 
 /**
+ * Seed starter zone
+ */
+export function seedZones(): void {
+	const db = getDatabase();
+
+	// Check if starter zone exists
+	const checkStmt = db.prepare('SELECT COUNT(*) as count FROM zones WHERE name = ?');
+	const result = checkStmt.get('Starter Plains') as { count: number };
+
+	if (result.count === 0) {
+		createZone({
+			name: 'Starter Plains',
+			description: 'A peaceful meadow where new adventurers begin their journey. Gentle creatures roam the grasslands.',
+			min_level: 1,
+			max_level: 5
+		});
+		console.log('  ✓ Seeded zone: Starter Plains');
+	}
+}
+
+/**
+ * Seed tutorial quest
+ */
+export function seedQuests(): void {
+	const db = getDatabase();
+
+	// Check if tutorial quest exists
+	const checkStmt = db.prepare('SELECT COUNT(*) as count FROM quest_templates WHERE title = ?');
+	const result = checkStmt.get('Welcome to the New World') as { count: number };
+
+	if (result.count === 0) {
+		// Get starter zone ID
+		const zoneStmt = db.prepare('SELECT id FROM zones WHERE name = ?');
+		const zone = zoneStmt.get('Starter Plains') as { id: number } | null;
+
+		createQuestTemplate({
+			title: 'Welcome to the New World',
+			description: 'You have been transported to a mysterious new world. Explore your surroundings and learn the basics of survival.',
+			zone_id: zone?.id || null,
+			min_level: 1,
+			max_level: null,
+			objectives: [
+				{
+					type: 'explore',
+					description: 'Explore the Starter Plains',
+					target: 'starter_plains',
+					required: 1,
+					current: 0
+				},
+				{
+					type: 'kill',
+					description: 'Defeat 3 Slimes',
+					target: 'slime',
+					required: 3,
+					current: 0
+				}
+			],
+			rewards: {
+				xp: 100,
+				currency: 50,
+				items: []
+			},
+			is_repeatable: false,
+			cooldown_hours: null
+		});
+		console.log('  ✓ Seeded quest: Welcome to the New World');
+	}
+}
+
+/**
+ * Seed starting equipment items
+ */
+export function seedItems(): void {
+	const db = getDatabase();
+
+	const items = [
+		{
+			name: 'Rusty Sword',
+			description: 'A basic sword, worn but still functional.',
+			type: 'weapon' as const,
+			rarity: 'common' as const,
+			level_requirement: 1,
+			stats: { damage: 5, strength: 2 },
+			effects: null,
+			max_stack: 1,
+			icon_path: null
+		},
+		{
+			name: 'Wooden Staff',
+			description: 'A simple wooden staff imbued with minor magical properties.',
+			type: 'weapon' as const,
+			rarity: 'common' as const,
+			level_requirement: 1,
+			stats: { damage: 4, intelligence: 3 },
+			effects: null,
+			max_stack: 1,
+			icon_path: null
+		},
+		{
+			name: 'Iron Dagger',
+			description: 'A sharp dagger perfect for quick strikes.',
+			type: 'weapon' as const,
+			rarity: 'common' as const,
+			level_requirement: 1,
+			stats: { damage: 4, dexterity: 3 },
+			effects: null,
+			max_stack: 1,
+			icon_path: null
+		},
+		{
+			name: 'Leather Armor',
+			description: 'Basic leather protection for adventurers.',
+			type: 'armor' as const,
+			rarity: 'common' as const,
+			level_requirement: 1,
+			stats: { defense: 5, vitality: 2 },
+			effects: null,
+			max_stack: 1,
+			icon_path: null
+		},
+		{
+			name: 'Health Potion',
+			description: 'Restores 50 HP when consumed.',
+			type: 'consumable' as const,
+			rarity: 'common' as const,
+			level_requirement: 1,
+			stats: null,
+			effects: { heal_hp: 50 },
+			max_stack: 99,
+			icon_path: null
+		}
+	];
+
+	let seededCount = 0;
+
+	for (const item of items) {
+		const checkStmt = db.prepare('SELECT COUNT(*) as count FROM item_templates WHERE name = ?');
+		const result = checkStmt.get(item.name) as { count: number };
+
+		if (result.count === 0) {
+			createItemTemplate(item);
+			seededCount++;
+			console.log(`  ✓ Seeded item: ${item.name}`);
+		}
+	}
+
+	if (seededCount > 0) {
+		console.log(`✅ Seeded ${seededCount} items`);
+	}
+}
+
+/**
  * Run all seed functions
  */
 export function seedDatabase(): void {
@@ -98,10 +253,9 @@ export function seedDatabase(): void {
 
 	try {
 		seedCharacterClasses();
-		// Additional seed functions will be added here as we implement more features
-		// seedZones();
-		// seedQuests();
-		// seedItems();
+		seedZones();
+		seedQuests();
+		seedItems();
 
 		console.log('✅ Database seeding completed');
 	} catch (error) {
