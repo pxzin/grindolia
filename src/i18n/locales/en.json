@@ -106,6 +106,33 @@
 			"questAccepted": "Quest accepted!",
 			"questCompleted": "Quest completed!",
 			"levelUp": "Level Up! You are now level {level}!"
+		},
+		"narratives": {
+			"welcomeToNewWorld": {
+				"title": "Welcome to the New World",
+				"description": "You have been transported to a mysterious new world. Explore your surroundings and learn the basics of survival.",
+				"completion": "Well done, adventurer! You've taken your first steps in this new realm."
+			},
+			"dungeonDelver": {
+				"title": "Dungeon Delver",
+				"description": "Prove your worth by descending into the depths of the dungeon. Each floor holds greater challenges and rewards!",
+				"completion": "Impressive! You've proven yourself a capable dungeon explorer."
+			},
+			"monsterHunterDaily": {
+				"title": "Monster Hunter Daily",
+				"description": "The realm always needs brave souls to keep the monster population in check. A simple task, but rewarding!",
+				"completion": "Another day, another batch of monsters defeated. Well done!"
+			},
+			"pathOfPower": {
+				"title": "The Path of Power",
+				"description": "True strength comes from experience and discipline. Push yourself to grow stronger!",
+				"completion": "You grow stronger with each battle. Your journey has just begun!"
+			},
+			"treasureSeeker": {
+				"title": "Treasure Seeker",
+				"description": "Legends speak of valuable treasures hidden within dungeon depths. Collect the spoils of your victories!",
+				"completion": "Fortune favors the bold! Your treasure hoard grows."
+			}
 		}
 	},
 	"inventory": {

@@ -123,17 +123,11 @@ export function seedZones(): void {
  */
 export function seedQuests(): void {
 	const db = getDatabase();
+	const zoneStmt = db.prepare('SELECT id FROM zones WHERE name = ?');
+	const zone = zoneStmt.get('Starter Plains') as { id: number } | null;
 
-	// Check if tutorial quest exists
-	const checkStmt = db.prepare('SELECT COUNT(*) as count FROM quest_templates WHERE title = ?');
-	const result = checkStmt.get('Welcome to the New World') as { count: number };
-
-	if (result.count === 0) {
-		// Get starter zone ID
-		const zoneStmt = db.prepare('SELECT id FROM zones WHERE name = ?');
-		const zone = zoneStmt.get('Starter Plains') as { id: number } | null;
-
-		createQuestTemplate({
+	const quests = [
+		{
 			title: 'Welcome to the New World',
 			description: 'You have been transported to a mysterious new world. Explore your surroundings and learn the basics of survival.',
 			zone_id: zone?.id || null,
@@ -162,8 +156,125 @@ export function seedQuests(): void {
 			},
 			is_repeatable: false,
 			cooldown_hours: null
-		});
-		console.log('  ✓ Seeded quest: Welcome to the New World');
+		},
+		{
+			title: 'Dungeon Delver',
+			description: 'Prove your worth by descending into the depths of the dungeon. Each floor holds greater challenges and rewards!',
+			zone_id: zone?.id || null,
+			min_level: 1,
+			max_level: null,
+			objectives: [
+				{
+					type: 'dungeon',
+					description: 'Reach Floor 3 of any dungeon',
+					target: 'floor_3',
+					required: 1,
+					current: 0
+				},
+				{
+					type: 'combat',
+					description: 'Defeat 5 monsters in dungeons',
+					target: 'any',
+					required: 5,
+					current: 0
+				}
+			],
+			rewards: {
+				xp: 250,
+				currency: 100,
+				items: []
+			},
+			is_repeatable: false,
+			cooldown_hours: null
+		},
+		{
+			title: 'Monster Hunter Daily',
+			description: 'The realm always needs brave souls to keep the monster population in check. A simple task, but rewarding!',
+			zone_id: zone?.id || null,
+			min_level: 1,
+			max_level: null,
+			objectives: [
+				{
+					type: 'kill',
+					description: 'Defeat 10 monsters of any type',
+					target: 'any',
+					required: 10,
+					current: 0
+				}
+			],
+			rewards: {
+				xp: 150,
+				currency: 75,
+				items: []
+			},
+			is_repeatable: true,
+			cooldown_hours: 24
+		},
+		{
+			title: 'The Path of Power',
+			description: 'True strength comes from experience and discipline. Push yourself to grow stronger!',
+			zone_id: zone?.id || null,
+			min_level: 1,
+			max_level: 5,
+			objectives: [
+				{
+					type: 'level',
+					description: 'Reach Level 3',
+					target: 'character',
+					required: 3,
+					current: 0
+				}
+			],
+			rewards: {
+				xp: 200,
+				currency: 150,
+				items: []
+			},
+			is_repeatable: false,
+			cooldown_hours: null
+		},
+		{
+			title: 'Treasure Seeker',
+			description: 'Legends speak of valuable treasures hidden within dungeon depths. Collect the spoils of your victories!',
+			zone_id: zone?.id || null,
+			min_level: 2,
+			max_level: null,
+			objectives: [
+				{
+					type: 'loot',
+					description: 'Collect 5 items from combat',
+					target: 'any',
+					required: 5,
+					current: 0
+				}
+			],
+			rewards: {
+				xp: 180,
+				currency: 120,
+				items: []
+			},
+			is_repeatable: true,
+			cooldown_hours: 48
+		}
+	];
+
+	let seededCount = 0;
+
+	for (const quest of quests) {
+		const checkStmt = db.prepare('SELECT COUNT(*) as count FROM quest_templates WHERE title = ?');
+		const result = checkStmt.get(quest.title) as { count: number };
+
+		if (result.count === 0) {
+			createQuestTemplate(quest);
+			seededCount++;
+			console.log(`  ✓ Seeded quest: ${quest.title}`);
+		}
+	}
+
+	if (seededCount > 0) {
+		console.log(`✅ Seeded ${seededCount} quest templates`);
+	} else {
+		console.log('ℹ️  Quest templates already seeded');
 	}
 }
 

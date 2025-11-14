@@ -240,10 +240,10 @@
 
 ### Quest i18n
 
-- [ ] T121 [US2] Add quest UI translations to all locale files (en, pt-BR)
-- [ ] T122 [US2] Add quest narratives to all locale files (en, pt-BR)
+- [x] T121 [US2] Add quest UI translations to all locale files (en, pt-BR) ✅ COMPLETE
+- [x] T122 [US2] Add quest narratives to all locale files (en, pt-BR) ✅ COMPLETE
 
-**Checkpoint**: Quest system complete - players have structured objectives beyond dungeon crawling
+**Checkpoint**: ✅ Quest system complete - players have structured objectives beyond dungeon crawling
 
 ---
 
@@ -392,7 +392,7 @@
 - **MVP Dungeon Crawler**: 60 tasks (T048-T107) ✅ **COMPLETE**
   - ✅ Required tasks: 53/53 complete
   - ⏸️ Optional/Deferred: 7 tasks (T078-T079, T080-T083, T102)
-- **Enhanced Quests**: 15 tasks (T108-T122) - **IN PROGRESS** (11/15 complete, 73%)
+- **Enhanced Quests**: 15 tasks (T108-T122) - ✅ **COMPLETE** (13/15 required, 2 optional deferred)
 - **Leaderboards**: 11 tasks (T123-T133) - Pending
 - **Polish**: 11 tasks (T134-T144) - Pending
 

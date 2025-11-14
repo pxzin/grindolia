@@ -106,6 +106,33 @@
 			"questAccepted": "Missão aceita!",
 			"questCompleted": "Missão completada!",
 			"levelUp": "Subiu de Nível! Você agora é nível {level}!"
+		},
+		"narratives": {
+			"welcomeToNewWorld": {
+				"title": "Bem-vindo ao Novo Mundo",
+				"description": "Você foi transportado para um mundo misterioso. Explore seus arredores e aprenda o básico para sobreviver.",
+				"completion": "Muito bem, aventureiro! Você deu seus primeiros passos neste novo reino."
+			},
+			"dungeonDelver": {
+				"title": "Explorador de Masmorras",
+				"description": "Prove seu valor descendo nas profundezas da masmorra. Cada andar traz desafios e recompensas maiores!",
+				"completion": "Impressionante! Você provou ser um explorador de masmorras capaz."
+			},
+			"monsterHunterDaily": {
+				"title": "Caçador de Monstros Diário",
+				"description": "O reino sempre precisa de almas corajosas para manter a população de monstros sob controle. Uma tarefa simples, mas recompensadora!",
+				"completion": "Mais um dia, mais monstros derrotados. Muito bem!"
+			},
+			"pathOfPower": {
+				"title": "O Caminho do Poder",
+				"description": "A verdadeira força vem da experiência e disciplina. Force-se a ficar mais forte!",
+				"completion": "Você fica mais forte a cada batalha. Sua jornada apenas começou!"
+			},
+			"treasureSeeker": {
+				"title": "Caçador de Tesouros",
+				"description": "Lendas falam de tesouros valiosos escondidos nas profundezas das masmorras. Colete os espólios de suas vitórias!",
+				"completion": "A fortuna favorece os audazes! Seu tesouro cresce."
+			}
 		}
 	},
 	"inventory": {
