@@ -61,14 +61,37 @@ class CharacterStore {
 	}
 
 	/**
+	 * Get total XP required for next level
+	 * Uses cumulative XP formula matching the server
+	 */
+	get xpToNextLevel(): number {
+		// Calculate total XP required for next level (cumulative from level 1)
+		let total = 0;
+		for (let i = 1; i <= this._state.level; i++) {
+			total += i ** 2 * 100;
+		}
+		return total;
+	}
+
+	/**
 	 * Get XP progress to next level (0-1)
+	 * Uses cumulative XP formula matching the server
 	 */
 	get xpProgress(): number {
-		const xpForNextLevel = this._state.level ** 2 * 100;
-		const currentLevelXP = (this._state.level - 1) ** 2 * 100;
-		const xpInCurrentLevel = this._state.xp - currentLevelXP;
-		const xpNeededForLevel = xpForNextLevel - currentLevelXP;
-		return Math.min(xpInCurrentLevel / xpNeededForLevel, 1);
+		// Calculate total XP required for current level (where we are now)
+		let totalXPForCurrentLevel = 0;
+		for (let i = 1; i < this._state.level; i++) {
+			totalXPForCurrentLevel += i ** 2 * 100;
+		}
+
+		// Calculate total XP required for next level
+		const totalXPForNextLevel = this.xpToNextLevel;
+
+		// Calculate progress within current level
+		const xpInCurrentLevel = this._state.xp - totalXPForCurrentLevel;
+		const xpNeededForLevel = totalXPForNextLevel - totalXPForCurrentLevel;
+
+		return Math.max(0, Math.min(xpInCurrentLevel / xpNeededForLevel, 1));
 	}
 
 	/**
@@ -153,18 +176,73 @@ class CharacterStore {
 
 	/**
 	 * Gain XP and check for level up
+	 * Uses the same formula as the server: total cumulative XP required
 	 */
 	gainXp(amount: number): { leveledUp: boolean; newLevel?: number } {
 		this._state.xp += amount;
 
-		const xpForNextLevel = this._state.level ** 2 * 100;
+		// Calculate total XP required for next level (cumulative from level 1)
+		// Formula: sum of (level^2 * 100) for all levels from 1 to target level
+		let totalXPForNextLevel = 0;
+		for (let i = 1; i < this._state.level + 1; i++) {
+			totalXPForNextLevel += i ** 2 * 100;
+		}
 
-		if (this._state.xp >= xpForNextLevel) {
+		if (this._state.xp >= totalXPForNextLevel) {
 			this._state.level += 1;
 			return { leveledUp: true, newLevel: this._state.level };
 		}
 
 		return { leveledUp: false };
+	}
+
+	/**
+	 * Load character from server
+	 */
+	async loadCharacter(): Promise<boolean> {
+		try {
+			console.log('📥 [CharacterStore] Loading character from server...');
+			const response = await fetch('/api/character');
+
+			if (!response.ok) {
+				if (response.status === 404) {
+					console.warn('⚠️  [CharacterStore] No character found (404)');
+					return false;
+				}
+				throw new Error('Failed to load character');
+			}
+
+			const data = await response.json();
+			console.log('📦 [CharacterStore] Received data:', JSON.stringify(data, null, 2));
+
+			if (data.character) {
+				console.log('✅ [CharacterStore] Setting character:', {
+					id: data.character.id,
+					name: data.character.name,
+					class: data.character.class,
+					level: data.character.level,
+					hp: data.character.hp,
+					maxHp: data.character.maxHp
+				});
+				this.setCharacter(data.character);
+				console.log('✅ [CharacterStore] Character loaded successfully');
+				console.log('📊 [CharacterStore] Current state:', {
+					id: this._state.id,
+					name: this._state.name,
+					class: this._state.class,
+					level: this._state.level,
+					hp: this._state.hp,
+					maxHp: this._state.maxHp
+				});
+				return true;
+			}
+
+			console.warn('⚠️  [CharacterStore] No character in response');
+			return false;
+		} catch (error) {
+			console.error('❌ [CharacterStore] Failed to load character:', error);
+			return false;
+		}
 	}
 
 	/**

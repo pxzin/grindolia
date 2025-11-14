@@ -37,7 +37,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 		// Get character class
 		const classRepo = new CharacterClassRepository(db);
-		const characterClass = classRepo.getById(character.class_id);
+		const characterClass = classRepo.findById(character.class_id);
 
 		return {
 			character: {

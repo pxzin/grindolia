@@ -12,11 +12,12 @@ export function getXPForLevel(level: number): number {
 }
 
 /**
- * Calculate total XP required to reach a level
+ * Calculate total XP required to reach a level from level 1
+ * This is cumulative XP across all levels
  */
 export function getTotalXPForLevel(level: number): number {
 	let total = 0;
-	for (let i = 2; i <= level; i++) {
+	for (let i = 1; i < level; i++) {
 		total += getXPForLevel(i);
 	}
 	return total;
@@ -27,14 +28,12 @@ export function getTotalXPForLevel(level: number): number {
  */
 export function getLevelFromXP(totalXP: number): number {
 	let level = 1;
-	let requiredXP = 0;
 
-	while (requiredXP <= totalXP) {
+	while (getTotalXPForLevel(level + 1) <= totalXP) {
 		level++;
-		requiredXP += getXPForLevel(level);
 	}
 
-	return level - 1;
+	return level;
 }
 
 /**

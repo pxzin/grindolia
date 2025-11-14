@@ -102,6 +102,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 /**
  * GET /api/character?id=123
  * Get character details
+ * If no ID is provided, returns the first character for the logged-in user
  */
 export const GET: RequestHandler = async ({ url, locals }) => {
 	// Check authentication
@@ -110,36 +111,58 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 	}
 
 	try {
-		const characterIdParam = url.searchParams.get('id');
-
-		if (!characterIdParam) {
-			throw error(400, 'Character ID is required');
-		}
-
-		const characterId = parseInt(characterIdParam, 10);
-
-		if (isNaN(characterId)) {
-			throw error(400, 'Invalid character ID');
-		}
+		console.log('🔍 [API/Character] GET request - userId:', locals.session.userId);
 
 		const db = getDatabase();
 		const characterRepo = new CharacterRepository(db);
-		const character = characterRepo.findById(characterId);
+		const characterIdParam = url.searchParams.get('id');
 
-		if (!character) {
-			throw error(404, 'Character not found');
-		}
+		let character;
 
-		// Verify ownership
-		if (character.player_id !== locals.session.userId) {
-			throw error(403, 'Access denied');
+		if (characterIdParam) {
+			console.log('🔍 [API/Character] Looking for specific character ID:', characterIdParam);
+			// Get specific character by ID
+			const characterId = parseInt(characterIdParam, 10);
+
+			if (isNaN(characterId)) {
+				throw error(400, 'Invalid character ID');
+			}
+
+			character = characterRepo.findById(characterId);
+
+			if (!character) {
+				throw error(404, 'Character not found');
+			}
+
+			// Verify ownership
+			if (character.player_id !== locals.session.userId) {
+				throw error(403, 'Access denied');
+			}
+		} else {
+			console.log('🔍 [API/Character] Looking for characters by player ID:', locals.session.userId);
+			// Get first character for the logged-in user
+			const characters = characterRepo.findByPlayerId(locals.session.userId);
+			console.log('📊 [API/Character] Found characters:', characters?.length || 0);
+
+			if (!characters || characters.length === 0) {
+				throw error(404, 'No character found');
+			}
+
+			character = characters[0]; // Use first character
+			console.log('✅ [API/Character] Selected character:', {
+				id: character.id,
+				name: character.name,
+				class_id: character.class_id,
+				level: character.level
+			});
 		}
 
 		// Get character class
 		const classRepo = new CharacterClassRepository(db);
 		const characterClass = classRepo.findById(character.class_id);
+		console.log('📚 [API/Character] Character class:', characterClass?.name || 'Not found');
 
-		return json({
+		const response = {
 			success: true,
 			character: {
 				id: character.id,
@@ -156,9 +179,15 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 					vitality: character.vitality,
 					hp: character.max_hp
 				},
-				currency: character.currency
+				currency: character.currency,
+				position: { x: 0, y: 0, z: 0 },
+				zoneId: null,
+				status: 'alive' as const
 			}
-		});
+		};
+
+		console.log('📤 [API/Character] Sending response:', JSON.stringify(response, null, 2));
+		return json(response);
 	} catch (err) {
 		if (err && typeof err === 'object' && 'status' in err) {
 			throw err; // Re-throw SvelteKit errors

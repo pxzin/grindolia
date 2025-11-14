@@ -109,6 +109,14 @@ export class MonsterRepository {
 	}
 
 	/**
+	 * Find monsters by exact level
+	 */
+	findByLevel(level: number): Monster[] {
+		const stmt = this.db.prepare('SELECT * FROM monsters WHERE base_level = ? ORDER BY name ASC');
+		return stmt.all(level) as Monster[];
+	}
+
+	/**
 	 * Create a new monster
 	 */
 	create(data: CreateMonsterData): Monster {

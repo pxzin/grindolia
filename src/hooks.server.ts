@@ -5,6 +5,21 @@
 
 import type { Handle } from '@sveltejs/kit';
 import { getSession } from '../server/websocket/session-memory';
+import { initializeDatabase } from '../server/database/connection';
+import { seedDatabase } from '../server/database/seed';
+
+// Initialize database on startup
+let dbInitialized = false;
+if (!dbInitialized) {
+	try {
+		console.log('🔧 Initializing database...');
+		initializeDatabase();
+		seedDatabase();
+		dbInitialized = true;
+	} catch (error) {
+		console.error('Failed to initialize database:', error);
+	}
+}
 
 /**
  * Authentication middleware

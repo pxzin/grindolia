@@ -317,4 +317,28 @@ export class DungeonProgressRepository {
 			total_monsters_defeated: number;
 		};
 	}
+
+	/**
+	 * Find active dungeon progress (alias for compatibility)
+	 */
+	findActive(characterId: number): DungeonProgress | null {
+		return this.findActiveByCharacterId(characterId);
+	}
+
+	/**
+	 * Descend to next floor (alias for compatibility)
+	 */
+	descendFloor(id: number): DungeonProgress {
+		return this.advanceToNextFloor(id);
+	}
+
+	/**
+	 * Mark dungeon as abandoned (alias for compatibility)
+	 */
+	markAbandoned(id: number): DungeonProgress {
+		return this.update(id, {
+			status: 'failed',
+			completed_at: Math.floor(Date.now() / 1000)
+		});
+	}
 }

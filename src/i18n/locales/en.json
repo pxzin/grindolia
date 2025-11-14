@@ -163,5 +163,43 @@
 			"arenaWins": "By Arena Wins",
 			"wealth": "By Wealth"
 		}
+	},
+	"dungeon": {
+		"title": "Dungeons",
+		"enter": "Enter Dungeon",
+		"exit": "Exit Dungeon",
+		"floor": "Floor",
+		"difficulty": "Difficulty",
+		"monstersDefeated": "Monsters Defeated",
+		"descend": "Descend to Floor {floor}",
+		"completeDungeon": "Complete Dungeon",
+		"encounterMonster": "Encounter Monster",
+		"messages": {
+			"darkCorridor": "A dark corridor stretches before you...",
+			"floorCleared": "Floor cleared! You may proceed.",
+			"dungeonComplete": "Dungeon complete! Well done!"
+		}
+	},
+	"combat": {
+		"title": "Combat",
+		"fight": "Fight!",
+		"fighting": "Fighting...",
+		"victory": "Victory!",
+		"defeat": "Defeated",
+		"continue": "Continue",
+		"returnToTown": "Return to Town",
+		"hp": "HP",
+		"vs": "VS",
+		"combatLog": "Combat Log",
+		"rewards": {
+			"title": "Rewards",
+			"xp": "XP",
+			"gold": "Gold",
+			"items": "Item(s)"
+		},
+		"messages": {
+			"inProgress": "Combat in progress...",
+			"defeated": "You have been defeated by the {monster}..."
+		}
 	}
 }

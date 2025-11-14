@@ -1,22 +1,70 @@
-# Grindolia - Fantasy RPG Multiplayer Game
+# 🎮 Grindolia - Fantasy RPG Dungeon Crawler
 
-Um jogo RPG multiplayer baseado em navegador, construído com SvelteKit, TypeScript e WebSocket.
+A web-based multiplayer RPG game built with SvelteKit, featuring dungeon exploration, turn-based combat, and character progression.
 
 ## 🚀 Quick Start
+
+```bash
+# Install dependencies
+pnpm install
+
+# Start development server (auto-seeds database on first run)
+pnpm dev
+
+# Open browser to http://localhost:5173
+```
+
+## 📖 Demo Instructions
+
+See [DEMO_INSTRUCTIONS.md](./DEMO_INSTRUCTIONS.md) for complete testing guide.
+
+**Quick Test Flow**:
+1. Register account at `/auth/register`
+2. Create character at `/character/create`
+3. Enter dungeon at `/dungeon`
+4. Fight monsters and descend floors!
+
+## ✨ Features
+
+### ✅ Implemented (MVP)
+- **Character Creation**: 3 classes (Warrior, Mage, Rogue)
+- **Dungeon System**: 5-floor dungeon with increasing difficulty
+- **Turn-based Combat**: Damage, crits, dodges
+- **Progression**: XP, leveling, stat growth
+- **Loot System**: Random item drops, gold rewards
+- **Monster Variety**: 7 different monster types
+
+### 🔨 In Progress
+- Inventory management (items collected, not equippable yet)
+- Character HP persistence
+- WebSocket real-time updates
+
+### 📋 Planned
+- Quest system integration
+- Arena PvP battles
+- Auction house
+- Leaderboards
+- Multiple dungeons
+
+## 🏗️ Tech Stack
+
+- **Framework**: SvelteKit + Svelte 5 (runes)
+- **Styling**: UnoCSS + Radix Colors
+- **Database**: SQLite (better-sqlite3)
+- **Session**: Redis (in-memory for MVP)
+- **Language**: TypeScript (strict mode)
+- **Testing**: Vitest + Playwright
+
+---
 
 ### Pré-requisitos
 
 - Node.js 18+ ou superior
-- pnpm (recomendado) ou npm
-- Redis (para sessões e pub/sub)
+- pnpm (recomendado)
 
 ### Instalação
 
 ```bash
-# Clone o repositório
-git clone <repository-url>
-cd grindolia
-
 # Instale as dependências
 pnpm install
 

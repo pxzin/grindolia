@@ -311,6 +311,27 @@
 		currentUser = null;
 		apiResponse = '✅ Logged out';
 	};
+
+	const handleResetCharacter = async () => {
+		if (!confirm('Reset your character to Level 1? This cannot be undone!')) {
+			return;
+		}
+
+		try {
+			const response = await fetch('/api/character/reset', {
+				method: 'POST'
+			});
+
+			const data = await response.json();
+			if (response.ok) {
+				alert('✅ Character reset to Level 1!\n\nRefresh the dungeon page to see the changes.');
+			} else {
+				alert(`❌ Reset failed: ${data.message || 'Unknown error'}`);
+			}
+		} catch (error) {
+			alert(`❌ Error: ${error}`);
+		}
+	};
 </script>
 
 <div class="demo-page">
@@ -326,29 +347,74 @@
 				This demo showcases all the major UI components built for the Fantasy RPG game. All data
 				is mocked - no authentication or database required.
 			</p>
+
 			<div class="intro-actions">
-				<Button variant="primary" size="lg" onclick={() => (currentView = 'api-test')}>
-					🔌 Test Backend APIs
-				</Button>
-				<Button variant="secondary" size="lg" onclick={() => (currentView = 'character-creation')}>
-					Start Demo
-				</Button>
-				<Button variant="secondary" size="lg" onclick={() => (currentView = 'quests')}>
-					View Quests
-				</Button>
-				<Button variant="secondary" size="lg" onclick={() => (currentView = 'inventory')}>
-					View Inventory
-				</Button>
-				<Button
-					variant="secondary"
-					size="lg"
-					onclick={() => {
-						showNarrative = true;
-						currentView = 'narrative';
-					}}
-				>
-					View Narrative
-				</Button>
+				<!-- Dungeon Crawler Live Routes -->
+				<div class="section-group">
+					<h3 class="section-group-title">🎮 Dungeon Crawler (Live Game)</h3>
+					<Button
+						variant="primary"
+						size="lg"
+						onclick={() => (window.location.href = '/dungeon')}
+					>
+						Play Dungeon Crawler
+					</Button>
+					<Button
+						variant="secondary"
+						size="md"
+						onclick={() => (window.location.href = '/character/create')}
+					>
+						Create Character
+					</Button>
+					<Button
+						variant="secondary"
+						size="md"
+						onclick={() => (window.location.href = '/auth/register')}
+					>
+						Register Account
+					</Button>
+					<Button
+						variant="secondary"
+						size="md"
+						onclick={() => (window.location.href = '/auth/login')}
+					>
+						Login
+					</Button>
+					<Button
+						variant="destructive"
+						size="md"
+						onclick={handleResetCharacter}
+					>
+						Reset Character to Level 1
+					</Button>
+				</div>
+
+				<!-- Component Demos -->
+				<div class="section-group">
+					<h3 class="section-group-title">📦 Component Demos (Mock Data)</h3>
+					<Button variant="primary" size="lg" onclick={() => (currentView = 'api-test')}>
+						🔌 Test Backend APIs
+					</Button>
+					<Button variant="secondary" size="md" onclick={() => (currentView = 'character-creation')}>
+						Character Creation
+					</Button>
+					<Button variant="secondary" size="md" onclick={() => (currentView = 'quests')}>
+						Quest System
+					</Button>
+					<Button variant="secondary" size="md" onclick={() => (currentView = 'inventory')}>
+						Inventory
+					</Button>
+					<Button
+						variant="secondary"
+						size="md"
+						onclick={() => {
+							showNarrative = true;
+							currentView = 'narrative';
+						}}
+					>
+						Narrative Modal
+					</Button>
+				</div>
 			</div>
 		</Card>
 	{/if}
@@ -578,9 +644,23 @@
 	.intro-actions {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
-		max-width: 400px;
+		gap: 2rem;
+		max-width: 500px;
 		margin: 0 auto;
+	}
+
+	.section-group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.section-group-title {
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: var(--color-primary-11);
+		margin-bottom: 0.25rem;
+		text-align: center;
 	}
 
 	.nav-back {

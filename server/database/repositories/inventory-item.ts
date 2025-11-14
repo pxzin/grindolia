@@ -3,6 +3,7 @@
  * Database operations for character inventory items
  */
 
+import type Database from 'better-sqlite3';
 import { getDatabase } from '../connection';
 
 export interface InventoryItem {
@@ -12,6 +13,77 @@ export interface InventoryItem {
 	quantity: number;
 	equipped: boolean;
 	acquired_at: number;
+}
+
+export interface CreateInventoryItemData {
+	character_id: number;
+	item_template_id: number;
+	quantity: number;
+	equipped: boolean;
+}
+
+export class InventoryItemRepository {
+	private db: Database.Database;
+
+	constructor(database?: Database.Database) {
+		this.db = database || getDatabase();
+	}
+
+	/**
+	 * Create inventory item
+	 */
+	create(data: CreateInventoryItemData): InventoryItem {
+		const now = Math.floor(Date.now() / 1000);
+		const stmt = this.db.prepare(`
+			INSERT INTO inventory_items (character_id, item_template_id, quantity, equipped, acquired_at)
+			VALUES (?, ?, ?, ?, ?)
+		`);
+
+		const result = stmt.run(
+			data.character_id,
+			data.item_template_id,
+			data.quantity,
+			data.equipped ? 1 : 0,
+			now
+		);
+
+		return {
+			id: result.lastInsertRowid as number,
+			character_id: data.character_id,
+			item_template_id: data.item_template_id,
+			quantity: data.quantity,
+			equipped: data.equipped,
+			acquired_at: now
+		};
+	}
+
+	/**
+	 * Find inventory item by ID
+	 */
+	findById(id: number): InventoryItem | null {
+		const stmt = this.db.prepare('SELECT * FROM inventory_items WHERE id = ?');
+		const row = stmt.get(id) as InventoryItem | null;
+
+		if (!row) return null;
+
+		return {
+			...row,
+			equipped: Boolean(row.equipped)
+		};
+	}
+
+	/**
+	 * Find all items for a character
+	 */
+	findByCharacter(characterId: number): InventoryItem[] {
+		const stmt = this.db.prepare('SELECT * FROM inventory_items WHERE character_id = ? ORDER BY acquired_at DESC');
+		const rows = stmt.all(characterId) as InventoryItem[];
+
+		return rows.map(row => ({
+			...row,
+			equipped: Boolean(row.equipped)
+		}));
+	}
 }
 
 /**
