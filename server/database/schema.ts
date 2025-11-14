@@ -62,7 +62,8 @@ CREATE TABLE IF NOT EXISTS zones (
   description TEXT NOT NULL,
   min_level INTEGER NOT NULL DEFAULT 1,
   max_level INTEGER NOT NULL,
-  theme TEXT NOT NULL
+  theme TEXT NOT NULL,
+  created_at INTEGER NOT NULL DEFAULT (unixepoch())
 );
 
 -- Quest templates
@@ -76,6 +77,9 @@ CREATE TABLE IF NOT EXISTS quest_templates (
   rewards TEXT NOT NULL,
   zone_id INTEGER NOT NULL,
   prerequisite_quest_id INTEGER,
+  is_repeatable INTEGER NOT NULL DEFAULT 0,
+  cooldown_hours INTEGER,
+  created_at INTEGER NOT NULL DEFAULT (unixepoch()),
   FOREIGN KEY (zone_id) REFERENCES zones(id),
   FOREIGN KEY (prerequisite_quest_id) REFERENCES quest_templates(id)
 );

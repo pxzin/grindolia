@@ -108,7 +108,8 @@ export function seedZones(): void {
 			name: 'Starter Plains',
 			description: 'A peaceful meadow where new adventurers begin their journey. Gentle creatures roam the grasslands.',
 			min_level: 1,
-			max_level: 5
+			max_level: 5,
+			theme: 'grassland'
 		});
 		console.log('  ✓ Seeded zone: Starter Plains');
 	}
@@ -264,7 +265,7 @@ export function seedDatabase(): void {
 	}
 }
 
-// Run seed if called directly
-if (require.main === module) {
-	seedDatabase();
-}
+// Run seed if called directly (CommonJS only)
+// if (require.main === module) {
+// 	seedDatabase();
+// }

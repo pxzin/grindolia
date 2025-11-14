@@ -5,8 +5,8 @@
 
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { PlayerRepository } from '../../../../../server/database/repositories/player';
-import { hashPassword } from '../../../../../server/utils/crypto';
+import { PlayerRepository } from '$server/database/repositories/player';
+import { hashPassword } from '$server/utils/crypto';
 
 interface RegisterRequest {
 	email: string;
@@ -45,8 +45,10 @@ function isValidUsername(username: string): boolean {
 }
 
 export const POST: RequestHandler = async ({ request }) => {
+	console.log('[AUTH] Registration request received');
 	try {
 		const body = (await request.json()) as RegisterRequest;
+		console.log('[AUTH] Request body:', { email: body.email, username: body.username });
 
 		// Validation
 		if (!body.email || !body.username || !body.password) {
@@ -80,9 +82,11 @@ export const POST: RequestHandler = async ({ request }) => {
 			);
 		}
 
+		console.log('[AUTH] Validation passed, creating PlayerRepository');
 		const playerRepo = new PlayerRepository();
 
 		// Check if email already exists
+		console.log('[AUTH] Checking if email exists');
 		if (playerRepo.emailExists(body.email)) {
 			return json({ error: 'Email already registered' }, { status: 409 });
 		}

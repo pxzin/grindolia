@@ -12,6 +12,7 @@ export interface Zone {
 	description: string;
 	min_level: number;
 	max_level: number;
+	theme: string;
 	created_at: number;
 }
 
@@ -48,12 +49,12 @@ export function getZonesByLevel(level: number): Zone[] {
 export function createZone(zone: Omit<Zone, 'id' | 'created_at'>): Zone {
 	const db = getDatabase();
 	const stmt = db.prepare(`
-		INSERT INTO zones (name, description, min_level, max_level, created_at)
-		VALUES (?, ?, ?, ?, ?)
+		INSERT INTO zones (name, description, min_level, max_level, theme, created_at)
+		VALUES (?, ?, ?, ?, ?, ?)
 	`);
 
 	const now = Math.floor(Date.now() / 1000);
-	const result = stmt.run(zone.name, zone.description, zone.min_level, zone.max_level, now);
+	const result = stmt.run(zone.name, zone.description, zone.min_level, zone.max_level, zone.theme, now);
 
 	return {
 		id: result.lastInsertRowid as number,
@@ -85,6 +86,10 @@ export function updateZone(id: number, updates: Partial<Omit<Zone, 'id' | 'creat
 	if (updates.max_level !== undefined) {
 		fields.push('max_level = ?');
 		values.push(updates.max_level);
+	}
+	if (updates.theme !== undefined) {
+		fields.push('theme = ?');
+		values.push(updates.theme);
 	}
 
 	if (fields.length === 0) return false;
