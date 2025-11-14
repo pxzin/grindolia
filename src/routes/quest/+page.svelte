@@ -111,9 +111,47 @@
 		// Reload quest data
 		window.location.reload();
 	};
+
+	// Development: Reset all quests
+	const handleResetQuests = async () => {
+		const characterId = character.id || data.character?.id;
+		if (!characterId) return;
+
+		if (!confirm('Reset all active quests? This will delete all quest progress.')) {
+			return;
+		}
+
+		try {
+			const response = await fetch(`/api/dev/reset-quests?characterId=${characterId}`, {
+				method: 'DELETE'
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to reset quests');
+			}
+
+			const result = await response.json();
+			alert(`Reset complete: ${result.deletedCount} quest(s) deleted`);
+
+			// Reload page to refresh quest list
+			window.location.reload();
+		} catch (error) {
+			console.error('Failed to reset quests:', error);
+			alert('Failed to reset quests. Check console for details.');
+		}
+	};
 </script>
 
 <div class="quest-page">
+	<!-- Development Tools -->
+	{#if import.meta.env.DEV}
+		<div class="dev-tools">
+			<button onclick={handleResetQuests} class="reset-button">
+				🧹 Reset All Quests (Dev)
+			</button>
+		</div>
+	{/if}
+
 	<QuestList
 		{availableQuests}
 		{activeQuests}
@@ -136,5 +174,35 @@
 	.quest-page {
 		min-height: 100vh;
 		background: linear-gradient(to bottom, var(--color-primary-1), var(--color-primary-2));
+		padding: 1rem;
+	}
+
+	.dev-tools {
+		position: fixed;
+		bottom: 1rem;
+		right: 1rem;
+		z-index: 1000;
+	}
+
+	.reset-button {
+		padding: 0.75rem 1.5rem;
+		background: var(--color-red-9);
+		color: white;
+		border: none;
+		border-radius: 0.5rem;
+		font-weight: 600;
+		cursor: pointer;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		transition: all 0.2s ease;
+	}
+
+	.reset-button:hover {
+		background: var(--color-red-10);
+		transform: translateY(-2px);
+		box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+	}
+
+	.reset-button:active {
+		transform: translateY(0);
 	}
 </style>

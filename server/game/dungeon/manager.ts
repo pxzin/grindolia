@@ -14,6 +14,7 @@ import { simulateCombat, type CombatResult, type CombatStats } from '../combat/c
 import { scaleMonsterToCharacterLevel, getFloorDifficultyMultiplier } from './difficulty-scaler';
 import { rollMonsterLoot, rollFloorLoot, mergeLootDrops } from '../loot/drop-system';
 import { shouldLevelUp, getXPForLevel } from '../progression/experience';
+import { updateQuestProgress } from '../quest/progress-tracker';
 
 export interface EnterDungeonResult {
 	dungeon_progress_id: number;
@@ -305,6 +306,33 @@ export function resolveCombat(
 				equipped: false
 			});
 		}
+
+		// Update quest progress for monster kill
+		// Note: progress-tracker will automatically match quests with target='any'
+		updateQuestProgress({
+			characterId,
+			eventType: 'kill',
+			target: monster.name.toLowerCase(),
+			amount: 1
+		});
+
+		// Track combat separately (different event type)
+		updateQuestProgress({
+			characterId,
+			eventType: 'combat',
+			target: 'any',
+			amount: 1
+		});
+
+		// Track loot collection
+		if (rewards.items.length > 0) {
+			updateQuestProgress({
+				characterId,
+				eventType: 'loot',
+				target: 'any',
+				amount: rewards.items.length
+			});
+		}
 	}
 
 	// Update character
@@ -411,6 +439,14 @@ export function descendFloor(dungeonProgressId: number): { current_floor: number
 	}
 
 	const updatedProgress = progressRepo.descendFloor(dungeonProgressId);
+
+	// Track dungeon floor progress for quests
+	updateQuestProgress({
+		characterId: progress.character_id,
+		eventType: 'dungeon',
+		target: `floor_${updatedProgress.current_floor}`,
+		amount: 1
+	});
 
 	return {
 		current_floor: updatedProgress.current_floor,

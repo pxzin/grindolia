@@ -4,7 +4,8 @@
  */
 
 import type { QuestRewards } from '$lib/types/quest';
-import { updateCharacter, getCharacterById } from '../../database/repositories/character';
+import { CharacterRepository } from '../../database/repositories/character';
+import { getDatabase } from '../../database/connection';
 import { addItem } from '../../database/repositories/inventory-item';
 import { shouldLevelUp, getLevelFromXP } from '../progression/experience';
 import { logger } from '../../utils/logger';
@@ -27,7 +28,9 @@ export async function distributeQuestRewards(
 	rewards: QuestRewards
 ): Promise<RewardResult> {
 	try {
-		const character = getCharacterById(characterId);
+		const db = getDatabase();
+		const characterRepo = new CharacterRepository(db);
+		const character = characterRepo.findById(characterId);
 
 		if (!character) {
 			return {
@@ -61,7 +64,7 @@ export async function distributeQuestRewards(
 			});
 		}
 
-		updateCharacter(characterId, updates);
+		characterRepo.update(characterId, updates);
 
 		// Add items to inventory
 		const itemsGained: Array<{ itemId: number; quantity: number }> = [];

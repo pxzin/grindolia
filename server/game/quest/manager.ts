@@ -18,7 +18,6 @@ import { CharacterRepository } from '../../database/repositories/character';
 import { getDatabase } from '../../database/connection';
 import { distributeQuestRewards } from './rewards';
 import { logger } from '../../utils/logger';
-import { areObjectivesComplete } from '$lib/types/quest';
 
 export interface AcceptQuestResult {
 	success: boolean;
@@ -208,7 +207,11 @@ export async function completeQuest(characterQuestId: number): Promise<CompleteQ
 		}
 
 		// Check if all objectives are complete
-		if (!areObjectivesComplete(characterQuest.progress)) {
+		const allComplete = characterQuest.progress.every(
+			(objective) => objective.current >= objective.required
+		);
+
+		if (!allComplete) {
 			return { success: false, error: 'Quest objectives not completed' };
 		}
 

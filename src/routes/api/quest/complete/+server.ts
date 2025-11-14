@@ -6,7 +6,8 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getCharacterQuestById } from '$server/database/repositories/character-quest';
-import { getCharacterById } from '$server/database/repositories/character';
+import { CharacterRepository } from '$server/database/repositories/character';
+import { getDatabase } from '$server/database/connection';
 import { completeQuest } from '$server/game/quest/manager';
 
 /**
@@ -33,14 +34,16 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			throw error(404, 'Quest not found');
 		}
 
-		const character = getCharacterById(characterQuest.character_id);
+		const db = getDatabase();
+		const characterRepo = new CharacterRepository(db);
+		const character = characterRepo.findById(characterQuest.character_id);
 
 		if (!character) {
 			throw error(404, 'Character not found');
 		}
 
 		// Verify ownership
-		if (character.user_id !== locals.session.userId) {
+		if (character.player_id !== locals.session.userId) {
 			throw error(403, 'Access denied');
 		}
 
