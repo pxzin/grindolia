@@ -19,10 +19,10 @@
 	}: Props = $props();
 
 	const variantClasses = {
-		default: 'bg-arcana-bg-secondary border border-arcana-border-default shadow-xl',
-		elevated: 'bg-arcana-bg-elevated border border-arcana-border-glow shadow-2xl',
+		default: 'bg-arcana-bg-secondary border border-arcana-border-default shadow-[0_10px_15px_-3px_rgba(0,0,0,0.4)]',
+		elevated: 'bg-arcana-bg-elevated border border-arcana-border-glow shadow-[0_25px_50px_-12px_rgba(0,0,0,0.6)]',
 		outlined: 'bg-transparent border-2 border-arcana-border-default',
-		gold: 'bg-arcana-bg-secondary border-2 border-arcana-gold-600 shadow-xl'
+		gold: 'bg-arcana-bg-secondary border-2 border-arcana-gold-600 shadow-[0_0_20px_rgba(201,152,74,0.4)]'
 	};
 
 	const paddingClasses = {
@@ -32,7 +32,7 @@
 		lg: 'p-8'
 	};
 
-	const baseClasses = 'rounded-2xl backdrop-blur-sm';
+	const baseClasses = 'rounded-3xl backdrop-blur-lg';
 </script>
 
 <div class="{baseClasses} {variantClasses[variant]} {paddingClasses[padding]} {className}">

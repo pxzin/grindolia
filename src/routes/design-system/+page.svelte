@@ -2,10 +2,96 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Input from '$lib/components/ui/Input.svelte';
+	import ProgressBar from '$lib/components/ui/ProgressBar.svelte';
+	import VictoryModal from '$lib/components/ui/VictoryModal.svelte';
+	import DefeatModal from '$lib/components/ui/DefeatModal.svelte';
+	import StatDisplay from '$lib/components/ui/StatDisplay.svelte';
+	import CharacterSheet from '$lib/components/game/CharacterSheet.svelte';
+	import ClassCard from '$lib/components/game/ClassCard.svelte';
+	import AdventureLog from '$lib/components/game/AdventureLog.svelte';
+	import CombatLog from '$lib/components/game/CombatLog.svelte';
+	import { Sword, Sparkles, Wind, Heart } from 'lucide-svelte';
 
 	let textValue = $state('');
 	let emailValue = $state('');
 	let passwordValue = $state('');
+	let showVictoryModal = $state(false);
+	let showDefeatModal = $state(false);
+	let selectedClass = $state<string | null>(null);
+
+	// Mock log messages
+	const adventureMessages = [
+		{ text: 'You enter the dark dungeon. The air is thick with ancient magic...', type: 'normal' as const },
+		{ text: 'A monster appears from the shadows!', type: 'danger' as const },
+		{ text: 'You found a hidden chest containing 50 gold!', type: 'gold' as const },
+		{ text: 'You gained 150 XP!', type: 'xp' as const },
+		{ text: 'You discovered a secret passage!', type: 'success' as const }
+	];
+
+	const combatMessages = [
+		{ text: 'Combat begins! You face a Shadow Beast!', type: 'normal' as const },
+		{ text: 'You attack for 45 damage!', type: 'player' as const },
+		{ text: 'Shadow Beast attacks for 30 damage!', type: 'enemy' as const },
+		{ text: 'CRITICAL HIT! You deal 90 damage!', type: 'critical' as const },
+		{ text: 'You healed for 25 HP!', type: 'heal' as const },
+		{ text: 'Shadow Beast misses!', type: 'miss' as const }
+	];
+
+	// Mock character data
+	const mockCharacter = {
+		name: 'Aragorn',
+		class: 'warrior',
+		level: 12,
+		hp: { current: 245, max: 250 },
+		xp: { current: 1850, max: 2000 },
+		stats: {
+			strength: 45,
+			intelligence: 28,
+			dexterity: 32,
+			vitality: 50
+		},
+		gold: 12450
+	};
+
+	// Character classes
+	const classes = [
+		{
+			id: 'warrior',
+			name: 'Warrior',
+			description:
+				'A fierce melee combatant with high strength and vitality. Masters of close-quarter combat.',
+			icon: Sword,
+			color: '#ff6b35',
+			stats: { strength: 15, intelligence: 8, dexterity: 10, vitality: 14 }
+		},
+		{
+			id: 'mage',
+			name: 'Mage',
+			description:
+				'A wielder of arcane magic with devastating spells. High intelligence but fragile defenses.',
+			icon: Sparkles,
+			color: '#2a9d8f',
+			stats: { strength: 6, intelligence: 16, dexterity: 9, vitality: 8 }
+		},
+		{
+			id: 'rogue',
+			name: 'Rogue',
+			description:
+				'A swift and cunning assassin. Excels in critical strikes and evasion with high dexterity.',
+			icon: Wind,
+			color: '#43a047',
+			stats: { strength: 10, intelligence: 10, dexterity: 16, vitality: 10 }
+		},
+		{
+			id: 'cleric',
+			name: 'Cleric',
+			description:
+				'A holy warrior who can heal allies and smite foes. Balanced stats with divine magic.',
+			icon: Heart,
+			color: '#d946ef',
+			stats: { strength: 11, intelligence: 13, dexterity: 8, vitality: 12 }
+		}
+	];
 </script>
 
 <div class="min-h-screen bg-gray-1 p-8">
@@ -30,6 +116,17 @@
 			</Card>
 
 			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Hero Variant</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Variante especial para CTAs principais com fonte Cinzel (serif) e efeito de brilho dourado
+				</p>
+				<div class="flex gap-3 flex-wrap">
+					<Button variant="hero">Enter the Dungeon</Button>
+					<Button variant="hero" size="lg">Begin Your Adventure</Button>
+				</div>
+			</Card>
+
+			<Card class="mb-6">
 				<h3 class="text-lg font-semibold mb-4">Tamanhos</h3>
 				<div class="flex gap-3 items-center flex-wrap">
 					<Button variant="primary" size="sm">Small</Button>
@@ -50,7 +147,21 @@
 				<h3 class="text-lg font-semibold mb-4">Uso</h3>
 				<pre class="bg-gray-3 p-4 rounded-md text-sm overflow-x-auto"><code>{`<Button variant="primary">Click me</Button>
 <Button variant="secondary" size="sm">Small button</Button>
+<Button variant="hero" size="lg">Epic Action</Button>
 <Button variant="danger" disabled>Disabled</Button>`}</code></pre>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Efeitos de Hover</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Todos os botões agora possuem efeitos de brilho ao passar o mouse:
+				</p>
+				<ul class="text-sm text-gray-11 space-y-2">
+					<li>• <strong>Primary & Hero:</strong> Brilho dourado (gold-600)</li>
+					<li>• <strong>Secondary:</strong> Brilho cyan suave (border-glow)</li>
+					<li>• <strong>Borders:</strong> Todos usam border-2 para maior definição</li>
+					<li>• <strong>Rounded:</strong> md/lg botões usam rounded-2xl</li>
+				</ul>
 			</Card>
 		</section>
 
@@ -58,20 +169,25 @@
 		<section class="mb-16">
 			<h2 class="text-3xl font-bold mb-6">Card</h2>
 
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 				<Card>
 					<h3 class="text-lg font-semibold mb-2">Default Card</h3>
-					<p class="text-gray-11">Cartão padrão com fundo sólido</p>
+					<p class="text-gray-11">Cartão padrão com fundo sólido e sombra média</p>
 				</Card>
 
 				<Card variant="elevated">
 					<h3 class="text-lg font-semibold mb-2">Elevated Card</h3>
-					<p class="text-gray-11">Cartão com sombra para elevação</p>
+					<p class="text-gray-11">Cartão com sombra profunda para máxima elevação</p>
 				</Card>
 
 				<Card variant="outlined">
 					<h3 class="text-lg font-semibold mb-2">Outlined Card</h3>
 					<p class="text-gray-11">Cartão com borda ao invés de fundo</p>
+				</Card>
+
+				<Card variant="gold">
+					<h3 class="text-lg font-semibold mb-2">Gold Card</h3>
+					<p class="text-gray-11">Cartão especial com borda dourada e efeito de brilho</p>
 				</Card>
 			</div>
 
@@ -126,7 +242,22 @@
 				<h3 class="text-lg font-semibold mb-4">Uso</h3>
 				<pre class="bg-gray-3 p-4 rounded-md text-sm overflow-x-auto"><code>{`<Card>Content here</Card>
 <Card variant="elevated">Elevated content</Card>
+<Card variant="gold">Special gold card</Card>
 <Card variant="outlined" padding="lg">Large padding</Card>`}</code></pre>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Aprimoramentos Dark Fantasy</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Cards agora possuem estilo aprimorado para melhor imersão:
+				</p>
+				<ul class="text-sm text-gray-11 space-y-2">
+					<li>• <strong>Bordas:</strong> Aumentadas para rounded-3xl (mais suaves)</li>
+					<li>• <strong>Blur:</strong> backdrop-blur-lg para efeito glassmorphism</li>
+					<li>• <strong>Sombras:</strong> Profundidade customizada por variante</li>
+					<li>• <strong>Gold:</strong> Brilho dourado shadow-[0_0_20px_rgba(201,152,74,0.4)]</li>
+					<li>• <strong>Elevated:</strong> Sombra profunda shadow-[0_25px_50px_-12px_rgba(0,0,0,0.6)]</li>
+				</ul>
 			</Card>
 		</section>
 
@@ -169,6 +300,29 @@
 					<Input type="text" label="Com Erro" error="Este campo é obrigatório" />
 
 					<Input type="text" label="Desabilitado" value="Não editável" disabled />
+
+					<Input type="text" label="Campo Obrigatório" placeholder="Digite aqui..." required />
+				</div>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Efeitos de Foco Dark Fantasy</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Inputs agora possuem efeitos visuais aprimorados ao focar:
+				</p>
+				<ul class="text-sm text-gray-11 space-y-2">
+					<li>• <strong>Bordas:</strong> Aumentadas para rounded-2xl e border-2</li>
+					<li>• <strong>Foco Normal:</strong> Brilho dourado shadow-[0_0_20px_rgba(201,152,74,0.2)]</li>
+					<li>• <strong>Foco com Erro:</strong> Brilho laranja shadow-[0_0_20px_rgba(255,107,53,0.2)]</li>
+					<li>• <strong>Transição:</strong> Animação suave de 300ms</li>
+					<li>• <strong>Placeholder:</strong> Texto com opacidade reduzida (text-muted)</li>
+				</ul>
+				<div class="mt-4">
+					<p class="text-xs text-gray-11 mb-2">Teste o efeito de foco clicando nos campos:</p>
+					<div class="space-y-3">
+						<Input type="text" placeholder="Clique aqui para ver o brilho dourado..." />
+						<Input type="text" error="Campo inválido" placeholder="Brilho laranja no erro..." />
+					</div>
 				</div>
 			</Card>
 
@@ -196,6 +350,269 @@
   label="Email"
   error="Invalid email"
 />`}</code></pre>
+			</Card>
+		</section>
+
+		<!-- ProgressBar Component -->
+		<section class="mb-16">
+			<h2 class="text-3xl font-bold mb-6">ProgressBar</h2>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Tipos de Barra</h3>
+				<div class="space-y-6 max-w-md">
+					<ProgressBar type="hp" current={175} max={250} />
+					<ProgressBar type="mana" current={80} max={120} />
+					<ProgressBar type="xp" current={650} max={1000} />
+				</div>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Tamanhos</h3>
+				<div class="space-y-6 max-w-md">
+					<div>
+						<p class="text-xs text-gray-11 mb-2">Thin (padrão)</p>
+						<ProgressBar type="hp" current={120} max={200} size="thin" />
+					</div>
+					<div>
+						<p class="text-xs text-gray-11 mb-2">Thick</p>
+						<ProgressBar type="hp" current={120} max={200} size="thick" />
+					</div>
+				</div>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Com e Sem Label</h3>
+				<div class="space-y-6 max-w-md">
+					<ProgressBar type="mana" current={45} max={100} showLabel={true} />
+					<ProgressBar type="mana" current={45} max={100} showLabel={false} />
+				</div>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Exemplo: Character Stats</h3>
+				<Card variant="elevated" class="max-w-sm">
+					<h3 class="text-lg font-semibold mb-4">Warrior Stats</h3>
+					<div class="space-y-4">
+						<ProgressBar type="hp" current={245} max={250} size="thick" />
+						<ProgressBar type="mana" current={30} max={80} size="thick" />
+						<ProgressBar type="xp" current={1850} max={2000} />
+					</div>
+				</Card>
+			</Card>
+
+			<Card>
+				<h3 class="text-lg font-semibold mb-4">Uso</h3>
+				<pre class="bg-gray-3 p-4 rounded-md text-sm overflow-x-auto"><code>{`<ProgressBar type="hp" current={175} max={250} />
+<ProgressBar type="mana" current={80} max={120} size="thick" />
+<ProgressBar type="xp" current={650} max={1000} showLabel={false} />`}</code></pre>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Características</h3>
+				<ul class="text-sm text-gray-11 space-y-2">
+					<li>• <strong>HP:</strong> Gradiente laranja (orange-600 → orange-500)</li>
+					<li>• <strong>Mana:</strong> Gradiente cyan (cyan-600 → cyan-400)</li>
+					<li>• <strong>XP:</strong> Gradiente verde (green-600 → green-400)</li>
+					<li>• <strong>Animação:</strong> Transição suave de 500ms ao mudar valor</li>
+					<li>• <strong>Label:</strong> Fonte monoespaçada para números</li>
+					<li>• <strong>Background:</strong> Fundo escuro com sombra interna</li>
+				</ul>
+			</Card>
+		</section>
+
+		<!-- Modal Components -->
+		<section class="mb-16">
+			<h2 class="text-3xl font-bold mb-6">Modals</h2>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Victory Modal</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Modal exibido quando o jogador vence um combate, mostrando XP e Gold ganhos.
+				</p>
+				<Button variant="primary" onclick={() => (showVictoryModal = true)}>
+					Show Victory Modal
+				</Button>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Defeat Modal</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Modal exibido quando o jogador perde um combate, com opção de respawn.
+				</p>
+				<Button variant="danger" onclick={() => (showDefeatModal = true)}>
+					Show Defeat Modal
+				</Button>
+			</Card>
+
+			<Card>
+				<h3 class="text-lg font-semibold mb-4">Características dos Modals</h3>
+				<ul class="text-sm text-gray-11 space-y-2">
+					<li>• <strong>Backdrop:</strong> Fundo escuro com backdrop-blur-xl (95% opacity)</li>
+					<li>• <strong>Animação:</strong> Fade in de 200ms ao aparecer</li>
+					<li>• <strong>Escape Key:</strong> Fecha o modal ao pressionar ESC (configurável)</li>
+					<li>• <strong>Click Outside:</strong> Fecha ao clicar fora (configurável)</li>
+					<li>• <strong>Victory:</strong> Card dourado com ícone Trophy pulsante</li>
+					<li>• <strong>Defeat:</strong> Card com borda laranja e ícone Skull pulsante</li>
+					<li>• <strong>Acessibilidade:</strong> role="dialog" e aria-modal</li>
+				</ul>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Uso</h3>
+				<pre class="bg-gray-3 p-4 rounded-md text-sm overflow-x-auto"><code>{`<script>
+  let showVictoryModal = $state(false);
+</script>
+
+<VictoryModal
+  bind:open={showVictoryModal}
+  xpGained={350}
+  goldGained={125}
+  onContinue={() => showVictoryModal = false}
+/>
+
+<DefeatModal
+  bind:open={showDefeatModal}
+  onRespawn={() => showDefeatModal = false}
+/>`}</code></pre>
+			</Card>
+		</section>
+
+		<!-- StatDisplay Component -->
+		<section class="mb-16">
+			<h2 class="text-3xl font-bold mb-6">StatDisplay</h2>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Variante Padrão</h3>
+				<div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl">
+					<StatDisplay label="Strength" value={45} />
+					<StatDisplay label="Intelligence" value={32} />
+					<StatDisplay label="Dexterity" value={28} />
+					<StatDisplay label="Vitality" value={50} />
+				</div>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Variante Compacta</h3>
+				<div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl">
+					<StatDisplay label="Strength" value={45} variant="compact" />
+					<StatDisplay label="Intelligence" value={32} variant="compact" />
+					<StatDisplay label="Dexterity" value={28} variant="compact" />
+					<StatDisplay label="Vitality" value={50} variant="compact" />
+				</div>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Com Valores Grandes</h3>
+				<div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl">
+					<StatDisplay label="Gold" value={12450} />
+					<StatDisplay label="Combat Power" value={1250} />
+					<StatDisplay label="Total XP" value={45800} />
+				</div>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Exemplo: Character Stats Panel</h3>
+				<Card variant="elevated" class="max-w-md">
+					<h3 class="text-lg font-semibold mb-4">Character Stats</h3>
+					<div class="grid grid-cols-2 gap-3">
+						<StatDisplay label="Strength" value={45} variant="compact" />
+						<StatDisplay label="Intelligence" value={32} variant="compact" />
+						<StatDisplay label="Dexterity" value={28} variant="compact" />
+						<StatDisplay label="Vitality" value={50} variant="compact" />
+					</div>
+				</Card>
+			</Card>
+
+			<Card>
+				<h3 class="text-lg font-semibold mb-4">Uso</h3>
+				<pre class="bg-gray-3 p-4 rounded-md text-sm overflow-x-auto"><code>{`<StatDisplay label="Strength" value={45} />
+<StatDisplay label="Gold" value={12450} variant="compact" />`}</code></pre>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">Características</h3>
+				<ul class="text-sm text-gray-11 space-y-2">
+					<li>• <strong>Default:</strong> Fundo elevado com borda, texto maior (text-2xl)</li>
+					<li>• <strong>Compact:</strong> Fundo escuro transparente, texto médio (text-xl)</li>
+					<li>• <strong>Números:</strong> Fonte monoespaçada com formatação automática (1,250)</li>
+					<li>• <strong>Label:</strong> Texto secundário/muted conforme variante</li>
+					<li>• <strong>Flexível:</strong> Aceita números ou strings como valor</li>
+				</ul>
+			</Card>
+		</section>
+
+		<!-- Game Components -->
+		<section class="mb-16">
+			<h2 class="text-3xl font-bold mb-6">Game Components</h2>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">CharacterSheet</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Exibe informações completas do personagem incluindo stats, HP, XP e gold.
+				</p>
+				<div class="max-w-sm mx-auto">
+					<CharacterSheet character={mockCharacter} />
+				</div>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">ClassCard</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Cards de seleção de classe com ícone, descrição e stats iniciais.
+				</p>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					{#each classes as classOption}
+						<ClassCard
+							{...classOption}
+							selected={selectedClass === classOption.id}
+							onclick={() => (selectedClass = classOption.id)}
+						/>
+					{/each}
+				</div>
+			</Card>
+
+			<Card>
+				<h3 class="text-lg font-semibold mb-4">Uso</h3>
+				<pre class="bg-gray-3 p-4 rounded-md text-sm overflow-x-auto"><code>{`<CharacterSheet character={{
+  name: 'Aragorn',
+  class: 'warrior',
+  level: 12,
+  hp: { current: 245, max: 250 },
+  xp: { current: 1850, max: 2000 },
+  stats: { strength: 45, intelligence: 28, dexterity: 32, vitality: 50 },
+  gold: 12450
+}} />
+
+<ClassCard
+  id="warrior"
+  name="Warrior"
+  description="A fierce melee combatant..."
+  icon={Sword}
+  color="#ff6b35"
+  stats={{ strength: 15, intelligence: 8, dexterity: 10, vitality: 14 }}
+  selected={selectedClass === 'warrior'}
+  onclick={() => setSelectedClass('warrior')}
+/>`}</code></pre>
+			</Card>
+
+			<Card class="mb-6">
+				<h3 class="text-lg font-semibold mb-4">AdventureLog</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Log de mensagens de aventura com cores por tipo (normal, danger, success, gold, xp).
+				</p>
+				<Card variant="elevated">
+					<AdventureLog messages={adventureMessages} />
+				</Card>
+			</Card>
+
+			<Card>
+				<h3 class="text-lg font-semibold mb-4">CombatLog</h3>
+				<p class="text-sm text-gray-11 mb-4">
+					Log de mensagens de combate com cores por tipo (player, enemy, damage, heal, critical, miss).
+				</p>
+				<Card variant="elevated">
+					<CombatLog messages={combatMessages} />
+				</Card>
 			</Card>
 		</section>
 
@@ -403,3 +820,13 @@
 		</section>
 	</div>
 </div>
+
+<!-- Modal Instances -->
+<VictoryModal
+	bind:open={showVictoryModal}
+	xpGained={350}
+	goldGained={125}
+	onContinue={() => (showVictoryModal = false)}
+/>
+
+<DefeatModal bind:open={showDefeatModal} onRespawn={() => (showDefeatModal = false)} />

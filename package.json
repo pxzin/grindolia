@@ -49,6 +49,7 @@
 		"bcrypt": "^6.0.0",
 		"better-sqlite3": "^12.4.1",
 		"ioredis": "^5.8.2",
+		"lucide-svelte": "^0.553.0",
 		"svelte-i18n": "^4.0.1",
 		"ws": "^8.18.3"
 	}

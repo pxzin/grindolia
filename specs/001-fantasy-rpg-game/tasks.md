@@ -261,44 +261,44 @@
 
 ### Analysis & Preparation
 
-- [ ] T145 [P] [UI] Analyze mockup component structure and document all components in research.md section
-- [ ] T146 [P] [UI] Create color token mapping table (mockup CSS vars → Arcana vars) in research.md
-- [ ] T147 [P] [UI] Document React→Svelte conversion patterns (useState→$state, props→$props) in research.md
-- [ ] T148 [UI] Create component migration checklist for each screen in research.md
+- [x] T145 [P] [UI] Analyze mockup component structure and document all components in research.md section ✅
+- [x] T146 [P] [UI] Create color token mapping table (mockup CSS vars → Arcana vars) in research.md ✅
+- [x] T147 [P] [UI] Document React→Svelte conversion patterns (useState→$state, props→$props) in research.md ✅
+- [x] T148 [UI] Create component migration checklist for each screen in research.md ✅
 
 ### Enhanced Core UI Components
 
-- [ ] T149 [P] [UI] Enhance Button with 'hero' variant and improved styling in src/lib/components/ui/Button.svelte
-- [ ] T150 [P] [UI] Add 'gold' and 'elevated' Card variants in src/lib/components/ui/Card.svelte
-- [ ] T151 [P] [UI] Update Input with dark fantasy borders and focus states in src/lib/components/ui/Input.svelte
-- [ ] T152 [UI] Update design system page with enhanced Button variants at src/routes/design-system/+page.svelte
-- [ ] T153 [UI] Update design system page with new Card variants at src/routes/design-system/+page.svelte
-- [ ] T154 [UI] Update design system page with enhanced Input styling at src/routes/design-system/+page.svelte
+- [x] T149 [P] [UI] Enhance Button with 'hero' variant and improved styling in src/lib/components/ui/Button.svelte ✅
+- [x] T150 [P] [UI] Add 'gold' and 'elevated' Card variants in src/lib/components/ui/Card.svelte ✅
+- [x] T151 [P] [UI] Update Input with dark fantasy borders and focus states in src/lib/components/ui/Input.svelte ✅
+- [x] T152 [UI] Update design system page with enhanced Button variants at src/routes/design-system/+page.svelte ✅
+- [x] T153 [UI] Update design system page with new Card variants at src/routes/design-system/+page.svelte ✅
+- [x] T154 [UI] Update design system page with enhanced Input styling at src/routes/design-system/+page.svelte ✅
 
 ### New UI Components
 
-- [ ] T155 [P] [UI] Create ProgressBar component with glow effects in src/lib/components/ui/ProgressBar.svelte
-- [ ] T156 [P] [UI] Create Modal base component in src/lib/components/ui/Modal.svelte
-- [ ] T157 [P] [UI] Create VictoryModal extending Modal in src/lib/components/game/VictoryModal.svelte
-- [ ] T158 [P] [UI] Create DefeatModal extending Modal in src/lib/components/game/DefeatModal.svelte
-- [ ] T159 [UI] Add ProgressBar examples to design system page at src/routes/design-system/+page.svelte
-- [ ] T160 [UI] Add Modal examples to design system page at src/routes/design-system/+page.svelte
+- [x] T155 [P] [UI] Create ProgressBar component with glow effects in src/lib/components/ui/ProgressBar.svelte ✅
+- [x] T156 [P] [UI] Create Modal base component in src/lib/components/ui/Modal.svelte ✅
+- [x] T157 [P] [UI] Create VictoryModal extending Modal in src/lib/components/ui/VictoryModal.svelte ✅
+- [x] T158 [P] [UI] Create DefeatModal extending Modal in src/lib/components/ui/DefeatModal.svelte ✅
+- [x] T159 [UI] Add ProgressBar examples to design system page at src/routes/design-system/+page.svelte ✅
+- [x] T160 [UI] Add Modal examples to design system page at src/routes/design-system/+page.svelte ✅
 
 ### Game-Specific Components
 
-- [ ] T161 [P] [UI] Create enhanced CharacterSheet with stat displays in src/lib/components/game/CharacterSheet.svelte
-- [ ] T162 [P] [UI] Create StatDisplay sub-component in src/lib/components/game/StatDisplay.svelte
-- [ ] T163 [P] [UI] Create ClassCard for character creation in src/lib/components/game/ClassCard.svelte
-- [ ] T164 [P] [UI] Create AdventureLog for dungeon messages in src/lib/components/game/AdventureLog.svelte
-- [ ] T165 [P] [UI] Create CombatLog for turn messages in src/lib/components/game/CombatLog.svelte
-- [ ] T166 [UI] Add game component examples to design system page at src/routes/design-system/+page.svelte
+- [x] T161 [P] [UI] Create enhanced CharacterSheet with stat displays in src/lib/components/game/CharacterSheet.svelte ✅
+- [x] T162 [P] [UI] Create StatDisplay sub-component in src/lib/components/ui/StatDisplay.svelte ✅
+- [x] T163 [P] [UI] Create ClassCard for character creation in src/lib/components/game/ClassCard.svelte ✅
+- [x] T164 [P] [UI] Add game component examples to design system page at src/routes/design-system/+page.svelte ✅
+- [x] T165 [P] [UI] Create AdventureLog for dungeon messages in src/lib/components/game/AdventureLog.svelte ✅
+- [x] T166 [P] [UI] Create CombatLog for turn messages in src/lib/components/game/CombatLog.svelte ✅
 
 ### Enhanced Authentication Screens
 
-- [ ] T167 [UI] Update Login page with enhanced background and styling at src/routes/login/+page.svelte
-- [ ] T168 [UI] Update Registration page with matching aesthetic at src/routes/register/+page.svelte
-- [ ] T169 [P] [UI] Add "Grindolia" title with Cinzel font and gold glow to login/register
-- [ ] T170 [UI] Add page transition animations (fadeIn, slideUp) to app.css
+- [x] T167 [UI] Update Login page with enhanced background and styling at src/routes/auth/login/+page.svelte ✅
+- [x] T168 [UI] Update Registration page with matching aesthetic at src/routes/auth/register/+page.svelte ✅
+- [x] T169 [P] [UI] Add "Grindolia" title with Cinzel font and gold glow to login/register ✅
+- [x] T170 [UI] Add page transition animations (fadeIn, slideUp) to auth pages ✅
 
 ### Enhanced Character Creation
 

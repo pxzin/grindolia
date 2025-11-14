@@ -5,7 +5,7 @@
 	 */
 
 	interface Props {
-		variant?: 'primary' | 'secondary' | 'danger' | 'ghost' | 'destructive';
+		variant?: 'primary' | 'secondary' | 'danger' | 'ghost' | 'destructive' | 'hero';
 		size?: 'sm' | 'md' | 'lg';
 		disabled?: boolean;
 		type?: 'button' | 'submit' | 'reset';
@@ -25,17 +25,18 @@
 	}: Props = $props();
 
 	const variantClasses = {
-		primary: 'bg-arcana-gold-600 text-arcana-bg-primary hover:bg-arcana-gold-500 active:bg-arcana-gold-700 border-2 border-arcana-gold-800',
-		secondary: 'bg-arcana-bg-elevated text-arcana-text-primary hover:bg-arcana-bg-secondary active:bg-arcana-bg-primary border-2 border-arcana-border-default',
+		primary: 'bg-arcana-gold-600 text-arcana-bg-primary hover:bg-arcana-gold-500 active:bg-arcana-gold-700 border-2 border-arcana-gold-800 hover:shadow-[0_0_20px_rgba(201,152,74,0.4)]',
+		secondary: 'bg-arcana-bg-elevated text-arcana-text-primary hover:bg-arcana-bg-secondary active:bg-arcana-bg-primary border-2 border-arcana-border-default hover:border-arcana-border-glow hover:shadow-[0_0_20px_rgba(93,106,184,0.2)]',
 		danger: 'bg-arcana-orange-600 text-white hover:bg-arcana-orange-500 active:bg-arcana-orange-700 border-2 border-arcana-orange-800',
 		destructive: 'bg-arcana-orange-600 text-white hover:bg-arcana-orange-500 active:bg-arcana-orange-700 border-2 border-arcana-orange-800',
-		ghost: 'bg-transparent text-arcana-text-primary hover:bg-arcana-bg-secondary active:bg-arcana-bg-elevated border-2 border-transparent'
+		ghost: 'bg-transparent text-arcana-text-primary hover:bg-arcana-bg-secondary active:bg-arcana-bg-elevated border-2 border-transparent',
+		hero: 'bg-arcana-gold-600 text-arcana-bg-primary hover:bg-arcana-gold-500 active:bg-arcana-gold-700 border-3 border-arcana-gold-800 font-serif hover:shadow-[0_0_20px_rgba(201,152,74,0.4)] text-lg'
 	};
 
 	const sizeClasses = {
-		sm: 'px-4 py-2 text-sm',
-		md: 'px-6 py-3 text-base',
-		lg: 'px-8 py-4 text-lg'
+		sm: 'px-4 py-2 rounded-lg text-sm',
+		md: 'px-6 py-3 rounded-2xl text-base',
+		lg: 'px-8 py-4 rounded-2xl text-lg'
 	};
 
 	const baseClasses =

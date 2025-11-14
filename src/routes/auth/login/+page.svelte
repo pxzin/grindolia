@@ -1,12 +1,13 @@
 <script lang="ts">
 	/**
 	 * Login Page
-	 * User authentication interface
+	 * Dark Fantasy authentication interface
 	 */
 
 	import { goto } from '$app/navigation';
 	import Card from '$lib/components/ui/Card.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
+	import Input from '$lib/components/ui/Input.svelte';
 
 	let email = $state('');
 	let password = $state('');
@@ -52,190 +53,107 @@
 	}
 </script>
 
-<div class="login-page">
-	<div class="login-container">
-		<Card variant="elevated" padding="lg">
-			<div class="login-header">
-				<h1 class="login-title">Welcome Back</h1>
-				<p class="login-subtitle">Login to continue your adventure</p>
-			</div>
+<div class="min-h-screen flex items-center justify-center p-4 bg-gradient-radial from-arcana-bg-primary via-arcana-bg-primary/95 to-arcana-bg-primary animate-fadeIn">
+	<div class="w-full max-w-md">
+		<!-- Title Section -->
+		<div class="text-center mb-8">
+			<h1 class="text-5xl font-serif text-arcana-gold-400 mb-4 drop-shadow-[0_0_20px_rgba(201,152,74,0.4)] animate-glow">
+				Grindolia
+			</h1>
+			<p class="text-arcana-text-secondary">Enter the realm of shadows and magic</p>
+		</div>
 
-			<form class="login-form" onsubmit={(e) => e.preventDefault()}>
+		<!-- Login Card -->
+		<Card variant="elevated">
+			<h2 class="text-2xl font-serif text-arcana-gold-400 mb-6 text-center">
+				Welcome Back
+			</h2>
+
+			<form class="space-y-4" onsubmit={(e) => e.preventDefault()}>
 				{#if error}
-					<div class="error-message">
-						<p>{error}</p>
+					<div class="bg-arcana-orange-600/10 border border-arcana-orange-600/30 rounded-xl p-4">
+						<p class="text-arcana-orange-600 text-sm">{error}</p>
 					</div>
 				{/if}
 
-				<div class="form-group">
-					<label for="email">Email</label>
-					<input
-						id="email"
-						type="email"
-						bind:value={email}
-						onkeypress={handleKeyPress}
-						placeholder="your@email.com"
-						class="form-input"
-						disabled={isLoading}
-						autocomplete="email"
-					/>
-				</div>
-
-				<div class="form-group">
-					<label for="password">Password</label>
-					<input
-						id="password"
-						type="password"
-						bind:value={password}
-						onkeypress={handleKeyPress}
-						placeholder="••••••••"
-						class="form-input"
-						disabled={isLoading}
-						autocomplete="current-password"
-					/>
-				</div>
-
-				<Button
-					variant="primary"
-					size="lg"
-					onclick={handleLogin}
+				<Input
+					label="Username or Email"
+					type="email"
+					placeholder="Enter your username"
+					bind:value={email}
+					required
 					disabled={isLoading}
-					class="login-button"
-				>
-					{isLoading ? 'Logging in...' : 'Login'}
-				</Button>
+				/>
 
-				<div class="login-footer">
-					<p class="footer-text">
-						Don't have an account?
-						<a href="/auth/register" class="link">Register</a>
-					</p>
-					<a href="/demo" class="link">Back to Demo</a>
+				<Input
+					label="Password"
+					type="password"
+					placeholder="Enter your password"
+					bind:value={password}
+					required
+					disabled={isLoading}
+				/>
+
+				<div class="pt-4">
+					<Button
+						variant="primary"
+						class="w-full"
+						onclick={handleLogin}
+						disabled={isLoading}
+					>
+						{isLoading ? 'Logging in...' : 'Login'}
+					</Button>
 				</div>
 			</form>
+
+			<div class="mt-6 text-center">
+				<p class="text-sm text-arcana-text-muted">
+					Don't have an account?
+					<a
+						href="/auth/register"
+						class="text-arcana-gold-600 hover:text-arcana-gold-500 transition-colors ml-1"
+					>
+						Register
+					</a>
+				</p>
+			</div>
 		</Card>
 	</div>
 </div>
 
 <style>
-	.login-page {
-		min-height: 100vh;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: linear-gradient(to bottom, var(--color-primary-1), var(--color-primary-2));
-		padding: 2rem;
+	.bg-gradient-radial {
+		background: radial-gradient(
+			ellipse at center,
+			var(--color-arcana-bg-primary),
+			rgba(93, 106, 184, 0.05),
+			var(--color-arcana-bg-primary)
+		);
 	}
 
-	.login-container {
-		width: 100%;
-		max-width: 420px;
-	}
-
-	.login-header {
-		text-align: center;
-		margin-bottom: 2rem;
-	}
-
-	.login-title {
-		font-size: 2rem;
-		font-weight: 700;
-		color: var(--color-primary-12);
-		margin-bottom: 0.5rem;
-	}
-
-	.login-subtitle {
-		font-size: 1rem;
-		color: var(--color-gray-11);
-	}
-
-	.login-form {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-	}
-
-	.error-message {
-		background: var(--color-red-3);
-		border: 1px solid var(--color-red-6);
-		border-radius: 0.5rem;
-		padding: 1rem;
-	}
-
-	.error-message p {
-		color: var(--color-red-11);
-		margin: 0;
-		font-size: 0.875rem;
-	}
-
-	.form-group {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.form-group label {
-		font-size: 0.875rem;
-		font-weight: 500;
-		color: var(--color-gray-12);
-	}
-
-	.form-input {
-		width: 100%;
-		padding: 0.75rem;
-		background: var(--color-gray-1);
-		border: 1px solid var(--color-gray-6);
-		border-radius: 0.375rem;
-		color: var(--color-gray-12);
-		font-size: 1rem;
-		transition: all 0.2s;
-	}
-
-	.form-input:focus {
-		outline: none;
-		border-color: var(--color-primary-8);
-		box-shadow: 0 0 0 3px var(--color-primary-4);
-	}
-
-	.form-input:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-
-	.login-footer {
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-		text-align: center;
-		padding-top: 1rem;
-		border-top: 1px solid var(--color-gray-6);
-	}
-
-	.footer-text {
-		font-size: 0.875rem;
-		color: var(--color-gray-11);
-		margin: 0;
-	}
-
-	.link {
-		color: var(--color-primary-11);
-		text-decoration: none;
-		font-weight: 500;
-		transition: color 0.2s;
-	}
-
-	.link:hover {
-		color: var(--color-primary-12);
-		text-decoration: underline;
-	}
-
-	@media (max-width: 640px) {
-		.login-page {
-			padding: 1rem;
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
 		}
-
-		.login-title {
-			font-size: 1.5rem;
+		to {
+			opacity: 1;
 		}
+	}
+
+	@keyframes glow {
+		0%, 100% {
+			text-shadow: 0 0 20px rgba(201, 152, 74, 0.4);
+		}
+		50% {
+			text-shadow: 0 0 30px rgba(201, 152, 74, 0.6);
+		}
+	}
+
+	.animate-fadeIn {
+		animation: fadeIn 0.5s ease-out;
+	}
+
+	.animate-glow {
+		animation: glow 3s ease-in-out infinite;
 	}
 </style>
