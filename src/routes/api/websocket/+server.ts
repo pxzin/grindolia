@@ -5,7 +5,7 @@
 
 import type { RequestHandler } from './$types';
 import { WebSocketServer } from 'ws';
-import { getSession } from '../../../../server/websocket/session';
+import { getSession } from '../../../../server/websocket/session-memory';
 import {
 	addConnection,
 	removeConnection,

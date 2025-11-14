@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	try {
 		const db = getDatabase();
 		const classRepo = new CharacterClassRepository(db);
-		const classes = classRepo.getAll();
+		const classes = classRepo.findAll();
 
 		return {
 			classes: classes.map((c) => ({

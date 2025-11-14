@@ -5,9 +5,9 @@
 
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { PlayerRepository } from '../../../../../server/database/repositories/player';
-import { verifyPassword, generateSessionId } from '../../../../../server/utils/crypto';
-import { createSession } from '../../../../../server/websocket/session';
+import { PlayerRepository } from '$server/database/repositories/player';
+import { verifyPassword, generateSessionId } from '$server/utils/crypto';
+import { createSession } from '$server/websocket/session-memory';
 
 interface LoginRequest {
 	email: string;

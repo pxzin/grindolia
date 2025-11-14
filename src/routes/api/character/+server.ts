@@ -6,23 +6,29 @@
 
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { createCharacter, getCharacterById } from '$server/database/repositories/character';
+import { CharacterRepository } from '$server/database/repositories/character';
 import { CharacterClassRepository } from '$server/database/repositories/character-class';
 import { getDatabase } from '$server/database/connection';
-import { addItem } from '$server/database/repositories/inventory-item';
 
 /**
  * POST /api/character
  * Create a new character
  */
 export const POST: RequestHandler = async ({ request, locals }) => {
+	const fs = await import('fs');
+	fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Request received\n`);
+	fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] locals: ${JSON.stringify(locals)}\n`);
+
 	// Check authentication
 	if (!locals.session?.userId) {
+		fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Authentication failed\n`);
 		throw error(401, 'Authentication required');
 	}
 
 	try {
+		fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Parsing request body\n`);
 		const { name, classId } = await request.json();
+		fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Parsed: ${JSON.stringify({ name, classId })}\n`);
 
 		// Validate input
 		if (!name || typeof name !== 'string') {
@@ -41,36 +47,34 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		// Validate class exists
 		const db = getDatabase();
 		const classRepo = new CharacterClassRepository(db);
-		const characterClass = classRepo.getById(classId);
+		const characterClass = classRepo.findById(classId);
 
 		if (!characterClass) {
 			throw error(400, 'Invalid character class');
 		}
 
+		// Parse base stats from JSON
+		const baseStats = classRepo.parseBaseStats(characterClass);
+
 		// Create character
-		const character = createCharacter({
-			user_id: locals.session.userId,
+		const characterRepo = new CharacterRepository(db);
+		const character = characterRepo.create({
+			player_id: locals.session.userId,
 			name,
 			class_id: classId,
-			level: 1,
-			xp: 0,
-			hp: characterClass.base_stats.hp,
-			max_hp: characterClass.base_stats.hp,
-			stats: characterClass.base_stats,
-			currency: 100, // Starting currency
-			position_x: 0,
-			position_y: 0,
-			position_z: 0,
-			zone_id: null,
-			status: 'alive'
-		});
-
-		// Add starting equipment to inventory
-		if (characterClass.starting_equipment && characterClass.starting_equipment.length > 0) {
-			for (const itemId of characterClass.starting_equipment) {
-				addItem(character.id, itemId, 1, false);
+			experience_to_next_level: 100, // XP needed for level 2
+			current_hp: baseStats.hp,
+			max_hp: baseStats.hp,
+			strength: baseStats.strength,
+			intelligence: baseStats.intelligence,
+			dexterity: baseStats.dexterity,
+			vitality: baseStats.vitality,
+			appearance: {
+				skin_tone: 'default',
+				hair_color: 'brown',
+				face: 'default'
 			}
-		}
+		});
 
 		return json({
 			success: true,
@@ -79,14 +83,23 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 				name: character.name,
 				class: characterClass.name,
 				level: character.level,
-				xp: character.xp,
-				hp: character.hp,
+				xp: character.experience,
+				hp: character.current_hp,
 				maxHp: character.max_hp,
-				stats: character.stats,
+				stats: {
+					strength: character.strength,
+					intelligence: character.intelligence,
+					dexterity: character.dexterity,
+					vitality: character.vitality,
+					hp: character.max_hp
+				},
 				currency: character.currency
 			}
 		});
 	} catch (err) {
+		fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Error: ${err}\n`);
+		fs.appendFileSync('/tmp/character-debug.log', `[CHARACTER] Error stack: ${err instanceof Error ? err.stack : 'no stack'}\n`);
+
 		if (err && typeof err === 'object' && 'status' in err) {
 			throw err; // Re-throw SvelteKit errors
 		}
@@ -119,21 +132,22 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 			throw error(400, 'Invalid character ID');
 		}
 
-		const character = getCharacterById(characterId);
+		const db = getDatabase();
+		const characterRepo = new CharacterRepository(db);
+		const character = characterRepo.findById(characterId);
 
 		if (!character) {
 			throw error(404, 'Character not found');
 		}
 
 		// Verify ownership
-		if (character.user_id !== locals.session.userId) {
+		if (character.player_id !== locals.session.userId) {
 			throw error(403, 'Access denied');
 		}
 
 		// Get character class
-		const db = getDatabase();
 		const classRepo = new CharacterClassRepository(db);
-		const characterClass = classRepo.getById(character.class_id);
+		const characterClass = classRepo.findById(character.class_id);
 
 		return json({
 			success: true,
@@ -142,18 +156,17 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 				name: character.name,
 				class: characterClass?.name || 'Unknown',
 				level: character.level,
-				xp: character.xp,
-				hp: character.hp,
+				xp: character.experience,
+				hp: character.current_hp,
 				maxHp: character.max_hp,
-				stats: character.stats,
-				currency: character.currency,
-				position: {
-					x: character.position_x,
-					y: character.position_y,
-					z: character.position_z
+				stats: {
+					strength: character.strength,
+					intelligence: character.intelligence,
+					dexterity: character.dexterity,
+					vitality: character.vitality,
+					hp: character.max_hp
 				},
-				zoneId: character.zone_id,
-				status: character.status
+				currency: character.currency
 			}
 		});
 	} catch (err) {
