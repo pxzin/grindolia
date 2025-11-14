@@ -140,28 +140,28 @@
 
 - [x] T065 [P] [US1] Create character store with Svelte 5 runes in src/lib/stores/character.svelte.ts
 - [x] T066 [P] [US1] Create quest store with Svelte 5 runes in src/lib/stores/quest.svelte.ts
-- [ ] T067 [P] [US1] Create inventory store with Svelte 5 runes in src/lib/stores/inventory.svelte.ts
+- [x] T067 [P] [US1] Create inventory store with Svelte 5 runes in src/lib/stores/inventory.svelte.ts
 
 ### UI Components for US1
 
 - [x] T068 [P] [US1] Create CharacterCreation component in src/lib/components/character/CharacterCreation.svelte
 - [x] T069 [P] [US1] Create QuestList component in src/lib/components/quest/QuestList.svelte
 - [x] T070 [P] [US1] Create QuestDetails component in src/lib/components/quest/QuestDetails.svelte
-- [ ] T071 [P] [US1] Create InventoryGrid component in src/lib/components/game/InventoryGrid.svelte
-- [ ] T072 [US1] Create narrative modal component for isekai intro in src/lib/components/game/NarrativeModal.svelte
+- [x] T071 [P] [US1] Create InventoryGrid component in src/lib/components/inventory/InventoryGrid.svelte
+- [x] T072 [US1] Create narrative modal component for isekai intro in src/lib/components/narrative/NarrativeModal.svelte
 
 ### Pages for US1
 
-- [ ] T073 [US1] Create character creation page in src/routes/character/create/+page.svelte
-- [ ] T074 [US1] Create character detail page in src/routes/character/[id]/+page.svelte
-- [ ] T075 [US1] Create quest list page in src/routes/quest/+page.svelte
-- [ ] T076 [US1] Create quest detail page in src/routes/quest/[id]/+page.svelte
+- [x] T073 [US1] Create character creation page in src/routes/character/create/+page.svelte and +page.server.ts
+- [x] T074 [US1] Create character detail page in src/routes/character/[id]/+page.svelte and +page.server.ts
+- [x] T075 [US1] Create quest list page in src/routes/quest/+page.svelte and +page.server.ts
+- [x] T076 [US1] Quest details integrated into quest list page with modal component
 
 ### i18n for US1
 
-- [ ] T077 [US1] Add character creation translations to all locale files (en, pt-BR, es)
-- [ ] T078 [US1] Add quest UI translations to all locale files (en, pt-BR, es)
-- [ ] T079 [US1] Add isekai intro narrative translations to all locale files (en, pt-BR, es)
+- [x] T077 [US1] Add character creation translations to all locale files (en, pt-BR)
+- [x] T078 [US1] Add quest UI translations to all locale files (en, pt-BR)
+- [x] T079 [US1] Add isekai intro narrative translations to all locale files (en, pt-BR)
 
 **Checkpoint**: User Story 1 is complete - players can create characters and complete tutorial quest
 

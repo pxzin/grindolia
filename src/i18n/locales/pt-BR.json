@@ -31,11 +31,18 @@
 	},
 	"character": {
 		"create": {
-			"title": "Criar Personagem",
-			"selectClass": "Selecionar Classe",
+			"title": "Crie Seu Personagem",
+			"selectClass": "Escolha Sua Classe",
 			"characterName": "Nome do Personagem",
+			"namePlaceholder": "Digite o nome do seu personagem",
 			"customize": "Personalizar Aparência",
-			"createButton": "Criar Personagem"
+			"createButton": "Criar Personagem",
+			"creating": "Criando Personagem...",
+			"errors": {
+				"nameRequired": "Nome do personagem é obrigatório",
+				"nameLength": "O nome do personagem deve ter entre 2 e 20 caracteres",
+				"classRequired": "Por favor, selecione uma classe de personagem"
+			}
 		},
 		"stats": {
 			"level": "Nível",
@@ -45,24 +52,61 @@
 			"intelligence": "Inteligência",
 			"dexterity": "Destreza",
 			"vitality": "Vitalidade",
-			"combatPower": "Poder de Combate"
+			"combatPower": "Poder de Combate",
+			"currency": "Ouro"
 		},
 		"classes": {
 			"warrior": "Guerreiro",
 			"mage": "Mago",
 			"rogue": "Ladino"
+		},
+		"actions": {
+			"viewQuests": "Ver Missões",
+			"inventory": "Inventário",
+			"arena": "Arena"
+		},
+		"sheet": {
+			"title": "Ficha do Personagem"
+		}
+	},
+	"narrative": {
+		"isekai": {
+			"title": "Um Novo Começo",
+			"intro": [
+				"<p>Você estava voltando do trabalho em uma noite chuvosa quando, de repente, <em>tudo ficou branco</em>.</p><p>Quando sua visão se limpa, você se encontra em um prado verdejante sob um céu desconhecido. O ar está fresco, cheio do perfume de flores silvestres e algo mais—<strong>magia</strong>.</p>",
+				"<p>Uma janela translúcida aparece diante de seus olhos, exibindo <em>estatísticas</em> e <em>habilidades</em> como se você estivesse em um jogo. Seu coração acelera ao perceber que o impossível aconteceu.</p><p>Você foi transportado para <strong>outro mundo</strong>.</p>",
+				"<p>À distância, você vê uma pequena vila com fumaça subindo das chaminés. Um caminho atravessa o prado em direção à civilização, em direção à <em>aventura</em>.</p><p>Sua nova vida começa agora. O que você se tornará neste mundo de fantasia?</p>"
+			]
 		}
 	},
 	"quest": {
 		"title": "Missões",
 		"active": "Missões Ativas",
 		"completed": "Concluídas",
-		"available": "Disponíveis",
+		"available": "Missões Disponíveis",
 		"objectives": "Objetivos",
 		"rewards": "Recompensas",
-		"start": "Iniciar Missão",
-		"complete": "Concluir Missão",
-		"progress": "Progresso"
+		"accept": "Aceitar Missão",
+		"accepting": "Aceitando...",
+		"complete": "Completar Missão",
+		"completing": "Completando...",
+		"progress": "Progresso",
+		"viewProgress": "Ver Progresso",
+		"levelRequirement": "Nível Necessário",
+		"repeatable": "Repetível",
+		"cooldown": "Recarga",
+		"errors": {
+			"alreadyActive": "Missão já está ativa",
+			"levelTooLow": "Seu nível é muito baixo para esta missão",
+			"objectivesNotComplete": "Objetivos da missão não foram completados",
+			"onCooldown": "Missão em recarga"
+		},
+		"messages": {
+			"noQuests": "Nenhuma missão disponível para seu nível",
+			"questAccepted": "Missão aceita!",
+			"questCompleted": "Missão completada!",
+			"levelUp": "Subiu de Nível! Você agora é nível {level}!"
+		}
 	},
 	"inventory": {
 		"title": "Inventário",

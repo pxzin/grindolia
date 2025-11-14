@@ -31,11 +31,18 @@
 	},
 	"character": {
 		"create": {
-			"title": "Create Character",
-			"selectClass": "Select Class",
+			"title": "Create Your Character",
+			"selectClass": "Choose Your Class",
 			"characterName": "Character Name",
+			"namePlaceholder": "Enter your character name",
 			"customize": "Customize Appearance",
-			"createButton": "Create Character"
+			"createButton": "Create Character",
+			"creating": "Creating Character...",
+			"errors": {
+				"nameRequired": "Character name is required",
+				"nameLength": "Character name must be between 2 and 20 characters",
+				"classRequired": "Please select a character class"
+			}
 		},
 		"stats": {
 			"level": "Level",
@@ -45,24 +52,61 @@
 			"intelligence": "Intelligence",
 			"dexterity": "Dexterity",
 			"vitality": "Vitality",
-			"combatPower": "Combat Power"
+			"combatPower": "Combat Power",
+			"currency": "Gold"
 		},
 		"classes": {
 			"warrior": "Warrior",
 			"mage": "Mage",
 			"rogue": "Rogue"
+		},
+		"actions": {
+			"viewQuests": "View Quests",
+			"inventory": "Inventory",
+			"arena": "Arena"
+		},
+		"sheet": {
+			"title": "Character Sheet"
+		}
+	},
+	"narrative": {
+		"isekai": {
+			"title": "A New Beginning",
+			"intro": [
+				"<p>You were walking home from work on a rainy evening when suddenly, <em>everything went white</em>.</p><p>When your vision clears, you find yourself standing in a lush meadow under an unfamiliar sky. The air is crisp, filled with the scent of wildflowers and something else—<strong>magic</strong>.</p>",
+				"<p>A translucent window appears before your eyes, displaying <em>stats</em> and <em>abilities</em> as if you were in a game. Your heart races as you realize the impossible has happened.</p><p>You've been transported to <strong>another world</strong>.</p>",
+				"<p>In the distance, you see a small village with smoke rising from chimneys. A path leads through the meadow toward civilization, toward <em>adventure</em>.</p><p>Your new life begins now. What will you become in this fantasy world?</p>"
+			]
 		}
 	},
 	"quest": {
 		"title": "Quests",
 		"active": "Active Quests",
 		"completed": "Completed",
-		"available": "Available",
+		"available": "Available Quests",
 		"objectives": "Objectives",
 		"rewards": "Rewards",
-		"start": "Start Quest",
+		"accept": "Accept Quest",
+		"accepting": "Accepting...",
 		"complete": "Complete Quest",
-		"progress": "Progress"
+		"completing": "Completing...",
+		"progress": "Progress",
+		"viewProgress": "View Progress",
+		"levelRequirement": "Level Requirement",
+		"repeatable": "Repeatable",
+		"cooldown": "Cooldown",
+		"errors": {
+			"alreadyActive": "Quest already active",
+			"levelTooLow": "Your level is too low for this quest",
+			"objectivesNotComplete": "Quest objectives not completed",
+			"onCooldown": "Quest on cooldown"
+		},
+		"messages": {
+			"noQuests": "No quests available at your level",
+			"questAccepted": "Quest accepted!",
+			"questCompleted": "Quest completed!",
+			"levelUp": "Level Up! You are now level {level}!"
+		}
 	},
 	"inventory": {
 		"title": "Inventory",
