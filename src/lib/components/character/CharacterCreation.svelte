@@ -121,8 +121,8 @@
 			<!-- Character Name Input -->
 			<Card variant="elevated" class="mb-8">
 				{#if error}
-					<div class="bg-arcana-orange-600/10 border border-arcana-orange-600/30 rounded-xl p-4 mb-4">
-						<p class="text-arcana-orange-600 text-sm">{error}</p>
+					<div class="bg-arcana-orange-900/60 border border-arcana-orange-500/50 rounded-xl p-4 mb-4">
+						<p class="text-arcana-orange-300 text-sm font-semibold">{error}</p>
 					</div>
 				{/if}
 
