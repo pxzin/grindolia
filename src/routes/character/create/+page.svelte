@@ -45,8 +45,8 @@
 			status: 'alive'
 		});
 
-		// Redirect to character page
-		goto(`/character/${result.character.id}`);
+		// Redirect to town hall
+		goto('/town');
 	};
 </script>
 

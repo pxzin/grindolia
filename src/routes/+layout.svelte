@@ -4,6 +4,7 @@
 	import 'uno.css';
 	import { initI18n } from '../i18n/config';
 	import { onMount } from 'svelte';
+	import DebugPanel from '$lib/dev/debug-panel.svelte';
 
 	let { children } = $props();
 
@@ -35,6 +36,9 @@
 <div class="app min-h-screen bg-arcana-bg-primary text-arcana-text-primary">
 	{@render children()}
 </div>
+
+<!-- Debug Panel (DEV only) -->
+<DebugPanel />
 
 <style>
 	:global(:root) {

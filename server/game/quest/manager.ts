@@ -94,11 +94,13 @@ export function acceptQuest(characterId: number, questTemplateId: number): Accep
 			}
 		}
 
-		// Initialize quest progress
-		const initialProgress: QuestObjective[] = questTemplate.objectives.map(obj => ({
-			...obj,
-			current: 0
-		}));
+		// Initialize quest progress as Record<string, number>
+		// Keys are in format: {type}_{target} (e.g., "kill_Slime", "collect_Herb")
+		const initialProgress: Record<string, number> = {};
+		for (const obj of questTemplate.objectives) {
+			const key = `${obj.type}_${obj.target}`;
+			initialProgress[key] = 0;
+		}
 
 		// Create character quest
 		const characterQuest = createCharacterQuest(characterId, questTemplateId, initialProgress);

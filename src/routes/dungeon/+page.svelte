@@ -18,6 +18,9 @@
 	import Button from '$lib/components/ui/Button.svelte';
 	import { Sword, Search, ArrowDown, LogOut } from 'lucide-svelte';
 
+	// Get server-side data
+	let { data } = $props<{ data: { userId: number; characterId: number } }>();
+
 	// Make reactive references to store state using $derived
 	const character = $derived(characterStore.state);
 	const dungeon = $derived(dungeonStore.state);
@@ -44,10 +47,10 @@
 	onMount(async () => {
 		// Try to load character from server if not already loaded
 		if (!characterStore.isLoaded) {
-			const loaded = await characterStore.loadCharacter();
+			const loaded = await characterStore.loadCharacter(data.characterId);
 			if (!loaded) {
-				// No character found, redirect to create
-				goto('/character/create');
+				// No character found, redirect to select
+				goto('/character/select');
 				return;
 			}
 		}

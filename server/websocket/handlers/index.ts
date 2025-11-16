@@ -6,6 +6,7 @@
 import type { WebSocketConnection } from '../server';
 import type { WebSocketMessage } from '../../../src/lib/types/websocket';
 import { handleQuestProgress } from './quest-progress';
+import { handleLeaderboardRequest } from './leaderboard';
 
 /**
  * Message handler function type
@@ -22,6 +23,11 @@ export type MessageHandler = (
 const handlers: Record<string, MessageHandler> = {
 	// Quest handlers
 	'quest:progress': handleQuestProgress,
+
+	// Leaderboard handlers
+	'leaderboard:request': async (connection, message) => {
+		await handleLeaderboardRequest(connection.ws, message as any);
+	},
 
 	// Arena handlers (will be implemented in Phase 6)
 	// ARENA_INITIATE: handleArenaInitiate,

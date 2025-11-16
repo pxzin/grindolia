@@ -44,8 +44,8 @@
 			const data = await response.json();
 
 			if (response.ok) {
-				// Redirect to character creation
-				goto('/character/create');
+				// Redirect to character selection
+				goto('/character/select');
 			} else {
 				errors = { general: data.error || 'Registration failed' };
 			}

@@ -1,13 +1,13 @@
 /**
- * Dungeon Page Server Load
- * Load character data for the dungeon page
+ * Quests Page Server Load Function
+ * Pass session character ID to client
  */
 
-import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	// Check if user is authenticated
+	// Redirect to login if not authenticated
 	if (!locals.session?.userId) {
 		throw redirect(302, '/auth/login');
 	}
@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 
 	return {
-		userId: locals.session.userId,
-		characterId: locals.session.characterId
+		characterId: locals.session.characterId,
+		userId: locals.session.userId
 	};
 };

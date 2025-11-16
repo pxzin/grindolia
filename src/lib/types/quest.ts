@@ -36,9 +36,16 @@ export interface CharacterQuest {
 	progress: Record<string, number>;
 	started_at: number;
 	completed_at: number | null;
+	template?: {
+		title: string;
+		description: string;
+		min_level: number;
+		objectives: QuestObjective[];
+		rewards: { xp: number; currency: number };
+	};
 }
 
-export type QuestStatus = 'active' | 'completed' | 'failed';
+export type QuestStatus = 'active' | 'in_progress' | 'completed' | 'failed';
 
 export interface QuestWithTemplate {
 	quest: CharacterQuest;

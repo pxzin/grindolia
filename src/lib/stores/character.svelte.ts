@@ -54,6 +54,13 @@ class CharacterStore {
 	}
 
 	/**
+	 * Get current character (alias for state, but returns null if not loaded)
+	 */
+	get character(): Readonly<CharacterState> | null {
+		return this._state.id !== null ? this._state : null;
+	}
+
+	/**
 	 * Check if character is loaded
 	 */
 	get isLoaded(): boolean {
@@ -199,10 +206,11 @@ class CharacterStore {
 	/**
 	 * Load character from server
 	 */
-	async loadCharacter(): Promise<boolean> {
+	async loadCharacter(characterId?: number): Promise<boolean> {
 		try {
-			console.log('📥 [CharacterStore] Loading character from server...');
-			const response = await fetch('/api/character');
+			const url = characterId ? `/api/character/${characterId}` : '/api/character';
+			console.log('📥 [CharacterStore] Loading character from server...', { url, characterId });
+			const response = await fetch(url);
 
 			if (!response.ok) {
 				if (response.status === 404) {

@@ -33,8 +33,8 @@
 			const data = await response.json();
 
 			if (response.ok) {
-				// Redirect to character selection/creation
-				goto('/character/create');
+				// Redirect to character selection
+				goto('/character/select');
 			} else {
 				error = data.error || 'Login failed';
 			}
