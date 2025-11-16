@@ -109,7 +109,7 @@ class DungeonStore {
 
 			// Reload character to get updated HP (in case of revival)
 			console.log('🔄 [DungeonStore] Reloading character after dungeon entry...');
-			await characterStore.loadCharacter();
+			await characterStore.loadCharacter(characterId);
 		} catch (error) {
 			console.error('❌ [DungeonStore] Failed to enter dungeon:', error);
 			throw error;

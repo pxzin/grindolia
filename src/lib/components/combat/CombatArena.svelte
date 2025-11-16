@@ -75,24 +75,25 @@
 		dungeonStore.exitDungeon();
 	}
 
-	// Mock monster data
-	const monster = $derived(
-		combat.monster || {
-			name: 'Shadow Beast',
-			level: 5,
-			hp: { current: combat.monsterHPCurrent || 100, max: combat.monsterHPStart || 100 },
-			attack: 25,
-			defense: 15
-		}
-	);
+	// Derive monster data from combat state
+	const monster = $derived({
+		name: combat.monster?.name || 'Unknown',
+		level: combat.monster?.level || 1,
+		hp: { current: combat.monsterHPCurrent, max: combat.monsterHPStart },
+		attack: combat.monster?.strength || 10,
+		defense: combat.monster?.dexterity || 10
+	});
 
 	const player = $derived({
 		name: characterName,
-		level: 10,
+		level: 1, // Will be passed from parent
 		hp: { current: combat.characterHPCurrent || characterHP, max: characterMaxHP },
-		attack: 45,
-		defense: 30
+		attack: 10, // Character stats from parent
+		defense: 10
 	});
+
+	// Get rewards from combat state
+	const rewards = $derived(combat.rewards);
 </script>
 
 <div class="space-y-6">
@@ -164,8 +165,8 @@
 <!-- Victory Modal -->
 <VictoryModal
 	bind:open={showVictory}
-	xpGained={350}
-	goldGained={125}
+	xpGained={rewards?.xp || 0}
+	goldGained={rewards?.currency || 0}
 	onContinue={handleVictoryContinue}
 />
 

@@ -9,7 +9,6 @@
 	import { dungeonStore } from '$lib/stores/dungeon.svelte';
 	import { combatStore } from '$lib/stores/combat.svelte';
 	import { characterStore } from '$lib/stores/character.svelte';
-	import DungeonView from '$lib/components/dungeon/DungeonView.svelte';
 	import CombatArena from '$lib/components/combat/CombatArena.svelte';
 	import CharacterSheet from '$lib/components/game/CharacterSheet.svelte';
 	import DungeonHeader from '$lib/components/game/DungeonHeader.svelte';
@@ -97,24 +96,53 @@
 		adventureMessages = [...adventureMessages, { text, type }].slice(-10);
 	}
 
-	function handleFight() {
-		addMessage('A monster appears from the shadows!', 'danger');
-		// TODO: Start combat
+	async function handleFight() {
+		if (!character.id || !dungeon.dungeonProgressId) {
+			addMessage('Cannot initiate combat - not in a dungeon', 'danger');
+			return;
+		}
+
+		try {
+			addMessage('A monster appears from the shadows!', 'danger');
+			await combatStore.initiateCombat(character.id, dungeon.dungeonProgressId);
+			addMessage(`You encounter a ${combat.monster?.name || 'creature'}!`, 'danger');
+		} catch (err) {
+			const errorMsg = err instanceof Error ? err.message : 'Failed to initiate combat';
+			addMessage(errorMsg, 'danger');
+			console.error('Combat initiation error:', err);
+		}
 	}
 
 	function handleExplore() {
+		// For MVP, exploration just adds flavor text
 		const discoveries = [
-			{ text: 'You found a hidden chest containing 50 gold!', type: 'gold' as const },
-			{ text: 'The room is empty, only dust and cobwebs remain.', type: 'normal' as const },
-			{ text: 'You discovered a secret passage!', type: 'success' as const }
+			{ text: 'You search the area but find nothing of interest.', type: 'normal' as const },
+			{ text: 'The walls are covered with ancient runes...', type: 'normal' as const },
+			{ text: 'You hear distant echoes deeper in the dungeon.', type: 'normal' as const }
 		];
 		const discovery = discoveries[Math.floor(Math.random() * discoveries.length)];
 		addMessage(discovery.text, discovery.type);
 	}
 
-	function handleDescend() {
-		addMessage('You descend deeper into the dungeon...', 'normal');
-		// TODO: Implement descend logic
+	async function handleDescend() {
+		if (!dungeon.canDescend) {
+			addMessage('You must defeat at least one monster before descending.', 'normal');
+			return;
+		}
+
+		if (dungeon.isLastFloor) {
+			addMessage('You have reached the deepest floor!', 'success');
+			return;
+		}
+
+		try {
+			await dungeonStore.descendFloor();
+			addMessage(`You descend to floor ${dungeon.currentFloor}...`, 'success');
+		} catch (err) {
+			const errorMsg = err instanceof Error ? err.message : 'Failed to descend';
+			addMessage(errorMsg, 'danger');
+			console.error('Descend error:', err);
+		}
 	}
 </script>
 
@@ -177,12 +205,12 @@
 					<div class="space-y-6">
 						<!-- Dungeon Header -->
 						<DungeonHeader
-							dungeonName="Dark Dungeon"
-							currentFloor={1}
-							maxFloor={5}
-							monstersDefeated={0}
-							monstersTotal={5}
-							recommendedLevel={1}
+							dungeonName={dungeon.dungeonName}
+							currentFloor={dungeon.currentFloor}
+							maxFloor={dungeon.maxFloors}
+							monstersDefeated={dungeon.monstersDefeated}
+							monstersTotal={3}
+							recommendedLevel={character.level}
 						/>
 
 						<!-- Status Area -->
@@ -235,7 +263,7 @@
 							<AdventureLog messages={adventureMessages} />
 						</Card>
 
-						<!-- Combat or Exploration View -->
+						<!-- Combat Arena (only shown during combat) -->
 						{#if combat.isInCombat}
 							<CombatArena
 								characterId={character.id || 0}
@@ -243,8 +271,6 @@
 								characterHP={character.hp}
 								characterMaxHP={character.maxHp}
 							/>
-						{:else}
-							<DungeonView characterId={character.id || 0} />
 						{/if}
 					</div>
 				{/if}
